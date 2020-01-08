@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.DriverControl;
@@ -40,13 +42,17 @@ public class Drivetrain extends SubsystemBase {
 
     private DifferentialDriveOdometry odometry;
 
+    // Current pose
+    private Pose2d currentPose = new Pose2d();
+
     public Drivetrain() {
+
         lMotor0 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
         lMotor1 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
         lMotor2 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
         rMotor0 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
         rMotor1 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rMotor2 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rMotor2 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         lMotor0.setIdleMode(CANSparkMax.IdleMode.kBrake);
         lMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -69,7 +75,7 @@ public class Drivetrain extends SubsystemBase {
 
         leftEncoder = new Encoder(
                 DriveConstants.kLeftEncoderPorts[0],
-                DriveConstants.kRightEncoderPorts[1],
+                DriveConstants.kLeftEncoderPorts[1],
                 DriveConstants.kLeftEncoderReversed
         );
 
@@ -192,6 +198,11 @@ public class Drivetrain extends SubsystemBase {
         // TODO: populate this with A LOT more (logging ect)
         odometry.update(Rotation2d.fromDegrees(getHeading()), leftEncoder.getDistance(),
                 rightEncoder.getDistance());
+
+        currentPose = getPose();
+        SmartDashboard.putNumber("X Pos", currentPose.getTranslation().getX());
+        SmartDashboard.putNumber("Y Pos", currentPose.getTranslation().getX());
+        SmartDashboard.putNumber("Heading", currentPose.getRotation().getDegrees());
     }
 
 }
