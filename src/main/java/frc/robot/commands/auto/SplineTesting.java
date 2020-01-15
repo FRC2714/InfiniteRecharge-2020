@@ -35,7 +35,9 @@ public class SplineTesting extends SequentialCommandGroup {
                         ),
                         new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
                         4,2,true
-                )
+                ),
+
+                new InstantCommand(() -> drivetrain.tankDriveVolts(0,0))
         );
 
     }

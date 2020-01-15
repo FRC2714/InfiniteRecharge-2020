@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.commands.auto.SplineTesting;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
@@ -77,8 +78,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+      return new SplineTesting(drivetrain);
   }
 
   public Command getDriverControlCommand() {
