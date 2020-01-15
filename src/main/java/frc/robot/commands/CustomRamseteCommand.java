@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -160,11 +161,15 @@ public class CustomRamseteCommand extends CommandBase {
         var targetWheelSpeeds = m_kinematics.toWheelSpeeds(
                 m_follower.calculate(m_pose.get(), m_trajectory.sample(curTime)));
 
+
+
         var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
         var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
 
         telemetry.put("Target Left Velocity", leftSpeedSetpoint);
         telemetry.put("Target Right Velocity", rightSpeedSetpoint);
+        SmartDashboard.putNumber("Target left velocity", leftSpeedSetpoint);
+        SmartDashboard.putNumber("Target right velocity", rightSpeedSetpoint);
 
         double leftOutput;
         double rightOutput;

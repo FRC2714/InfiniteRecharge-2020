@@ -17,17 +17,17 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DriveConstants {
-        private static double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
-        private static double kTrackWidth = 3; // feet
-        private static double kWheelRadius = 3.0/12; // feet
-        private static int kShaftEncoderResolution = 8192; // counts per revolution bore encoder
-        private static double positionChangePerRotation = 8.73; // Motor rotation per shaft rotation
+        public static double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
+        public static double kTrackWidth = 0.91; // meters
+        public static double kWheelRadius = 0.076; // meters
+        public static double kShaftEncoderResolution = 2048; // counts per revolution bore encoder
+        public static double positionChangePerRotation = 8.73; // Motor rotation per shaft rotation
         public static double kMaxVelocity = 13; // feet per second
         public static double kMaxAcceleration = 3; // Max Accel fet per second squared
 
-        public static double ksVolts = 0.141; // Constant feedforward term for the robot drive.
-        public static double kvVoltSecondsPerMeter = 2.26; // Velocity-proportional feedforward term for the robot drive
-        public static double kaVoltSecondsSquaredPerMeter = 0.433; //Acceleration-proportional feedforward term for the robot
+        public static double kStatic = 0.129; // Constant feedforward term for the robot drive.
+        public static double kV = 2.26; // Velocity-proportional feedforward term for the robot drive
+        public static double kA = 0.238; //Acceleration-proportional feedforward term for the robot
 
         // Tuning parameter (b > 0) for which larger values make convergence more aggressive like a proportional term
         public static double kRamseteB = 2;
@@ -39,12 +39,16 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
+        public static double kDriveP = 3; // 3 stable
+        public static double kDriveI = 0;
+        public static double kDriveD = 0;
+
         public static int[] kLeftEncoderPorts = new int[]{0, 1};
         public static int[] kRightEncoderPorts = new int[]{2, 3};
 
         public static boolean kLeftEncoderReversed = false;
         public static boolean kRightEncoderReversed = false;
 
-        public static boolean kGyroReversed = false;
+        public static boolean kGyroReversed = true;
     }
 }

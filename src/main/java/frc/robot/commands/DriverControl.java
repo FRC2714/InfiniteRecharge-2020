@@ -4,25 +4,34 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
+import java.util.function.DoubleSupplier;
+
 public class DriverControl extends CommandBase {
     private final Drivetrain drivetrain;
+    private final DoubleSupplier getRawX;
+    private final DoubleSupplier getRawPivot;
 
-    public DriverControl(Drivetrain subsystem) {
+    public DriverControl(Drivetrain subsystem, DoubleSupplier getRawX, DoubleSupplier getRawPivot) {
         drivetrain = subsystem;
         addRequirements(subsystem);
+
+        this.getRawX = getRawX;
+        this.getRawPivot = getRawPivot;
     }
 
     @Override
     public void execute() {
-        double rawX = RobotContainer.driverStick.getRawAxis(1);
-        double rawPivot = RobotContainer.driverStick.getRawAxis(4);
+        // double rawX = RobotContainer.driverStick.getRawAxis(1);
+        // double rawPivot = RobotContainer.driverStick.getRawAxis(4);
+        double rawX = getRawX.getAsDouble();
+        double rawPivot = getRawPivot.getAsDouble();
 
-        if(Math.abs(rawX) < 0.07)
+        if(Math.abs(getRawX.getAsDouble()) < 0.07)
             rawX = 0;
 
-        if(Math.abs(rawPivot) < 0.1)
+        if(Math.abs(getRawPivot.getAsDouble()) < 0.1)
             rawPivot = 0;
 
-        drivetrain.arcadeDrive(-rawX, rawPivot);
+        drivetrain.curvatureDrive(-rawX, rawPivot);
     }
 }
