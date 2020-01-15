@@ -84,4 +84,25 @@ public class FollowTrajectory extends CommandBase {
 
     }
 
+    @Override
+    public void initialize() {
+        ramseteCommand.initialize();
+        ramseteCommand.schedule();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return ramseteCommand.isFinished();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println();
+        System.out.printf("Final X Position %.2f | Final Y Position %.2f | Final Heading %.2f \n",
+                drivetrain.getPose().getTranslation().getX(),
+                drivetrain.getPose().getTranslation().getY(),
+                drivetrain.getPose().getRotation().getDegrees());
+        System.out.println("---ENDED FORWARD PATH TRACKING---");
+        System.out.println();
+    }
 }
