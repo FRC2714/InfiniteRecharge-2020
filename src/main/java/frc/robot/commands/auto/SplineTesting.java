@@ -13,9 +13,7 @@ import java.util.List;
 
 public class SplineTesting extends SequentialCommandGroup {
 
-    Drivetrain drivetrain;
     public SplineTesting(Drivetrain drivetrain){
-
         addCommands(
                 new InstantCommand(drivetrain::resetAll),
 
