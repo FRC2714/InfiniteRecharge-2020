@@ -13,8 +13,9 @@ import java.util.List;
 
 public class SplineTesting extends SequentialCommandGroup {
 
-    public SplineTesting(Drivetrain drivetrain){
+    public SplineTesting(Drivetrain drivetrain) {
         addCommands(
+
                 new InstantCommand(drivetrain::resetAll),
 
                 new FollowTrajectory(
@@ -24,8 +25,8 @@ public class SplineTesting extends SequentialCommandGroup {
                                 new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
                         ),
                         new Pose2d(Units.feetToMeters(10), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(0)),
-                        4,2, false
-                        ),
+                        3.3, 2, false
+                ),
 
                 new FollowTrajectory(
                         drivetrain,
@@ -34,10 +35,11 @@ public class SplineTesting extends SequentialCommandGroup {
                                 new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
                         ),
                         new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
-                        4,2,true
+                        3.3, 2, true
                 ),
 
-                new InstantCommand(() -> drivetrain.tankDriveVolts(0,0))
+                new InstantCommand(() -> System.out.println("SETTING TANK TO ZERO"))
+
         );
 
     }

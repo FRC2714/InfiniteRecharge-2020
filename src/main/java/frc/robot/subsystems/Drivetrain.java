@@ -133,7 +133,7 @@ public class Drivetrain extends SubsystemBase {
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
 
-
+        drive.setSafetyEnabled(false);
     }
 
 
