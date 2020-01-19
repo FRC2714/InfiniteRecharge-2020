@@ -120,36 +120,6 @@ public class RobotContainer {
                         .addConstraint(centripetalAccelerationConstraint)
                         .setReversed(true);
 
-    /*
-    Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                    new Translation2d(Units.feetToMeters(6), Units.feetToMeters(0)),
-                    new Translation2d(Units.feetToMeters(10), Units.feetToMeters(4))
-
-            ),
-            new Pose2d(Units.feetToMeters(), Units.feetToMeters(), new Rotation2d().fromDegrees(30)),
-            // Pass config
-            config
-    );*/
-
-    /*
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                    new Translation2d(1, 1),
-                    new Translation2d(2, -1)
-            ),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config
-    );*/
-
         Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
