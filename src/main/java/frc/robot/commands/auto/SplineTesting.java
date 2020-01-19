@@ -38,6 +38,7 @@ public class SplineTesting extends SequentialCommandGroup {
                         3.3, 2, true
                 ),
 
+                new InstantCommand(() -> drivetrain.tankDriveVolts(0,0)),
                 new InstantCommand(() -> System.out.println("SETTING TANK TO ZERO"))
 
         );
