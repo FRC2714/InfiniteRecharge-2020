@@ -28,6 +28,9 @@ import frc.robot.commands.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Logger;
+import frc.robot.Constants.DriveConstants;
+
+
 
 import java.util.List;
 
@@ -174,16 +177,16 @@ public class RobotContainer {
         CustomRamseteCommand ramseteCommand = new CustomRamseteCommand(
                 simpleSCurve,
                 drivetrain::getPose,
-                new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
+                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
                 new SimpleMotorFeedforward(
-                        Constants.DriveConstants.kStatic,
-                        Constants.DriveConstants.kV,
-                        Constants.DriveConstants.kA
+                        DriveConstants.kStatic,
+                        DriveConstants.kV,
+                        DriveConstants.kA
                 ),
                 drivetrain.getKinematics(),
                 drivetrain::getWheelSpeeds,
-                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
+                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
+                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
                 drivetrain::tankDriveVolts,
                 drivetrain
         );
@@ -191,16 +194,16 @@ public class RobotContainer {
         CustomRamseteCommand ramseteCommand2 = new CustomRamseteCommand(
                 reverseSimpleSCurve,
                 drivetrain::getPose,
-                new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
+                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
                 new SimpleMotorFeedforward(
-                        Constants.DriveConstants.kStatic,
-                        Constants.DriveConstants.kV,
-                        Constants.DriveConstants.kA
+                        DriveConstants.kStatic,
+                        DriveConstants.kV,
+                        DriveConstants.kA
                 ),
                 drivetrain.getKinematics(),
                 drivetrain::getWheelSpeeds,
-                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
+                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
+                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
                 drivetrain::tankDriveVolts,
                 drivetrain
         );
