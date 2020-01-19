@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-import javax.swing.*;
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class FollowTrajectory extends CommandBase {
@@ -37,7 +35,7 @@ public class FollowTrajectory extends CommandBase {
                             Pose2d startPose,
                             List<Translation2d> internalPoints,
                             Pose2d endPose,
-                            double velocity, double acceleration, boolean isReversed){
+                            double velocity, double acceleration, boolean isReversed) {
         this.drivetrain = drivetrain;
         this.startPose = startPose;
         this.endPose = endPose;
@@ -92,8 +90,8 @@ public class FollowTrajectory extends CommandBase {
                 ),
                 drivetrain.getKinematics(),
                 drivetrain::getWheelSpeeds,
-                new PIDController(Constants.DriveConstants.kDriveP,0,Constants.DriveConstants.kDriveD),
-                new PIDController(Constants.DriveConstants.kDriveP,0,Constants.DriveConstants.kDriveD),
+                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
+                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
                 drivetrain::tankDriveVolts,
                 drivetrain
         );

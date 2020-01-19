@@ -20,7 +20,7 @@ public class TurnToAngle extends PIDCommand {
                 drive
         );
 
-        getController().enableContinuousInput(-180,180);
+        getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
     }

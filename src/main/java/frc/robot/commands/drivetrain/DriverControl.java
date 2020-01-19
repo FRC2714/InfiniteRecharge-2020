@@ -1,7 +1,6 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
 import java.util.function.DoubleSupplier;
@@ -20,14 +19,14 @@ public class DriverControl extends CommandBase {
 
     @Override
     public void execute() {
-        
+
         double rawX = getRawX.getAsDouble();
         double rawPivot = getRawPivot.getAsDouble();
 
-        if(Math.abs(getRawX.getAsDouble()) < 0.07)
+        if (Math.abs(getRawX.getAsDouble()) < 0.07)
             rawX = 0;
 
-        if(Math.abs(getRawPivot.getAsDouble()) < 0.1)
+        if (Math.abs(getRawPivot.getAsDouble()) < 0.1)
             rawPivot = 0;
 
         drivetrain.curvatureDrive(-rawX, rawPivot);

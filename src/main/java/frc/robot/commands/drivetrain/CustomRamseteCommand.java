@@ -1,10 +1,5 @@
 package frc.robot.commands;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -17,6 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 
@@ -160,7 +160,6 @@ public class CustomRamseteCommand extends CommandBase {
 
         var targetWheelSpeeds = m_kinematics.toWheelSpeeds(
                 m_follower.calculate(m_pose.get(), m_trajectory.sample(curTime)));
-
 
 
         var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;

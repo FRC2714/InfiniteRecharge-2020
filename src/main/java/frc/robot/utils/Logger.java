@@ -2,7 +2,6 @@ package frc.robot.utils;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Logger<T> {
@@ -21,7 +20,7 @@ public class Logger<T> {
     }
 
     public void add(T t) {
-        logs.putIfAbsent(t, new CSVWriter(new File(ROOT+t.getClass().getSimpleName() + ".csv")));
+        logs.putIfAbsent(t, new CSVWriter(new File(ROOT + t.getClass().getSimpleName() + ".csv")));
     }
 
     public void putData(T t, Map<String, Object> data) {
