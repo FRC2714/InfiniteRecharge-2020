@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -50,5 +52,15 @@ public final class Constants {
         public static boolean kRightEncoderReversed = false;
 
         public static boolean kGyroReversed = true;
+    }
+
+    public static final class CameraConstants {
+        public static double kCameraHeight = Units.inchesToMeters(41.125); // TODO: update this
+        public static double kCameraMountingAngle = 25.3; // degrees
+    }
+
+    public static final class FieldConstants {
+        public static double kGoalHeight = Units.inchesToMeters(98.25); // TODO: check this
+
     }
 }
