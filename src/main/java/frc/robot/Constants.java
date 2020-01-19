@@ -25,9 +25,9 @@ public final class Constants {
         public static double kMaxVelocity = 13; // feet per second
         public static double kMaxAcceleration = 3; // Max Accel fet per second squared
 
-        public static double kStatic = 0.129; // Constant feedforward term for the robot drive.
+        public static double kStatic = 0.131; // Constant feedforward term for the robot drive.
         public static double kV = 2.26; // Velocity-proportional feedforward term for the robot drive
-        public static double kA = 0.238; //Acceleration-proportional feedforward term for the robot
+        public static double kA = 0.384; //Acceleration-proportional feedforward term for the robot (.238)
 
         // Tuning parameter (b > 0) for which larger values make convergence more aggressive like a proportional term
         public static double kRamseteB = 2;
@@ -39,7 +39,7 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kDriveP = 3; // 3 stable
+        public static double kDriveP = 2.45; // 3 stable
         public static double kDriveI = 0;
         public static double kDriveD = 0;
 

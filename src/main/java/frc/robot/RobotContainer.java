@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -105,20 +107,25 @@ public class RobotContainer {
                             Constants.DriveConstants.kA
                     ),
                     drivetrain.getKinematics(),
-                    12
+                    10
             );
+
+    CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(1.75);
     TrajectoryConfig config =
-            new TrajectoryConfig(4, 2)
-                    // Add kinematics to ensure max speed is actually obeyed
-                    .setKinematics(drivetrain.getKinematics())
-                    // Apply the voltage constraint
-                    .addConstraint(voltageConstraint);
-    TrajectoryConfig reverseConfig =
-            new TrajectoryConfig(4, 2)
+            new TrajectoryConfig(3, 2)
                     // Add kinematics to ensure max speed is actually obeyed
                     .setKinematics(drivetrain.getKinematics())
                     // Apply the voltage constraint
                     .addConstraint(voltageConstraint)
+                    .addConstraint(centripetalAccelerationConstraint);
+
+    TrajectoryConfig reverseConfig =
+            new TrajectoryConfig(3, 2)
+                    // Add kinematics to ensure max speed is actually obeyed
+                    .setKinematics(drivetrain.getKinematics())
+                    // Apply the voltage constraint
+                    .addConstraint(voltageConstraint)
+                    .addConstraint(centripetalAccelerationConstraint)
                     .setReversed(true);
 
     /*
@@ -156,19 +163,19 @@ public class RobotContainer {
             new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                    new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
+                    new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
             ),
-            new Pose2d(Units.feetToMeters(10), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(0)),
+            new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
             // Pass config
              config
     );
 
     Trajectory reverseSimpleSCurve = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
-            new Pose2d(10, -4.5, new Rotation2d().fromDegrees(0)),
+            new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                    new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
+                    new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
             ),
             new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
             // Pass config
