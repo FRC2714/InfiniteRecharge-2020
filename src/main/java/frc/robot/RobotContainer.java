@@ -13,31 +13,23 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.CustomRamseteCommand;
-import frc.robot.commands.DriverControl;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.auto.SplineTesting;
+import frc.robot.utils.CustomRamseteCommand;
+import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.Logger;
 
 import java.util.List;
-
-import static frc.robot.Constants.DriveConstants.kRamseteB;
-import static frc.robot.Constants.DriveConstants.kRamseteZeta;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -49,9 +41,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Drivetrain drivetrain = new Drivetrain();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   public static Joystick driverStick = new Joystick(0);
 
@@ -89,8 +78,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+      return new SplineTesting(drivetrain);
   }
 
   public Command getDriverControlCommand() {
@@ -99,6 +87,7 @@ public class RobotContainer {
 
   public Command getRamseteCommand() {
     drivetrain.resetAll();
+
     DifferentialDriveVoltageConstraint voltageConstraint =
             new DifferentialDriveVoltageConstraint(
                     new SimpleMotorFeedforward(
@@ -107,75 +96,41 @@ public class RobotContainer {
                             Constants.DriveConstants.kA
                     ),
                     drivetrain.getKinematics(),
-                    10
+                    12
             );
-
-    CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(1.75);
     TrajectoryConfig config =
-            new TrajectoryConfig(3, 2)
+            new TrajectoryConfig(4, 2)
                     // Add kinematics to ensure max speed is actually obeyed
                     .setKinematics(drivetrain.getKinematics())
                     // Apply the voltage constraint
-                    .addConstraint(voltageConstraint)
-                    .addConstraint(centripetalAccelerationConstraint);
+                    .addConstraint(voltageConstraint);
 
     TrajectoryConfig reverseConfig =
-            new TrajectoryConfig(3, 2)
+            new TrajectoryConfig(4, 2)
                     // Add kinematics to ensure max speed is actually obeyed
                     .setKinematics(drivetrain.getKinematics())
                     // Apply the voltage constraint
                     .addConstraint(voltageConstraint)
-                    .addConstraint(centripetalAccelerationConstraint)
                     .setReversed(true);
 
-    /*
     Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                    new Translation2d(Units.feetToMeters(6), Units.feetToMeters(0)),
-                    new Translation2d(Units.feetToMeters(10), Units.feetToMeters(4))
-
+                    new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
             ),
-            new Pose2d(Units.feetToMeters(), Units.feetToMeters(), new Rotation2d().fromDegrees(30)),
-            // Pass config
-            config
-    );*/
-
-    /*
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                    new Translation2d(1, 1),
-                    new Translation2d(2, -1)
-            ),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config
-    );*/
-
-    Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                    new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
-            ),
-            new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
+            new Pose2d(Units.feetToMeters(10), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(0)),
             // Pass config
              config
     );
 
     Trajectory reverseSimpleSCurve = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
-            new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
+            new Pose2d(Units.feetToMeters(10), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                    new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
+                    new Translation2d(Units.feetToMeters(5), Units.feetToMeters(-2.5))
             ),
             new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
             // Pass config
