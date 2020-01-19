@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.CustomRamseteCommand;
-import frc.robot.commands.DriverControl;
+import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.Logger;

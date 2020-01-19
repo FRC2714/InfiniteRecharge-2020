@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -14,15 +14,13 @@ public class DriverControl extends CommandBase {
     public DriverControl(Drivetrain subsystem, DoubleSupplier getRawX, DoubleSupplier getRawPivot) {
         drivetrain = subsystem;
         addRequirements(subsystem);
-
         this.getRawX = getRawX;
         this.getRawPivot = getRawPivot;
     }
 
     @Override
     public void execute() {
-        // double rawX = RobotContainer.driverStick.getRawAxis(1);
-        // double rawPivot = RobotContainer.driverStick.getRawAxis(4);
+        
         double rawX = getRawX.getAsDouble();
         double rawPivot = getRawPivot.getAsDouble();
 
