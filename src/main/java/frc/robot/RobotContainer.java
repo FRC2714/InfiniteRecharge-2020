@@ -104,7 +104,7 @@ public class RobotContainer {
 
         CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(1.75);
         TrajectoryConfig config =
-                new TrajectoryConfig(3, 2)
+                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(drivetrain.getKinematics())
                         // Apply the voltage constraint
@@ -112,7 +112,7 @@ public class RobotContainer {
                         .addConstraint(centripetalAccelerationConstraint);
 
         TrajectoryConfig reverseConfig =
-                new TrajectoryConfig(3, 2)
+                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(drivetrain.getKinematics())
                         // Apply the voltage constraint
