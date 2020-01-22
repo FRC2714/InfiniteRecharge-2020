@@ -66,7 +66,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getRamseteCommand();
+        //m_autonomousCommand = m_robotContainer.getRamseteCommand();
+         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         m_autonomousCommand.initialize();
 
         // schedule the autonomous command (example)
@@ -74,6 +75,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.schedule();
         }
     }
+
 
     /**
      * This function is called periodically during autonomous.
@@ -89,7 +91,7 @@ public class Robot extends TimedRobot {
         }
 
         Command driverControl = m_robotContainer.getDriverControlCommand();
-        driverControl.initialize();
+        //driverControl.initialize();
         driverControl.schedule();
 
     }

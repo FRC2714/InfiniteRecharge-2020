@@ -49,18 +49,6 @@ public class VisionCommand extends CommandBase {
         SmartDashboard.putNumber("Y offset", getYAngleOffset());
         SmartDashboard.putNumber("Distance", getDistanceToGoal());
         double tx = getXAngleOffset();
-        /*
-        if (buttonPressed.getAsBoolean()) {
-            double headingError = -tx;
-            double adjust = 0.0;
-
-            if (tx > 1.0)
-                adjust = 0.5 * headingError -.05;
-            else if (tx < 1.0)
-                adjust = 0.5 * headingError + .05;
-
-            drivetrain.arcadeDrive(0, adjust);
-        }*/
     }
 
 }

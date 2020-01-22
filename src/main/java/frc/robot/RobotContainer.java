@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.spline.Spline;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -24,9 +25,13 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CustomRamseteCommand;
+import frc.robot.commands.auto.SplineTesting;
+import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 import frc.robot.utils.Logger;
 import frc.robot.Constants.DriveConstants;
 
@@ -43,9 +48,13 @@ import java.util.List;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
+    private final Limelight limelight = new Limelight();
+
     private final Drivetrain drivetrain = new Drivetrain();
 
     public static Joystick driverStick = new Joystick(0);
+
+    JoystickButton button1 = new JoystickButton(driverStick, 1);
 
     private DriverControl driverControlCommand = new DriverControl(
             drivetrain,
@@ -54,6 +63,7 @@ public class RobotContainer {
     );
 
     private Logger<Subsystem> subsystemLogger = new Logger<>();
+
 
 
     /**
@@ -72,6 +82,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        button1.whenPressed(new AlignToTarget(limelight, drivetrain));
     }
 
 
@@ -82,11 +93,11 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return null;
+        return new SplineTesting(drivetrain);
     }
 
     public Command getDriverControlCommand() {
-        return driverControlCommand;
+        return new AlignToTarget(limelight, drivetrain);
     }
 
     public Command getRamseteCommand() {

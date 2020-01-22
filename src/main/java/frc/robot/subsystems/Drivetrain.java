@@ -207,6 +207,7 @@ public class Drivetrain extends SubsystemBase {
      * @param rot the commanded rotation
      */
     public void arcadeDrive(double fwd, double rot) {
+        System.out.println("FORWARD = " + fwd + " ROTATION" + rot);
         drive.arcadeDrive(fwd, rot);
     }
 
@@ -222,6 +223,7 @@ public class Drivetrain extends SubsystemBase {
      * @param rightVolts the commanded right output
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
+        System.out.println("Setting tank 0");
         lMotor0.set(leftVolts / RobotController.getBatteryVoltage());
         rMotor0.set(-rightVolts / RobotController.getBatteryVoltage());
     }
