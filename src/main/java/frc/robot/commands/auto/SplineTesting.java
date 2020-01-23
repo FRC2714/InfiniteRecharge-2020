@@ -38,7 +38,9 @@ public class SplineTesting extends SequentialCommandGroup {
                         10
                 );
 
-        CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(1.75);
+        CentripetalAccelerationConstraint centripetalAccelerationConstraint =
+                new CentripetalAccelerationConstraint(Units.feetToMeters(5.74147));
+
         TrajectoryConfig config =
                 new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
                         // Add kinematics to ensure max speed is actually obeyed
@@ -80,7 +82,7 @@ public class SplineTesting extends SequentialCommandGroup {
                 reverseConfig
         );
 
-        CustomRamseteCommand ramseteCommand = new CustomRamseteCommand(
+        CustomRamseteCommand forwardSpline = new CustomRamseteCommand(
                 simpleSCurve,
                 drivetrain::getPose,
                 new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
@@ -97,7 +99,7 @@ public class SplineTesting extends SequentialCommandGroup {
                 drivetrain
         );
 
-        CustomRamseteCommand ramseteCommand2 = new CustomRamseteCommand(
+        CustomRamseteCommand reverseSpline = new CustomRamseteCommand(
                 reverseSimpleSCurve,
                 drivetrain::getPose,
                 new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
@@ -116,44 +118,11 @@ public class SplineTesting extends SequentialCommandGroup {
 
 
         addCommands(
-
                 sequence(
-                        new CustomRamseteCommand(
-                                simpleSCurve,
-                                drivetrain::getPose,
-                                new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
-                                new SimpleMotorFeedforward(
-                                        Constants.DriveConstants.kStatic,
-                                        Constants.DriveConstants.kV,
-                                        Constants.DriveConstants.kA
-                                ),
-                                drivetrain.getKinematics(),
-                                drivetrain::getWheelSpeeds,
-                                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                                drivetrain::tankDriveVolts,
-                                drivetrain
-                        ),
-
-                        new CustomRamseteCommand(
-                                reverseSimpleSCurve,
-                                drivetrain::getPose,
-                                new RamseteController(Constants.DriveConstants.kRamseteB, Constants.DriveConstants.kRamseteZeta),
-                                new SimpleMotorFeedforward(
-                                        Constants.DriveConstants.kStatic,
-                                        Constants.DriveConstants.kV,
-                                        Constants.DriveConstants.kA
-                                ),
-                                drivetrain.getKinematics(),
-                                drivetrain::getWheelSpeeds,
-                                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                                new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
-                                drivetrain::tankDriveVolts,
-                                drivetrain
-                        ).andThen(() -> drivetrain.tankDriveVolts(0, 0))
+                        forwardSpline,
+                        reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0))
 
                 )
-
         );
 
     }
