@@ -34,7 +34,7 @@ public class SplineTesting extends SequentialCommandGroup {
                         ),
                         drivetrain.getKinematics(),
                         10
-                );
+        );
 
         CentripetalAccelerationConstraint centripetalAccelerationConstraint =
                 new CentripetalAccelerationConstraint(Units.feetToMeters(5.74147));
@@ -46,15 +46,6 @@ public class SplineTesting extends SequentialCommandGroup {
                         // Apply the voltage constraint
                         .addConstraint(voltageConstraint)
                         .addConstraint(centripetalAccelerationConstraint);
-
-        TrajectoryConfig reverseConfig =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(drivetrain.getKinematics())
-                        // Apply the voltage constraint
-                        .addConstraint(voltageConstraint)
-                        .addConstraint(centripetalAccelerationConstraint)
-                        .setReversed(true);
 
         Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
@@ -77,7 +68,7 @@ public class SplineTesting extends SequentialCommandGroup {
                 ),
                 new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
                 // Pass config
-                reverseConfig
+                config.setReversed(true)
         );
 
         CustomRamseteCommand forwardSpline = new CustomRamseteCommand(
