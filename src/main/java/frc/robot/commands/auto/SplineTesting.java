@@ -12,11 +12,9 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.CustomRamseteCommand;
-import frc.robot.commands.drivetrain.trajectories.FollowTrajectory;
+import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.subsystems.Drivetrain;
 
 import java.util.List;
@@ -121,7 +119,10 @@ public class SplineTesting extends SequentialCommandGroup {
                 sequence(
                         forwardSpline,
                         reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0))
+                ),
 
+                deadline(
+                        forwardSpline.deadlineWith()
                 )
         );
 
