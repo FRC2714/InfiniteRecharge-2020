@@ -2,15 +2,19 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
-public class AlignToTarget extends PIDCommand {
+import java.util.function.BooleanSupplier;
 
-    public AlignToTarget(Limelight limelight, Drivetrain drive) {
+public class AlignToTarget extends PIDCommand {
+    private Limelight limelight;
+    private BooleanSupplier isButtonHeld;
+
+    public AlignToTarget(Limelight limelight, Drivetrain drive, BooleanSupplier isButtonHeld) {
         super(
-                new PIDController(.12,0, .03),
+                new PIDController(DriveConstants.kAlignP,0, DriveConstants.kAlignD),
                 // Close loop on heading
                 limelight::getXAngleOffset,
                 // set reference to target
@@ -21,15 +25,20 @@ public class AlignToTarget extends PIDCommand {
                 drive
         );
 
+        this.limelight = limelight;
+        this.isButtonHeld = isButtonHeld;
+
         getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
         getController().setTolerance(.75);
     }
 
+
     @Override
     public boolean isFinished() {
-        return getController().atSetpoint();
+        return
+                getController().atSetpoint() || !limelight.targetVisible();
     }
 
 }

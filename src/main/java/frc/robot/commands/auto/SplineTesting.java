@@ -37,10 +37,10 @@ public class SplineTesting extends SequentialCommandGroup {
         );
 
         CentripetalAccelerationConstraint centripetalAccelerationConstraint =
-                new CentripetalAccelerationConstraint(Units.feetToMeters(5.74147));
+                new CentripetalAccelerationConstraint(Units.feetToMeters(5.4));
 
         TrajectoryConfig config =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
+                new TrajectoryConfig(Units.feetToMeters(13.3), Units.feetToMeters(8.75))
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(drivetrain.getKinematics())
                         // Apply the voltage constraint
@@ -110,10 +110,6 @@ public class SplineTesting extends SequentialCommandGroup {
                 sequence(
                         forwardSpline,
                         reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0))
-                ),
-
-                deadline(
-                        forwardSpline.deadlineWith()
                 )
         );
 

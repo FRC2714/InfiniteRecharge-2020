@@ -90,9 +90,11 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
 
-        Command driverControl = m_robotContainer.getDriverControlCommand();
+        //Command driverControl = m_robotContainer.getDriverControlCommand();
         //driverControl.initialize();
-        driverControl.schedule();
+        //driverControl.schedule();
+
+       m_robotContainer.initDefaultCommands();
 
     }
 

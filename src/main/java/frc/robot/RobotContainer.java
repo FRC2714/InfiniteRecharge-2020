@@ -74,6 +74,10 @@ public class RobotContainer {
 
     }
 
+    public void initDefaultCommands() {
+        drivetrain.initDefaultCommand(driverStick);
+    }
+
     /**
      * Use this method to define your button->command mappings.  Buttons can be created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -81,7 +85,8 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        button1.whenPressed(new AlignToTarget(limelight, drivetrain));
+        button1.whenPressed(new AlignToTarget(limelight, drivetrain,
+                () -> driverStick.getRawButton(1)));
     }
 
 
@@ -96,7 +101,7 @@ public class RobotContainer {
     }
 
     public Command getDriverControlCommand() {
-        return new AlignToTarget(limelight, drivetrain);
+        return new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawButton(1));
     }
 
     public Command getRamseteCommand() {
@@ -112,7 +117,7 @@ public class RobotContainer {
                         10
                 );
 
-        CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(1.75);
+        CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(Units.feetToMeters(4.5));
         TrajectoryConfig config =
                 new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
                         // Add kinematics to ensure max speed is actually obeyed

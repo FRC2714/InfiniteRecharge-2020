@@ -38,8 +38,7 @@ public class Limelight extends SubsystemBase {
 
     public boolean targetVisible() {
         double tv = limelight.getEntry("tv").getDouble(0.0);
-        if (tv != 0.0) return true;
-        return false;
+        return tv != 0.0;
     }
 
     @Override
