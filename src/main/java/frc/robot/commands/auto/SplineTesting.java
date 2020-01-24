@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class SplineTesting extends SequentialCommandGroup {
 
 
 
-    public SplineTesting(Drivetrain drivetrain) {
+    public SplineTesting(Drivetrain drivetrain, Limelight limelight) {
 
         DifferentialDriveVoltageConstraint voltageConstraint =
                 new DifferentialDriveVoltageConstraint(
@@ -109,7 +111,8 @@ public class SplineTesting extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         forwardSpline,
-                        reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0))
+                        //reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
+                        new AlignToTarget(limelight, drivetrain, () -> { return true; })
                 )
         );
 

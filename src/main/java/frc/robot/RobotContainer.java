@@ -85,7 +85,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        button1.whenPressed(new AlignToTarget(limelight, drivetrain,
+        button1.whileHeld(new AlignToTarget(limelight, drivetrain,
                 () -> driverStick.getRawButton(1)));
     }
 
@@ -97,7 +97,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new SplineTesting(drivetrain);
+        return new SplineTesting(drivetrain, limelight);
     }
 
     public Command getDriverControlCommand() {
