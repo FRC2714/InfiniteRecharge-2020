@@ -1,7 +1,0 @@
-language: java
-jdk:
-  - openjdk11
-jobs:
-  include:
-    - stage: build
-      script: ./gradlew build
