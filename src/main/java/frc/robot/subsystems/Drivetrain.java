@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.drivetrain.DriverControl;
 
-import java.util.function.DoubleSupplier;
-
 public class Drivetrain extends SubsystemBase {
 
     // motors
@@ -73,9 +71,9 @@ public class Drivetrain extends SubsystemBase {
     private double lastRightWheelDist = 0;
     private double lastTimeMillis = 0;
 
-    private boolean isInitialzed = false;
+    private boolean isInitialed = false;
 
-    NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
+    private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public Drivetrain() {
         lMotor0 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -136,29 +134,13 @@ public class Drivetrain extends SubsystemBase {
 
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
-
-
     }
-
 
     @Override
     public void periodic() {
         double leftDist = leftEncoder.getDistance();
         double rightDist = rightEncoder.getDistance();
         double curTime = System.currentTimeMillis();
-
-        if (!isInitialzed) {
-            lastTimeMillis = curTime;
-            isInitialzed = true;
-        } else {
-            double dt = System.currentTimeMillis() - lastTimeMillis;
-            double leftVel = (leftDist - lastLeftWheelDist) / dt;
-            double rightVel = (rightDist - lastRightWheelDist) / dt;
-
-            SmartDashboard.putNumber("Left wheel vel", leftVel);
-            SmartDashboard.putNumber("Right wheel vel", rightVel);
-        }
-
 
         // Update the odometry in the periodic block
         odometry.update(Rotation2d.fromDegrees(getHeading()), leftDist,

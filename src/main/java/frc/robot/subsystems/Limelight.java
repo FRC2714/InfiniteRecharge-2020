@@ -19,7 +19,7 @@ public class Limelight extends SubsystemBase {
         limelight = NetworkTableInstance.getDefault().getTable("limelight");
     }
 
-    private double internaGetDistanceToGoal() {
+    private double internalGetDistanceToGoal() {
         if (getYAngleOffset() == -1) return -1;
         return kCameraToGoalHeight / Math.tan(Math.toRadians(Constants.CameraConstants.kCameraMountingAngle + getYAngleOffset()));
     }
@@ -41,13 +41,24 @@ public class Limelight extends SubsystemBase {
         return tv != 0.0;
     }
 
+    public void setLED(boolean isBrightLightOn){
+        if(isBrightLightOn)
+            limelight.getEntry("ledMode").setDouble(3);
+        else
+            limelight.getEntry("ledMode").setDouble(1);
+    }
+
+    public void setPipeline(double numPipeline){
+        limelight.getEntry("pipeline").setDouble(numPipeline);
+    }
+
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("cam to goal", kCameraToGoalHeight);
+        SmartDashboard.putNumber("Camera Distance to Goal", kCameraToGoalHeight);
         tx = limelight.getEntry("tx").getDouble(-1);
         ty = limelight.getEntry("ty").getDouble(-1);
         tv = limelight.getEntry("tz").getDouble(0);
-        distance = internaGetDistanceToGoal();
+        distance = internalGetDistanceToGoal();
 
         SmartDashboard.putNumber("X offset", getXAngleOffset());
         SmartDashboard.putNumber("Y offset", getYAngleOffset());
