@@ -1,5 +1,7 @@
 package frc.robot.commands.drivetrain.trajectories;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -48,6 +51,9 @@ public class CustomRamseteCommand extends CommandBase {
     private final BiConsumer<Double, Double> m_output;
     private DifferentialDriveWheelSpeeds m_prevSpeeds;
     private double m_prevTime;
+
+    NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
+
 
     /**
      * Constructs a new RamseteCommand that, when executed, will follow the provided trajectory.
@@ -149,6 +155,10 @@ public class CustomRamseteCommand extends CommandBase {
             m_leftController.reset();
             m_rightController.reset();
         }
+
+        live_dashboard.getEntry("isFollowingPath").setBoolean(true);
+
+
     }
 
     @Override
@@ -158,8 +168,13 @@ public class CustomRamseteCommand extends CommandBase {
         double curTime = m_timer.get();
         double dt = curTime - m_prevTime;
 
+
         var targetWheelSpeeds = m_kinematics.toWheelSpeeds(
                 m_follower.calculate(m_pose.get(), m_trajectory.sample(curTime)));
+
+        live_dashboard.getEntry("pathX").setDouble(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getX()));
+        live_dashboard.getEntry("pathY").setDouble(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getY()));
+        live_dashboard.getEntry("pathHeading").setDouble(m_trajectory.sample(curTime).poseMeters.getRotation().getRadians());
 
 
         var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
