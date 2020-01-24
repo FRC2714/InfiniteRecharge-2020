@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.auto.RightStart;
 import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
-import frc.robot.commands.auto.SplineTesting;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.subsystems.Drivetrain;
@@ -52,9 +51,9 @@ public class RobotContainer {
 
     private final Drivetrain drivetrain = new Drivetrain();
 
-    public static Joystick driverStick = new Joystick(0);
+    private static Joystick driverStick = new Joystick(0);
 
-    JoystickButton button1 = new JoystickButton(driverStick, 1);
+    private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
 
     private DriverControl driverControlCommand = new DriverControl(
             drivetrain,
@@ -63,8 +62,6 @@ public class RobotContainer {
     );
 
     private Logger<Subsystem> subsystemLogger = new Logger<>();
-
-
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -86,7 +83,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        button1.whileHeld(new AlignToTarget(limelight, drivetrain,
+        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain,
                 () -> driverStick.getRawButton(1)));
     }
 
@@ -97,12 +94,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
         return new RightStart(drivetrain);
-    }
-
-    public Command getDriverControlCommand() {
-        return new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawButton(1));
     }
 
     public Command getRamseteCommand() {
