@@ -5,6 +5,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -72,6 +74,8 @@ public class Drivetrain extends SubsystemBase {
     private double lastTimeMillis = 0;
 
     private boolean isInitialzed = false;
+
+    NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public Drivetrain() {
         lMotor0 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -163,9 +167,13 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Left Encoder Meters", leftDist);
         SmartDashboard.putNumber("Right Encoder Meters", rightDist);
 
-        SmartDashboard.putNumber("X Pos FEET", Units.metersToFeet(getPose().getTranslation().getX()));
-        SmartDashboard.putNumber("Y Pos FEET", Units.metersToFeet(getPose().getTranslation().getY()));
-        SmartDashboard.putNumber("Heading", getPose().getRotation().getDegrees());
+        live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
+        live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
+        live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
+
+        SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
+        SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
+        SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
 
         lastRightWheelDist = rightDist;
         lastLeftWheelDist = leftDist;
