@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,6 +58,8 @@ public class Drivetrain extends SubsystemBase {
 
     // Gyro
     private AHRS navx;
+    private ADIS16470_IMU adisIMU = new ADIS16470_IMU();
+
 
     private DifferentialDrive drive;
 
@@ -67,11 +71,6 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDriveKinematics kinematics
             = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
 
-    private double lastLeftWheelDist = 0;
-    private double lastRightWheelDist = 0;
-    private double lastTimeMillis = 0;
-
-    private boolean isInitialed = false;
 
     private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
@@ -134,13 +133,14 @@ public class Drivetrain extends SubsystemBase {
 
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
+
+        adisIMU.calibrate();
     }
 
     @Override
     public void periodic() {
         double leftDist = leftEncoder.getDistance();
         double rightDist = rightEncoder.getDistance();
-        double curTime = System.currentTimeMillis();
 
         // Update the odometry in the periodic block
         odometry.update(Rotation2d.fromDegrees(getHeading()), leftDist,
@@ -157,9 +157,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
         SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
 
-        lastRightWheelDist = rightDist;
-        lastLeftWheelDist = leftDist;
-        lastTimeMillis = curTime;
     }
 
     /**
@@ -188,6 +185,7 @@ public class Drivetrain extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
         odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+        adisIMU.reset();
     }
 
     /**
@@ -213,7 +211,6 @@ public class Drivetrain extends SubsystemBase {
      * @param rightVolts the commanded right output
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        System.out.println("Setting tank 0");
         lMotor0.set(leftVolts / RobotController.getBatteryVoltage());
         rMotor0.set(-rightVolts / RobotController.getBatteryVoltage());
     }
@@ -262,6 +259,7 @@ public class Drivetrain extends SubsystemBase {
         drive.setMaxOutput(maxOutput);
     }
 
+
     /**
      * Zeroes the heading of the robot.
      */
@@ -275,7 +273,7 @@ public class Drivetrain extends SubsystemBase {
      * @return the robot's heading in degrees, from 180 to 180
      */
     public double getHeading() {
-        return Math.IEEEremainder(navx.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
 
@@ -285,7 +283,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return adisIMU.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
     public DifferentialDriveKinematics getKinematics() {
@@ -294,7 +292,8 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetAll() {
         resetOdometry(new Pose2d());
-        // navx.reset();
+        adisIMU.reset();
+        navx.reset();
     }
 
     public void initDefaultCommand(Joystick joystick) {

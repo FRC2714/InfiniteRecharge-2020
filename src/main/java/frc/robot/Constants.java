@@ -54,7 +54,7 @@ public final class Constants {
         public static boolean kLeftEncoderReversed = false;
         public static boolean kRightEncoderReversed = false;
 
-        public static boolean kGyroReversed = true;
+        public static boolean kGyroReversed = false;
     }
 
     public static final class CameraConstants {
