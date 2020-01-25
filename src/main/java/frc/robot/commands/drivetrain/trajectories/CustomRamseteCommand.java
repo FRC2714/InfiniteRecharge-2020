@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Drivetrain;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class CustomRamseteCommand extends CommandBase {
     private final BiConsumer<Double, Double> m_output;
     private DifferentialDriveWheelSpeeds m_prevSpeeds;
     private double m_prevTime;
+    private Drivetrain drivetrain;
 
     NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
@@ -102,6 +104,7 @@ public class CustomRamseteCommand extends CommandBase {
         m_usePID = true;
 
         addRequirements(requirements);
+        this.drivetrain = (Drivetrain) requirements[0];
     }
 
     /**
@@ -163,7 +166,6 @@ public class CustomRamseteCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Map<String, Object> telemetry = new HashMap<>();
 
         double curTime = m_timer.get();
         double dt = curTime - m_prevTime;
@@ -180,8 +182,6 @@ public class CustomRamseteCommand extends CommandBase {
         var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
         var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
 
-        telemetry.put("Target Left Velocity", leftSpeedSetpoint);
-        telemetry.put("Target Right Velocity", rightSpeedSetpoint);
         SmartDashboard.putNumber("Target left velocity", leftSpeedSetpoint);
         SmartDashboard.putNumber("Target right velocity", rightSpeedSetpoint);
 
@@ -222,6 +222,8 @@ public class CustomRamseteCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds());
+        if(drivetrain.isEncoderError())
+            System.out.println("ENCODER ERROR");
+        return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds()) || drivetrain.isEncoderError();
     }
 }

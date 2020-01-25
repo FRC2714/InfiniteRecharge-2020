@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RamseteGenerator {
     private static TrajectoryConfig getConfig(double maxVel, double maxA, boolean isReversed) {
-        return new TrajectoryConfig(Units.feetToMeters(13.3), Units.feetToMeters(8.75))
+        return new TrajectoryConfig(maxVel, maxA)
                 // Add kinematics to ensure max speed is actually obeyed
                 .setKinematics(Constants.DriveConstants.kDriveKinematics)
                 // Apply the voltage constraint
@@ -30,10 +30,10 @@ public class RamseteGenerator {
                                 Constants.DriveConstants.kA
                         ),
                         Constants.DriveConstants.kDriveKinematics,
-                        10
+                        11
                 ))
                 .addConstraint(
-                        new CentripetalAccelerationConstraint(Units.feetToMeters(5.4))
+                        new CentripetalAccelerationConstraint(Units.feetToMeters(4.5))
                 ).setReversed(isReversed);
     }
 

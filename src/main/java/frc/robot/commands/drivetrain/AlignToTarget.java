@@ -13,7 +13,7 @@ import java.util.function.BooleanSupplier;
 
 public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
-
+    private Drivetrain drivetrain;
     public AlignToTarget(Limelight limelight, Drivetrain drive) {
         super(
                 new ProfiledPIDController(DriveConstants.kAlignP,0, DriveConstants.kAlignD,
@@ -29,18 +29,23 @@ public class AlignToTarget extends ProfiledPIDCommand {
         );
 
         this.limelight = limelight;
+        this.drivetrain = drive;
         getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
-        getController().setTolerance(.5, 3);
+        getController().setTolerance(.75, 4);
     }
 
 
     @Override
     public boolean isFinished() {
-        System.out.println(getController().getPositionError());
         return
                 getController().atGoal() || !limelight.targetVisible();
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        drivetrain.tankDriveVolts(0,0);
+    }
 }

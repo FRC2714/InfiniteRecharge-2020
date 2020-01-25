@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -63,10 +62,11 @@ public class Drivetrain extends SubsystemBase {
 
     private DifferentialDrive drive;
 
-    private DifferentialDriveOdometry odometry;
+    private DifferentialDriveOdometry externalOdometry;
+    private DifferentialDriveOdometry internalOdometry;
+
 
     // Current pose
-    private Pose2d currentPose = new Pose2d();
 
     // private DifferentialDriveKinematics kinematics
             // = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
@@ -128,7 +128,8 @@ public class Drivetrain extends SubsystemBase {
         drive.setSafetyEnabled(false);
 
         // TODO: set encoder distance per pulse
-        odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+        externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+        internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
@@ -140,7 +141,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The pose.
      */
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return externalOdometry.getPoseMeters();
     }
 
     /**
@@ -159,8 +160,9 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         adisIMU.reset();
+        externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+        internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
 
     /**
@@ -170,7 +172,6 @@ public class Drivetrain extends SubsystemBase {
      * @param rot the commanded rotation
      */
     public void arcadeDrive(double fwd, double rot) {
-        System.out.println("FORWARD = " + fwd + " ROTATION" + rot);
         drive.arcadeDrive(fwd, rot);
     }
 
@@ -251,6 +252,10 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
+    public boolean isEncoderError(){
+        return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 1;
+    }
+
 
     /**
      * Returns the turn rate of the robot.
@@ -285,8 +290,13 @@ public class Drivetrain extends SubsystemBase {
         double rightDist = rightEncoder.getDistance();
 
         // Update the odometry in the periodic block
-        odometry.update(Rotation2d.fromDegrees(getHeading()), leftDist,
+        externalOdometry.update(Rotation2d.fromDegrees(getHeading()),
+                leftDist,
                 rightDist);
+
+        internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
+                (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius,
+                (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
 
         SmartDashboard.putNumber("Left Encoder Meters", leftDist);
         SmartDashboard.putNumber("Right Encoder Meters", rightDist);
@@ -299,6 +309,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
         SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
 
+        SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
+        SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
     }
 
 }

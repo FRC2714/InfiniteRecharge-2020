@@ -54,12 +54,12 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Camera Distance to Goal", kCameraToGoalHeight);
         tx = limelight.getEntry("tx").getDouble(-1);
         ty = limelight.getEntry("ty").getDouble(-1);
         tv = limelight.getEntry("tz").getDouble(0);
-// SmartDashboard.putNumber("X offset", getXAngleOffset());
+//        SmartDashboard.putNumber("X offset", getXAngleOffset());
 //        SmartDashboard.putNumber("Y offset", getYAngleOffset());
-//        SmartDashboard.putNumber("Distance (ft)", Units.feetToMeters(distance));S
+        distance = internalGetDistanceToGoal();
+        SmartDashboard.putNumber("Distance (ft)", Units.metersToFeet(distance));
     }
 }

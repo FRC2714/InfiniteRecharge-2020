@@ -46,10 +46,10 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.1;
-        public static double kAlignD = 0.005;
+        public static double kAlignP = 0.11;
+        public static double kAlignD = 0.008;
 
-        public static double kDriveP = 2.48; // 3 stable
+        public static double kDriveP = 2.45; // 3 stable
         public static double kDriveI = 0;
         public static double kDriveD = 0;
 
@@ -66,8 +66,8 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        public static double kCameraHeight = Units.inchesToMeters(41.125); // TODO: update this
-        public static double kCameraMountingAngle = 25.3; // degrees
+        public static double kCameraHeight = Units.inchesToMeters(42.75); // TODO: update this
+        public static double kCameraMountingAngle = 22; // degrees
     }
 
     public static final class FieldConstants {
@@ -75,8 +75,6 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-
-
 
     }
 }
