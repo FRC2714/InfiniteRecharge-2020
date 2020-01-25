@@ -157,8 +157,8 @@ public class Drivetrain extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
         adisIMU.reset();
-        externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+        externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
 
     /**
@@ -193,6 +193,8 @@ public class Drivetrain extends SubsystemBase {
     public void resetEncoders() {
         leftEncoder.reset();
         rightEncoder.reset();
+        leftNeoEncoder.setPosition(0);
+        rightNeoEncoder.setPosition(0);
     }
 
     /**
