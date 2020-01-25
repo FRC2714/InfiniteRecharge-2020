@@ -49,12 +49,13 @@ public class RightStart extends SequentialCommandGroup {
 
         Trajectory mainSpline = TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
-                new Pose2d(Units.feetToMeters(10.854), Units.feetToMeters(19.631), new Rotation2d().fromDegrees(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
+                new Pose2d(Units.feetToMeters(10.53), Units.feetToMeters(19.63), new Rotation2d().fromDegrees(0.00)),
+
                 List.of(
-                        new Translation2d(Units.feetToMeters(18.141), Units.feetToMeters(23.936))
+                        new Translation2d(Units.feetToMeters(14.89), Units.feetToMeters(23.75))
                 ),
-                new Pose2d(Units.feetToMeters(27.571), Units.feetToMeters(24.501), new Rotation2d().fromDegrees(0)),
+
+                new Pose2d(Units.feetToMeters(25.68), Units.feetToMeters(24.61), new Rotation2d().fromDegrees(0.00)),
                 // Pass config
                 config
         );
