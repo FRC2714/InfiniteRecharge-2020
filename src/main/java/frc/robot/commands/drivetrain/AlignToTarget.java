@@ -13,9 +13,8 @@ import java.util.function.BooleanSupplier;
 
 public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
-    private BooleanSupplier isButtonHeld;
 
-    public AlignToTarget(Limelight limelight, Drivetrain drive, BooleanSupplier isButtonHeld) {
+    public AlignToTarget(Limelight limelight, Drivetrain drive) {
         super(
                 new ProfiledPIDController(DriveConstants.kAlignP,0, DriveConstants.kAlignD,
                         new TrapezoidProfile.Constraints(100, 300)),
@@ -30,8 +29,6 @@ public class AlignToTarget extends ProfiledPIDCommand {
         );
 
         this.limelight = limelight;
-        this.isButtonHeld = isButtonHeld;
-
         getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
@@ -41,9 +38,9 @@ public class AlignToTarget extends ProfiledPIDCommand {
 
     @Override
     public boolean isFinished() {
-        System.out.println(getController().atGoal());
+        System.out.println(getController().getPositionError());
         return
-                getController().atGoal() || !limelight.targetVisible();
+                getController().atGoal();
     }
 
 }

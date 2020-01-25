@@ -111,8 +111,8 @@ public class SplineTesting extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         forwardSpline,
-                        //reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
-                        new AlignToTarget(limelight, drivetrain, () -> { return true; })
+                        reverseSpline.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
+                        new AlignToTarget(limelight, drivetrain)
                 )
         );
 

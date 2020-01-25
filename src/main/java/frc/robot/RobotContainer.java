@@ -83,8 +83,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain,
-                () -> driverStick.getRawButton(1)));
+        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain));
     }
 
 
@@ -94,7 +93,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new RightStart(drivetrain);
+        return new RightStart(drivetrain, limelight);
     }
 
     public Command getRamseteCommand() {
