@@ -56,7 +56,6 @@ public class Drivetrain extends SubsystemBase {
     );
 
     // Gyro
-    private AHRS navx;
     private ADIS16470_IMU adisIMU = new ADIS16470_IMU();
 
 
@@ -120,9 +119,6 @@ public class Drivetrain extends SubsystemBase {
 
         leftNeoEncoder.setPosition(0);
         rightNeoEncoder.setPosition(0);
-        navx = new AHRS(SPI.Port.kMXP);
-        navx.reset();
-        navx.zeroYaw();
 
         drive = new DifferentialDrive(lMotor0, rMotor0);
         drive.setSafetyEnabled(false);
@@ -240,7 +236,7 @@ public class Drivetrain extends SubsystemBase {
      * Zeroes the heading of the robot.
      */
     public void zeroHeading() {
-        navx.reset();
+        // navx.reset();
     }
 
     /**
@@ -273,7 +269,6 @@ public class Drivetrain extends SubsystemBase {
     public void resetAll() {
         resetOdometry(new Pose2d());
         adisIMU.reset();
-        navx.reset();
     }
 
     public void initDefaultCommand(Joystick joystick) {
