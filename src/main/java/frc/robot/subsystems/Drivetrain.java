@@ -118,7 +118,6 @@ public class Drivetrain extends SubsystemBase {
         leftNeoEncoder = lMotor0.getEncoder();
         rightNeoEncoder = rMotor0.getEncoder();
 
-
         leftNeoEncoder.setPosition(0);
         rightNeoEncoder.setPosition(0);
         navx = new AHRS(SPI.Port.kMXP);
@@ -133,28 +132,6 @@ public class Drivetrain extends SubsystemBase {
 
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
-    }
-
-    @Override
-    public void periodic() {
-        double leftDist = leftEncoder.getDistance();
-        double rightDist = rightEncoder.getDistance();
-
-        // Update the odometry in the periodic block
-        odometry.update(Rotation2d.fromDegrees(getHeading()), leftDist,
-                rightDist);
-
-        SmartDashboard.putNumber("Left Encoder Meters", leftDist);
-        SmartDashboard.putNumber("Right Encoder Meters", rightDist);
-
-        live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
-        live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
-        live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
-
-        SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
-        SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
-        SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
-
     }
 
     /**
@@ -300,6 +277,28 @@ public class Drivetrain extends SubsystemBase {
                 () -> joystick.getRawAxis(1),
                 () -> joystick.getRawAxis(4)
         ));
+    }
+
+    @Override
+    public void periodic() {
+        double leftDist = leftEncoder.getDistance();
+        double rightDist = rightEncoder.getDistance();
+
+        // Update the odometry in the periodic block
+        odometry.update(Rotation2d.fromDegrees(getHeading()), leftDist,
+                rightDist);
+
+        SmartDashboard.putNumber("Left Encoder Meters", leftDist);
+        SmartDashboard.putNumber("Right Encoder Meters", rightDist);
+
+        live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
+        live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
+        live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
+
+        SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
+        SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
+        SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
+
     }
 
 }
