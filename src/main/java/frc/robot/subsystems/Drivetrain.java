@@ -68,8 +68,8 @@ public class Drivetrain extends SubsystemBase {
     // Current pose
     private Pose2d currentPose = new Pose2d();
 
-    private DifferentialDriveKinematics kinematics
-            = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
+    // private DifferentialDriveKinematics kinematics
+            // = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
 
 
     private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
@@ -287,7 +287,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public DifferentialDriveKinematics getKinematics() {
-        return kinematics;
+        return DriveConstants.kDriveKinematics;
     }
 
     public void resetAll() {

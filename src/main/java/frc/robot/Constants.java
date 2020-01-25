@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 
 /**
@@ -55,6 +60,9 @@ public final class Constants {
         public static boolean kRightEncoderReversed = false;
 
         public static boolean kGyroReversed = false;
+
+        public static DifferentialDriveKinematics kDriveKinematics
+                = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
     }
 
     public static final class CameraConstants {
@@ -64,6 +72,11 @@ public final class Constants {
 
     public static final class FieldConstants {
         public static double kGoalHeight = Units.inchesToMeters(98.25); // TODO: check this
+    }
+
+    public static final class AutoConstants {
+
+
 
     }
 }
