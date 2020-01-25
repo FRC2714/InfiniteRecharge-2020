@@ -32,7 +32,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
         getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
-        getController().setTolerance(.75, 3);
+        getController().setTolerance(.5, 3);
     }
 
 
@@ -40,7 +40,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
     public boolean isFinished() {
         System.out.println(getController().getPositionError());
         return
-                getController().atGoal();
+                getController().atGoal() || !limelight.targetVisible();
     }
 
 }

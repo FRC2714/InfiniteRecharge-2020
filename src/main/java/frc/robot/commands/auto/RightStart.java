@@ -31,7 +31,7 @@ public class RightStart extends SequentialCommandGroup {
                                  new Translation2d(Units.feetToMeters(15.93), Units.feetToMeters(24.61))
                          ),
 
-                         new Pose2d(Units.feetToMeters(26.00), Units.feetToMeters(24.46), new Rotation2d().fromDegrees(-168.00)),
+                         new Pose2d(Units.feetToMeters(26.00), Units.feetToMeters(24.46), new Rotation2d().fromDegrees(-168.00)), // -168 is good
                         Units.feetToMeters(13.3), Units.feetToMeters(8.75), true
                 );
 
