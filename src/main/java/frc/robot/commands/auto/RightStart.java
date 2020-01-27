@@ -15,17 +15,13 @@ import frc.robot.utils.RamseteGenerator;
 import java.util.List;
 
 public class RightStart extends SequentialCommandGroup {
-    private static final Pose2d initialPose =
-            new Pose2d(Units.feetToMeters(10.75), Units.feetToMeters(19.78), new Rotation2d().fromDegrees(179.85));
-
-
 
     public RightStart(Drivetrain drivetrain, Limelight limelight) {
         CustomRamseteCommand lineToTrench =
                 RamseteGenerator.getRamseteCommand
                  (
                         drivetrain,
-                        initialPose,
+                         new Pose2d(Units.feetToMeters(10.75), Units.feetToMeters(19.78), new Rotation2d().fromDegrees(179.85)),
 
                          List.of(
                                  new Translation2d(Units.feetToMeters(15.93), Units.feetToMeters(24.61))
@@ -37,7 +33,7 @@ public class RightStart extends SequentialCommandGroup {
 
         addCommands(
                 sequence(
-                        new InstantCommand(() -> drivetrain.resetOdometry(initialPose)),
+                        new InstantCommand(() -> drivetrain.resetOdometry(lineToTrench.getInitialPose())),
                         lineToTrench.andThen(()->drivetrain.tankDriveVolts(0,0)),
                         new AlignToTarget(limelight, drivetrain)
                 )

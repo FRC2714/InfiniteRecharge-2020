@@ -232,4 +232,9 @@ public class CustomRamseteCommand extends CommandBase {
 
         return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds()) || drivetrain.isEncoderError();
     }
+
+    public Pose2d getInitialPose(){
+        return m_trajectory.getInitialPose();
+    }
+
 }
