@@ -57,8 +57,6 @@ public class Limelight extends SubsystemBase {
         tx = limelight.getEntry("tx").getDouble(-1);
         ty = limelight.getEntry("ty").getDouble(-1);
         tv = limelight.getEntry("tz").getDouble(0);
-//        SmartDashboard.putNumber("X offset", getXAngleOffset());
-//        SmartDashboard.putNumber("Y offset", getYAngleOffset());
         distance = internalGetDistanceToGoal();
         SmartDashboard.putNumber("Distance (ft)", Units.metersToFeet(distance));
     }
