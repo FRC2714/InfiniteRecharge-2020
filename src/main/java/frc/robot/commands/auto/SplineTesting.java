@@ -24,7 +24,6 @@ import java.util.List;
 public class SplineTesting extends SequentialCommandGroup {
 
 
-
     public SplineTesting(Drivetrain drivetrain, Limelight limelight) {
 
         DifferentialDriveVoltageConstraint voltageConstraint =
@@ -36,7 +35,7 @@ public class SplineTesting extends SequentialCommandGroup {
                         ),
                         drivetrain.getKinematics(),
                         10
-        );
+                );
 
         CentripetalAccelerationConstraint centripetalAccelerationConstraint =
                 new CentripetalAccelerationConstraint(Units.feetToMeters(5.4));

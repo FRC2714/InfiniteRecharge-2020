@@ -68,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
     // Current pose
 
     // private DifferentialDriveKinematics kinematics
-            // = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
+    // = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
 
 
     private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
@@ -250,7 +250,7 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
-    public boolean isEncoderError(){
+    public boolean isEncoderError() {
         return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 1;
     }
 

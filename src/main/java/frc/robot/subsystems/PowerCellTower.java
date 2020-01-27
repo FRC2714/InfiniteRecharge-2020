@@ -14,7 +14,7 @@ public class PowerCellTower extends SubsystemBase {
 
     private int powerCellsStored = 0;
 
-    public PowerCellTower(){
+    public PowerCellTower() {
 
 //        closeToIntakeMotor = new CANSparkMax(9, CANSparkMaxLowLevel.MotorType.kBrushless);
 //        midSectionMotor1 = new CANSparkMax(10, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -30,24 +30,24 @@ public class PowerCellTower extends SubsystemBase {
         midSectionMotor1.setInverted(false);
         midSectionMotor2.setInverted(false);
         shooterFeederMotor.setInverted(false);
-        
+
         powerCellsStored = 0;
 
     }
 
 
-    public void powerAll(double power){
+    public void powerAll(double power) {
         closeToIntakeMotor.set(power);
         midSectionMotor1.set(power);
         midSectionMotor2.set(power);
         shooterFeederMotor.set(power);
     }
 
-    public void updatePowerCellCount(){
+    public void updatePowerCellCount() {
 
     }
 
-    public int getPowerCellsStored(){
+    public int getPowerCellsStored() {
         return powerCellsStored;
     }
 

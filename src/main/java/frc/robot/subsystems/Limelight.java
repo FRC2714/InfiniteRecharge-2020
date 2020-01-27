@@ -41,14 +41,14 @@ public class Limelight extends SubsystemBase {
         return tv != 0.0;
     }
 
-    public void setLED(boolean isBrightLightOn){
-        if(isBrightLightOn)
+    public void setLED(boolean isBrightLightOn) {
+        if (isBrightLightOn)
             limelight.getEntry("ledMode").setDouble(3);
         else
             limelight.getEntry("ledMode").setDouble(1);
     }
 
-    public void setPipeline(double numPipeline){
+    public void setPipeline(double numPipeline) {
         limelight.getEntry("pipeline").setDouble(numPipeline);
     }
 

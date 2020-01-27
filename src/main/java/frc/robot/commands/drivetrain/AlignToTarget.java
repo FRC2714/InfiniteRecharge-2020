@@ -14,9 +14,10 @@ import java.util.function.BooleanSupplier;
 public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
     private Drivetrain drivetrain;
+
     public AlignToTarget(Limelight limelight, Drivetrain drive) {
         super(
-                new ProfiledPIDController(DriveConstants.kAlignP,0, DriveConstants.kAlignD,
+                new ProfiledPIDController(DriveConstants.kAlignP, 0, DriveConstants.kAlignD,
                         new TrapezoidProfile.Constraints(100, 300)),
                 // Close loop on heading
                 limelight::getXAngleOffset,
@@ -46,6 +47,6 @@ public class AlignToTarget extends ProfiledPIDCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        drivetrain.tankDriveVolts(0,0);
+        drivetrain.tankDriveVolts(0, 0);
     }
 }

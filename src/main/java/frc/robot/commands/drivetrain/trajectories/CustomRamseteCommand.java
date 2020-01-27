@@ -227,13 +227,13 @@ public class CustomRamseteCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(drivetrain.isEncoderError())
+        if (drivetrain.isEncoderError())
             System.out.println("ERROR - CHECK IF ENCODER UNPLUGGED");
 
         return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds()) || drivetrain.isEncoderError();
     }
 
-    public Pose2d getInitialPose(){
+    public Pose2d getInitialPose() {
         return m_trajectory.getInitialPose();
     }
 
