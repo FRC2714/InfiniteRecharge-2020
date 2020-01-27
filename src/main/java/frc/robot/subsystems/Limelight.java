@@ -58,6 +58,6 @@ public class Limelight extends SubsystemBase {
         ty = limelight.getEntry("ty").getDouble(-1);
         tv = limelight.getEntry("tz").getDouble(0);
         distance = internalGetDistanceToGoal();
-        SmartDashboard.putNumber("Distance (ft)", Units.metersToFeet(distance));
+        SmartDashboard.putNumber("Vision Distance (ft)", Units.metersToFeet(distance));
     }
 }

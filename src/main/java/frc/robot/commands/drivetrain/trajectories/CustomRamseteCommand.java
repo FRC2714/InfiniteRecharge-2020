@@ -218,12 +218,18 @@ public class CustomRamseteCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         m_timer.stop();
+
+        System.out.println("---ENDED PATH TRACKING---");
+        System.out.println("Final X Position " + Units.metersToFeet(drivetrain.getPose().getTranslation().getX()) + " | Final Y Position " +
+                Units.metersToFeet(drivetrain.getPose().getTranslation().getY()) +
+                " | Final Heading " + drivetrain.getPose().getRotation().getDegrees());
     }
 
     @Override
     public boolean isFinished() {
         if(drivetrain.isEncoderError())
             System.out.println("ERROR - CHECK IF ENCODER UNPLUGGED");
+
         return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds()) || drivetrain.isEncoderError();
     }
 }
