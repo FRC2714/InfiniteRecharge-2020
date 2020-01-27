@@ -79,7 +79,7 @@ public class RamseteGenerator {
                         Constants.DriveConstants.kV,
                         Constants.DriveConstants.kA
                 ),
-                drivetrain.getKinematics(),
+                Constants.DriveConstants.kDriveKinematics,
                 drivetrain::getWheelSpeeds,
                 new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
                 new PIDController(Constants.DriveConstants.kDriveP, 0, Constants.DriveConstants.kDriveD),
