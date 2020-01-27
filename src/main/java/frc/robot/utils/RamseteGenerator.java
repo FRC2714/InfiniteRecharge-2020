@@ -42,7 +42,6 @@ public class RamseteGenerator {
                                                          List<Translation2d> internalPoints,
                                                          Pose2d endPose,
                                                          double velocity, double acceleration, boolean isReversed) {
-
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
                 startPose,
@@ -55,6 +54,22 @@ public class RamseteGenerator {
                 getConfig(velocity, acceleration, isReversed)
         );
 
+        return getCustomRamseteCommand(drivetrain, trajectory);
+    }
+
+
+    public static CustomRamseteCommand getRamseteCommand(Drivetrain drivetrain,
+                                                         List<Pose2d> waypoints,
+                                                         double velocity, double acceleration, boolean isReversed) {
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+                waypoints,
+                getConfig(velocity, acceleration, isReversed)
+        );
+
+        return getCustomRamseteCommand(drivetrain, trajectory);
+    }
+
+    private static CustomRamseteCommand getCustomRamseteCommand(Drivetrain drivetrain, Trajectory trajectory) {
         return new CustomRamseteCommand(
                 trajectory,
                 drivetrain::getPose,
