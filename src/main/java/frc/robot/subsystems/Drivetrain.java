@@ -239,6 +239,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void zeroHeading() {
         // navx.reset();
+        adisIMU.reset();
     }
 
     /**

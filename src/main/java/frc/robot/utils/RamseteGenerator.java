@@ -19,6 +19,7 @@ import java.util.List;
 
 public class RamseteGenerator {
     private static TrajectoryConfig getConfig(double maxVel, double maxA, boolean isReversed) {
+
         return new TrajectoryConfig(maxVel, maxA)
                 // Add kinematics to ensure max speed is actually obeyed
                 .setKinematics(Constants.DriveConstants.kDriveKinematics)
@@ -33,8 +34,11 @@ public class RamseteGenerator {
                         11
                 ))
                 .addConstraint(
+
                         new CentripetalAccelerationConstraint(Units.feetToMeters(4.5))
+
                 ).setReversed(isReversed);
+
     }
 
     public static CustomRamseteCommand getRamseteCommand(Drivetrain drivetrain,
@@ -43,14 +47,12 @@ public class RamseteGenerator {
                                                          Pose2d endPose,
                                                          double velocity, double acceleration, boolean isReversed) {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
                 startPose,
-                // Pass through these two interior waypoints, making an 's' curve path
+
                 internalPoints,
 
-                // Ending point
                 endPose,
-                // Pass config
+
                 getConfig(velocity, acceleration, isReversed)
         );
 

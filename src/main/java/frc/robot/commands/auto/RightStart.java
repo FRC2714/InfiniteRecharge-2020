@@ -18,18 +18,28 @@ public class RightStart extends SequentialCommandGroup {
 
     public RightStart(Drivetrain drivetrain, Limelight limelight) {
         CustomRamseteCommand lineToTrench =
-                RamseteGenerator.getRamseteCommand
-                        (
-                                drivetrain,
-                                new Pose2d(Units.feetToMeters(10.75), Units.feetToMeters(19.78), new Rotation2d().fromDegrees(179.85)),
+                RamseteGenerator.getRamseteCommand(
+                        drivetrain,
+                        new Pose2d(Units.feetToMeters(10.75), Units.feetToMeters(19.78), new Rotation2d().fromDegrees(179.85)),
 
-                                List.of(
-                                        new Translation2d(Units.feetToMeters(15.93), Units.feetToMeters(24.61))
-                                ),
+                        List.of(
+                                new Translation2d(Units.feetToMeters(15.93), Units.feetToMeters(24.61))
+                        ),
 
-                                new Pose2d(Units.feetToMeters(26.00), Units.feetToMeters(24.46), new Rotation2d().fromDegrees(-168.00)), // -168 is god
-                                Units.feetToMeters(13.3), Units.feetToMeters(8.75), true
-                        );
+                        new Pose2d(Units.feetToMeters(26.00), Units.feetToMeters(24.46), new Rotation2d().fromDegrees(-168.00)),
+                        Units.feetToMeters(13.3), Units.feetToMeters(8.75), true
+                );
+
+        CustomRamseteCommand quinticLineToTrench =
+                RamseteGenerator.getRamseteCommand(
+                        drivetrain,
+                        List.of(
+                                new Pose2d(Units.feetToMeters(10.82), Units.feetToMeters(19.40), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(17.62), Units.feetToMeters(24.60), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(25.88), Units.feetToMeters(24.65), new Rotation2d().fromDegrees(0.00))
+                        ),
+                        Units.feetToMeters(13), Units.feetToMeters(8.5), false
+                );
 
         addCommands(
                 sequence(
