@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.ToggledBreakBeam;
 
 public class PowerCellTower extends SubsystemBase {
 
@@ -11,6 +13,8 @@ public class PowerCellTower extends SubsystemBase {
     private CANSparkMax midSectionMotor1;
     private CANSparkMax midSectionMotor2;
     private CANSparkMax shooterFeederMotor;
+
+    private ToggledBreakBeam entryBeam;
 
     private int powerCellsStored = 0;
 
@@ -33,6 +37,8 @@ public class PowerCellTower extends SubsystemBase {
 
         powerCellsStored = 0;
 
+        entryBeam = new ToggledBreakBeam(new DigitalInput(0));
+
     }
 
 
@@ -43,16 +49,14 @@ public class PowerCellTower extends SubsystemBase {
         shooterFeederMotor.set(power);
     }
 
-    public void updatePowerCellCount() {
-
-    }
-
     public int getPowerCellsStored() {
         return powerCellsStored;
     }
 
     @Override
     public void periodic() {
-        updatePowerCellCount();
+        entryBeam.update();
+
+        if (entryBeam.getToggled()) powerCellsStored++;
     }
 }
