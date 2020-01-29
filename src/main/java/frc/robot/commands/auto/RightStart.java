@@ -43,8 +43,8 @@ public class RightStart extends SequentialCommandGroup {
 
         addCommands(
                 sequence(
-                        new InstantCommand(() -> drivetrain.resetOdometry(lineToTrench.getInitialPose())),
-                        lineToTrench.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
+                        new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
+                        quinticLineToTrench.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
                         new AlignToTarget(limelight, drivetrain)
                 )
         );
