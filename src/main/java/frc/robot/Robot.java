@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.InterpolatingTreeMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,6 +23,8 @@ public class Robot extends TimedRobot {
 
     private RobotContainer m_robotContainer;
 
+    private InterpolatingTreeMap imap;
+
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -32,6 +35,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+
     }
 
     /**
@@ -86,6 +90,21 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        /*
+        imap = new InterpolatingTreeMap();
+
+        double dx = 0.1;
+
+        for (int i = 0; i <= 50; i++) {
+            imap.put(i * dx, Math.sin(i * dx));
+        }
+
+        System.out.println("sin(30) " + imap.getInterpolated(Math.toRadians(30)));
+        System.out.println("sin(60) " + imap.getInterpolated(Math.toRadians(60)));
+        System.out.println("sin(90) " + imap.getInterpolated(Math.toRadians(90)));
+
+         */
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }

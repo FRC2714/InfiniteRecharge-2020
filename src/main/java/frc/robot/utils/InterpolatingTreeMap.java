@@ -3,7 +3,7 @@ package frc.robot.utils;
 import java.util.TreeMap;
 
 public class InterpolatingTreeMap extends TreeMap<Double, Double> {
-    Double getInterpolated(Double key) {
+    public Double getInterpolated(Double key) {
         Double exactValue = get(key);
         if (exactValue == null) {
             Double topBound = ceilingKey(key);
