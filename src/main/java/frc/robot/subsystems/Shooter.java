@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.utils.InterpolatingTreeMap;
 
@@ -14,20 +16,22 @@ public class Shooter extends PIDSubsystem {
 
     private CANEncoder shooterEncoder;
     
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private InterpolatingTreeMap velocityLUT = new InterpolatingTreeMap();
 
-    SimpleMotorFeedforward flywheelFeedforward=
+    private SimpleMotorFeedforward flywheelFeedforward=
             new SimpleMotorFeedforward(0,0,0);
 
     private Limelight limelight;
 
     public Shooter(Limelight limelight) {
         super(new PIDController(0,0,0));
-
         this.limelight = limelight;
 
-//      intakeMotor1 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
-//      intakeMotor2 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
+        SmartDashboard.putData("Shooter PID Controller", getController());
+
+        shooterMotor1 = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor2 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         shooterMotor1.setSmartCurrentLimit(50);
         shooterMotor2.setSmartCurrentLimit(50);
@@ -55,8 +59,10 @@ public class Shooter extends PIDSubsystem {
         return shooterEncoder.getVelocity();
     }
 
-
-    // returns the target velocity based on current distance from goal
+    /**
+     * Returns the target velocity based on current distance from goal
+     * @return target velocity in RPM for shooter
+     */
     public double getTargetVelocity() {
         return velocityLUT.getInterpolated(limelight.getDistanceToGoal());
     }
