@@ -10,6 +10,7 @@ import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.utils.ToggledBreakBeam;
+import org.opencv.ml.EM;
 
 public class Conveyor extends SubsystemBase {
 
@@ -78,7 +79,11 @@ public class Conveyor extends SubsystemBase {
     public void periodic() {
         entryBeam.update();
         if (entryBeam.getToggled()) powerCellsStored++;
+
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
+
+
+//        if shooting: conveyor state = shooting;
 
         switch (conveyorState) {
             case EMPTY:
@@ -89,13 +94,8 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case ONE:
-                if (middleBeam.getState()) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = false;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
+                horizontalBeltMovement = middleBeam.getState();
+                verticalBeltMovement = false;
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.TWO;
@@ -107,7 +107,7 @@ public class Conveyor extends SubsystemBase {
                 if (RobotController.getFPGATime() < (stateTimer + 2e6)) {
                     horizontalBeltMovement = true;
                     verticalBeltMovement = false;
-                } else if (exitBeam.getState()){
+                } else if (exitBeam.getState()) {
                     horizontalBeltMovement = true;
                     verticalBeltMovement = true;
                 } else {
@@ -119,13 +119,8 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case THREE:
-                if (middleBeam.getState()) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = false;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
+                verticalBeltMovement = exitBeam.getState();
+                horizontalBeltMovement = middleBeam.getState();
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.FOUR;
@@ -134,13 +129,10 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case FOUR:
-                if (RobotController.getFPGATime() < (stateTimer + 2e6)) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = false;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
+                verticalBeltMovement = exitBeam.getState();
+
+                if (RobotController.getFPGATime() < (stateTimer + 2e6)) horizontalBeltMovement = true;
+                else horizontalBeltMovement = false;
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.FIVE;
@@ -149,13 +141,11 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case FIVE:
-                if (RobotController.getFPGATime() < (stateTimer + 1e6)) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = false;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
+                verticalBeltMovement = exitBeam.getState();
+
+                if (RobotController.getFPGATime() < (stateTimer + 1e6)) horizontalBeltMovement = true;
+                else horizontalBeltMovement = false;
+
                 break;
 
             case SHOOTING:
@@ -169,6 +159,8 @@ public class Conveyor extends SubsystemBase {
                 }
                 break;
         }
+
+        SmartDashboard.putString("Conveyor State", conveyorState.toString());
 
         SmartDashboard.putBoolean("Horizontal Belts Moving", horizontalBeltMovement);
         SmartDashboard.putBoolean("Vertical Belts Moving", verticalBeltMovement);
