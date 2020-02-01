@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ConveyorConstants;
 import frc.robot.utils.ToggledBreakBeam;
 
 public class Conveyor extends SubsystemBase {
@@ -17,8 +18,8 @@ public class Conveyor extends SubsystemBase {
 
     public Conveyor() {
 
-        horizontalConveyor = new CANSparkMax(10, CANSparkMaxLowLevel.MotorType.kBrushless);
-        verticalConveyor = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
+        horizontalConveyor = new CANSparkMax(ConveyorConstants.kHorizontalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        verticalConveyor = new CANSparkMax(ConveyorConstants.kVerticalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         horizontalConveyor.setSmartCurrentLimit(30);
         verticalConveyor.setSmartCurrentLimit(30);
@@ -29,7 +30,6 @@ public class Conveyor extends SubsystemBase {
         powerCellsStored = 0;
 
         entryBeam = new ToggledBreakBeam(new DigitalInput(0));
-
     }
 
 

@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.auto.CenterStart;
 import frc.robot.commands.auto.RightStart;
 import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
@@ -92,7 +93,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new RightStart(drivetrain, limelight);
+        // return new RightStart(drivetrain, limelight);
+        return new CenterStart(drivetrain, limelight);
     }
 
     public Command getRamseteCommand() {

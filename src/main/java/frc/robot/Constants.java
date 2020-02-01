@@ -65,6 +65,16 @@ public final class Constants {
                 = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
     }
 
+    public static final class ShooterConstants {
+        public static int kLeftMotorPort = 12;
+        public static int kRightMotorPort = 13;
+    }
+
+    public static final class ConveyorConstants {
+        public static int kHorizontalMotorPort = 10;
+        public static int kVerticalMotorPort = 11;
+    }
+
     public static final class CameraConstants {
         public static double kCameraHeight = Units.inchesToMeters(42.75); // TODO: update this
         public static double kCameraMountingAngle = 22; // degrees

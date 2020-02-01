@@ -17,7 +17,6 @@ import java.util.List;
 public class RightStart extends SequentialCommandGroup {
 
     public RightStart(Drivetrain drivetrain, Limelight limelight) {
-
         CustomRamseteCommand quinticLineToTrench =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
@@ -28,7 +27,6 @@ public class RightStart extends SequentialCommandGroup {
                         ),
                         Units.feetToMeters(13), Units.feetToMeters(8.5), false
                 );
-
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),

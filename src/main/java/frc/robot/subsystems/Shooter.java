@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.InterpolatingTreeMap;
 
 public class Shooter extends PIDSubsystem {
@@ -30,8 +31,8 @@ public class Shooter extends PIDSubsystem {
 
         SmartDashboard.putData("Shooter PID Controller", getController());
 
-        shooterMotor1 = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterMotor2 = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         shooterMotor1.setSmartCurrentLimit(50);
         shooterMotor2.setSmartCurrentLimit(50);
