@@ -10,6 +10,7 @@ public class Intake extends SubsystemBase {
     private CANSparkMax intakeMotor2;
     private CANSparkMax serializerMotor;
 
+
     public Intake() {
         intakeMotor1 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
         intakeMotor2 = new CANSparkMax(8, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -29,5 +30,6 @@ public class Intake extends SubsystemBase {
     public void extakePowerCell() {
         intakeMotor1.set(-0.5);
     }
+
 
 }

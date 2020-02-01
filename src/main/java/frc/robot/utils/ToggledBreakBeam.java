@@ -16,6 +16,10 @@ public class ToggledBreakBeam {
         return toggled;
     }
 
+    public boolean getState(){
+        return beam.get();
+    }
+
     public void update() {
         if (beam.get() && !lastState)
             toggled = true;

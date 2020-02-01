@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -30,6 +31,8 @@ import frc.robot.commands.auto.RightStart;
 import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
+import frc.robot.commands.intake.AutomatedIntake;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utils.Logger;
@@ -50,6 +53,8 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
 
     private final Drivetrain drivetrain = new Drivetrain();
+
+    private final Conveyor conveyor = new Conveyor();
 
     private static Joystick driverStick = new Joystick(0);
 
@@ -84,6 +89,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain));
+        SmartDashboard.putData(new AutomatedIntake(conveyor));
     }
 
 
