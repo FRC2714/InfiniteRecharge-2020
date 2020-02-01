@@ -3,9 +3,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.utils.ToggledBreakBeam;
 
 public class Conveyor extends SubsystemBase {
@@ -24,6 +27,18 @@ public class Conveyor extends SubsystemBase {
     private boolean horizontalBeltMovement = false;
     private boolean verticalBeltMovement = false;
 
+    private enum ConveyorState {
+        EMPTY,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SHOOTING
+    }
+    private ConveyorState conveyorState;
+    private long stateTimer; // in microseconds
+
     public Conveyor() {
 
 //        horizontalConveyor = new CANSparkMax(ConveyorConstants.kHorizontalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -36,6 +51,8 @@ public class Conveyor extends SubsystemBase {
 //        verticalConveyor.setInverted(false);
 
         powerCellsStored = 0;
+        conveyorState = ConveyorState.EMPTY;
+        stateTimer = RobotController.getFPGATime();
 
         entryBeam = new ToggledBreakBeam(new DigitalInput(4));
         middleBeam = new ToggledBreakBeam(new DigitalInput(5));
@@ -56,24 +73,101 @@ public class Conveyor extends SubsystemBase {
         return powerCellsStored;
     }
 
+
     @Override
     public void periodic() {
         entryBeam.update();
         if (entryBeam.getToggled()) powerCellsStored++;
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
 
-        if(powerCellsStored > 0 && powerCellsStored <= 2 && middleBeam.getState()) {
-            horizontalBeltMovement = true;
-            verticalBeltMovement = false;
-        } else if (powerCellsStored > 2 && powerCellsStored <= 5 && exitBeam.getState()){
-            horizontalBeltMovement = true;
-            verticalBeltMovement = true;
-        } else if (powerCellsStored <= 5 && !exitBeam.getState() ) {
-            horizontalBeltMovement = true;
-            verticalBeltMovement = false;
-        } else {
-            horizontalBeltMovement = false;
-            verticalBeltMovement = false;
+        switch (conveyorState) {
+            case EMPTY:
+                horizontalBeltMovement = false;
+                verticalBeltMovement = false;
+
+                if (entryBeam.getToggled()) conveyorState = ConveyorState.ONE;
+                break;
+
+            case ONE:
+                if (middleBeam.getState()) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = false;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                }
+
+                if (entryBeam.getToggled()) {
+                    conveyorState = ConveyorState.TWO;
+                    stateTimer = RobotController.getFPGATime();
+                }
+                break;
+
+            case TWO:
+                if (RobotController.getFPGATime() < (stateTimer + 2e6)) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = false;
+                } else if (exitBeam.getState()){
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = true;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                }
+
+                if (entryBeam.getToggled()) conveyorState = ConveyorState.THREE;
+                break;
+
+            case THREE:
+                if (middleBeam.getState()) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = false;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                }
+
+                if (entryBeam.getToggled()) {
+                    conveyorState = ConveyorState.FOUR;
+                    stateTimer = RobotController.getFPGATime();
+                }
+                break;
+
+            case FOUR:
+                if (RobotController.getFPGATime() < (stateTimer + 2e6)) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = false;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                }
+
+                if (entryBeam.getToggled()) {
+                    conveyorState = ConveyorState.FIVE;
+                    stateTimer = RobotController.getFPGATime();
+                }
+                break;
+
+            case FIVE:
+                if (RobotController.getFPGATime() < (stateTimer + 1e6)) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = false;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                }
+                break;
+
+            case SHOOTING:
+                if (exitBeam.getState()) {
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = true;
+                } else {
+                    horizontalBeltMovement = false;
+                    verticalBeltMovement = false;
+                    conveyorState = ConveyorState.EMPTY;
+                }
+                break;
         }
 
         SmartDashboard.putBoolean("Horizontal Belts Moving", horizontalBeltMovement);
