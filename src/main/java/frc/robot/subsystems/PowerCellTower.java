@@ -20,10 +20,10 @@ public class PowerCellTower extends SubsystemBase {
 
     public PowerCellTower() {
 
-//        closeToIntakeMotor = new CANSparkMax(9, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        midSectionMotor1 = new CANSparkMax(10, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        midSectionMotor2 = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        shooterFeederMotor = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        closeToIntakeMotor = new CANSparkMax(10, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        midSectionMotor1 = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        midSectionMotor2 = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
+//        shooterFeederMotor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         closeToIntakeMotor.setSmartCurrentLimit(30);
         midSectionMotor1.setSmartCurrentLimit(30);

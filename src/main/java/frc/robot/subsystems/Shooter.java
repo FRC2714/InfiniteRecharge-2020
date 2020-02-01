@@ -12,8 +12,6 @@ import frc.robot.utils.InterpolatingTreeMap;
 public class Shooter extends PIDSubsystem {
 
     private CANSparkMax shooterMotor1;
-    private CANSparkMax shooterMotor2;
-
     private CANEncoder shooterEncoder;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -27,15 +25,14 @@ public class Shooter extends PIDSubsystem {
     public Shooter(Limelight limelight) {
         super(new PIDController(0,0,0));
         this.limelight = limelight;
+        getController().disableContinuousInput();
 
         SmartDashboard.putData("Shooter PID Controller", getController());
 
-        shooterMotor1 = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterMotor2 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor1 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         shooterMotor1.setSmartCurrentLimit(50);
-        shooterMotor2.setSmartCurrentLimit(50);
-        shooterMotor2.follow(shooterMotor1);
+
         shooterEncoder = shooterMotor1.getEncoder();
 
         populateVelocityMap();
