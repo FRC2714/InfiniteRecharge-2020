@@ -28,7 +28,7 @@ public class Conveyor extends SubsystemBase {
     private boolean horizontalBeltMovement = false;
     private boolean verticalBeltMovement = false;
 
-    private enum ConveyorState {
+    public enum ConveyorState {
         EMPTY,
         ONE,
         TWO,
@@ -74,6 +74,9 @@ public class Conveyor extends SubsystemBase {
         return powerCellsStored;
     }
 
+    public void setConveyorState(ConveyorState conveyorState) {
+        this.conveyorState = conveyorState;
+    }
 
     @Override
     public void periodic() {
@@ -149,14 +152,13 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case SHOOTING:
-                if (exitBeam.getState()) {
+                if (!exitBeam.getState()) {
                     horizontalBeltMovement = true;
                     verticalBeltMovement = true;
                 } else {
                     horizontalBeltMovement = false;
                     verticalBeltMovement = false;
-                    conveyorState = ConveyorState.EMPTY;
-                }
+            }
                 break;
         }
 

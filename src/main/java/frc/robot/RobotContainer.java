@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstr
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.auto.CenterStart;
@@ -32,6 +33,7 @@ import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.commands.intake.AutomatedIntake;
+import frc.robot.commands.shoot.ManualShooter;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -90,6 +92,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain));
         SmartDashboard.putData(new AutomatedIntake(conveyor));
+        SmartDashboard.putData(new ManualShooter(conveyor));
     }
 
 
