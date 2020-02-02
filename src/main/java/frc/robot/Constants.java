@@ -72,6 +72,13 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
+        // TODO: tune these gains
+        public static double kV = 0.0;
+        public static double kA = 0.0;
+        public static double kStatic = 0.0;
+
+        public static double kVelocityP = 0.0;
+
         public static int kLeftMotorPort = 12;
         public static int kRightMotorPort = 13;
     }

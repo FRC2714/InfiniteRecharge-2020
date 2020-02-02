@@ -37,6 +37,7 @@ import frc.robot.commands.shoot.ManualShooter;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 import frc.robot.utils.Logger;
 import frc.robot.Constants.DriveConstants;
 
@@ -54,6 +55,8 @@ public class RobotContainer {
 
     private final Limelight limelight = new Limelight();
 
+    private final Shooter shooter = new Shooter(limelight::getDistanceToGoal);
+
     private final Drivetrain drivetrain = new Drivetrain();
 
     private final Conveyor conveyor = new Conveyor();
@@ -61,6 +64,7 @@ public class RobotContainer {
     private static Joystick driverStick = new Joystick(0);
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
+
 
     private DriverControl driverControlCommand = new DriverControl(
             drivetrain,

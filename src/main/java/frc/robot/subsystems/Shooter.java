@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.InterpolatingTreeMap;
 
+import java.util.function.DoubleSupplier;
+
 public class Shooter extends PIDSubsystem {
 
     private CANSparkMax shooterMotor1;
@@ -20,13 +22,13 @@ public class Shooter extends PIDSubsystem {
     private InterpolatingTreeMap velocityLUT = new InterpolatingTreeMap();
 
     private SimpleMotorFeedforward flywheelFeedforward=
-            new SimpleMotorFeedforward(0,0,0);
+            new SimpleMotorFeedforward(ShooterConstants.kStatic,ShooterConstants.kV,ShooterConstants.kA);
 
-    private Limelight limelight;
 
-    public Shooter(Limelight limelight) {
-        super(new PIDController(0,0,0));
-        this.limelight = limelight;
+    private DoubleSupplier distanceToGoal;
+
+    public Shooter(DoubleSupplier distanceToGoal) {
+        super(new PIDController(ShooterConstants.kVelocityP,0,0));
         getController().disableContinuousInput();
 
         SmartDashboard.putData("Shooter PID Controller", getController());
@@ -41,6 +43,8 @@ public class Shooter extends PIDSubsystem {
         shooterEncoder = shooterMotor1.getEncoder();
 
         populateVelocityMap();
+
+        this.distanceToGoal = distanceToGoal;
     }
 
     public void populateVelocityMap() {
@@ -66,7 +70,7 @@ public class Shooter extends PIDSubsystem {
      * @return target velocity in RPM for shooter
      */
     public double getTargetVelocity() {
-        return velocityLUT.getInterpolated(limelight.getDistanceToGoal());
+        return velocityLUT.getInterpolated(distanceToGoal.getAsDouble());
     }
 
     @Override
