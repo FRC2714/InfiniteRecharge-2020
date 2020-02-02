@@ -10,7 +10,6 @@ import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.utils.ToggledBreakBeam;
-import org.opencv.ml.EM;
 
 public class Conveyor extends SubsystemBase {
 
@@ -37,6 +36,7 @@ public class Conveyor extends SubsystemBase {
         FIVE,
         SHOOTING
     }
+
     private ConveyorState conveyorState;
     private long stateTimer; // in microseconds
 

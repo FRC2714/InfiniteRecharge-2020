@@ -65,6 +65,12 @@ public final class Constants {
                 = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
     }
 
+    public static final class IntakeConstants {
+        public static int kIntakeMotorPort = 7;
+        public static int kIntakeWristMotorPort = 8;
+        public static int kSerializerMotorPort = 9;
+    }
+
     public static final class ShooterConstants {
         public static int kLeftMotorPort = 12;
         public static int kRightMotorPort = 13;

@@ -21,10 +21,7 @@ public class ToggledBreakBeam {
     }
 
     public void update() {
-        if (beam.get() && !lastState)
-            toggled = true;
-        else
-            toggled = false;
+        toggled = beam.get() && !lastState;
 
         lastState = beam.get();
     }
