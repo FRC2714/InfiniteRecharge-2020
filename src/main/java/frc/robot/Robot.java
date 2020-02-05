@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.InterpolatingTreeMap;
+import frc.robot.utils.Tests;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_robotContainer.getCenterStartAutonomous();
         m_autonomousCommand.initialize();
 
         if (m_autonomousCommand != null) {
@@ -88,20 +89,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        /*
-        imap = new InterpolatingTreeMap();
-
-        double dx = 0.1;
-
-        for (int i = 0; i <= 50; i++) {
-            imap.put(i * dx, Math.sin(i * dx));
-        }
-
-        System.out.println("sin(30) " + imap.getInterpolated(Math.toRadians(30)));
-        System.out.println("sin(60) " + imap.getInterpolated(Math.toRadians(60)));
-        System.out.println("sin(90) " + imap.getInterpolated(Math.toRadians(90)));
-
-         */
+        Tests.testInterpolatingTreeMap();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();

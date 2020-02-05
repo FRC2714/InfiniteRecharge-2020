@@ -105,9 +105,13 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Command getCenterStartAutonomous() {
         // return new RightStart(drivetrain, limelight);
         return new CenterStart(drivetrain, limelight);
+    }
+
+    public Command getRightStartAutonomous() {
+        return new RightStart(drivetrain, limelight);
     }
 
     public Command getRamseteCommand() {
