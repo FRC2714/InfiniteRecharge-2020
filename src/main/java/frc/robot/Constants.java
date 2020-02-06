@@ -76,8 +76,12 @@ public final class Constants {
         public static double kV = 0.0;
         public static double kA = 0.0;
         public static double kStatic = 0.0;
+        public static double kWPILibP = 0.0001;
 
-        public static double kVelocityP = 0.0;
+
+        public static double kSparkMaxP = 0.0001;
+        public static double kSparkMaxFeedforward = 0.00018;
+
 
         public static int kLeftMotorPort = 12;
         public static int kRightMotorPort = 13;

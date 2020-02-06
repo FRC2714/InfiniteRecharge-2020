@@ -12,7 +12,7 @@ public class Limelight extends SubsystemBase {
 
     private NetworkTable limelight;
     // private final BooleanSupplier buttonPressed;
-    public static final double kCameraToGoalHeight = Constants.FieldConstants.kGoalHeight - Constants.CameraConstants.kCameraHeight;
+    private static final double kCameraToGoalHeight = Constants.FieldConstants.kGoalHeight - Constants.CameraConstants.kCameraHeight;
 
     public Limelight() {
         // this.buttonPressed = buttonPressed;
