@@ -46,8 +46,8 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.11;
-        public static double kAlignD = 0.008;
+        public static double kAlignP = 0.09;
+        public static double kAlignD = 0;
 
         public static double kDriveP = 2.45; // 3 stable
         public static double kDriveI = 0;
@@ -85,6 +85,10 @@ public final class Constants {
 
         public static int kLeftMotorPort = 12;
         public static int kRightMotorPort = 13;
+
+        public static double kTrenchShotRPM = 4000;
+        public static double kBaselineShotRPM = 3000;
+        public static double kLongshotRPM = 7000;
     }
 
     public static final class ConveyorConstants {

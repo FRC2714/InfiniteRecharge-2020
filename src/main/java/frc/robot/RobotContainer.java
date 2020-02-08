@@ -24,8 +24,10 @@ import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstr
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.auto.CenterStart;
 import frc.robot.commands.auto.RightStart;
 import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
@@ -53,16 +55,15 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
     private final Limelight limelight = new Limelight();
-
     private final Shooter shooter = new Shooter(limelight::getDistanceToGoal);
-
     private final Drivetrain drivetrain = new Drivetrain();
-
     private final Conveyor conveyor = new Conveyor();
 
     private static Joystick driverStick = new Joystick(0);
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
+    private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
+    private POVButton leftPOVButton = new POVButton(driverStick, 90);
 
 
     private DriverControl driverControlCommand = new DriverControl(
@@ -80,6 +81,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
+
     }
 
     public void initDefaultCommands() {
@@ -94,7 +96,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
-
+        driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
     }
 
 

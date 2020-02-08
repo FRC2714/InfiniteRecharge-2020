@@ -64,12 +64,7 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDriveOdometry externalOdometry;
     private DifferentialDriveOdometry internalOdometry;
 
-
-    // Current pose
-
-    // private DifferentialDriveKinematics kinematics
-    // = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
-
+    private boolean isControlsFlipped = false;
 
     private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
@@ -272,6 +267,14 @@ public class Drivetrain extends SubsystemBase {
     public void resetAll() {
         resetOdometry(new Pose2d());
         adisIMU.reset();
+    }
+
+    public void setControlsFlipped(boolean controlsFlipped) {
+        isControlsFlipped = controlsFlipped;
+    }
+
+    public boolean isControlsFlipped() {
+        return isControlsFlipped;
     }
 
     public void initDefaultCommand(Joystick joystick) {

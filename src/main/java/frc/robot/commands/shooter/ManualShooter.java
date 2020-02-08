@@ -16,6 +16,7 @@ public class ManualShooter extends CommandBase {
         this.rpm = rpm;
     }
 
+
     @Override
     public void initialize() {
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
@@ -25,13 +26,9 @@ public class ManualShooter extends CommandBase {
     }
 
     @Override
-    public void execute() {
-
-    }
-
-    @Override
     public void end(boolean interrupted) {
         shooter.disable();
         conveyor.setConveyorState(Conveyor.ConveyorState.EMPTY);
     }
+
 }

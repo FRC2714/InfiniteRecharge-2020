@@ -29,6 +29,10 @@ public class DriverControl extends CommandBase {
         if (Math.abs(getRawPivot.getAsDouble()) < 0.1)
             rawPivot = 0;
 
-        drivetrain.curvatureDrive(-rawX, rawPivot);
+        if(!drivetrain.isControlsFlipped())
+            drivetrain.curvatureDrive(-rawX, rawPivot);
+        else
+            drivetrain.curvatureDrive(rawX, rawPivot);
+
     }
 }

@@ -20,7 +20,6 @@ public class Intake extends SubsystemBase {
         intakeMotor.setSmartCurrentLimit(40);
         intakeWristMotor.setSmartCurrentLimit(40);
         serializerMotor.setSmartCurrentLimit(40);
-
     }
 
 
