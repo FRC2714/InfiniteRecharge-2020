@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,11 +49,18 @@ public class Shooter extends PIDSubsystem {
         sparkMaxPIDController.setP(ShooterConstants.kSparkMaxP);
 
         populateVelocityMap();
-
     }
 
     public void populateVelocityMap() {
         // TODO: implement
+    }
+
+    public void setSparkMaxVelocity(double rpmReference){
+        sparkMaxPIDController.setReference(rpmReference, ControlType.kVelocity);
+    }
+
+    public void setSparkMaxSmartVelocity(double rpmReference){
+        sparkMaxPIDController.setReference(rpmReference, ControlType.kSmartVelocity);
     }
 
     public void setShooterPower(double power){

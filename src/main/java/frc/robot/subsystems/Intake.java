@@ -23,11 +23,11 @@ public class Intake extends SubsystemBase {
         serializerMotor.setSmartCurrentLimit(40);
     }
 
-    public void intakePowerCell() {
+    public void intakePowerCells() {
         intakeMotor.set(0.5);
     }
 
-    public void extakePowerCell() { intakeMotor.set(-0.5); }
+    public void extakePowerCells() { intakeMotor.set(-0.5); }
 
 
 }
