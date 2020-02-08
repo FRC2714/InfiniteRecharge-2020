@@ -94,8 +94,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain));
-        SmartDashboard.putData(new AutomatedIntake(conveyor));
-        SmartDashboard.putData(new ManualShooter(conveyor));
+
     }
 
 

@@ -19,6 +19,7 @@ public class ManualShooter extends CommandBase {
     @Override
     public void initialize() {
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
+        shooter.setSparkMaxVelocity(rpm);
         shooter.setSetpoint(rpm);
         shooter.enable();
     }
