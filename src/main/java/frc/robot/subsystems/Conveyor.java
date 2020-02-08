@@ -93,6 +93,11 @@ public class Conveyor extends SubsystemBase {
                 horizontalBeltMovement = false;
                 verticalBeltMovement = false;
 
+                if(intakeState){
+                    horizontalBeltMovement = true;
+                    verticalBeltMovement = true;
+                }
+
                 if (entryBeam.getToggled()) conveyorState = ConveyorState.ONE;
                 break;
 

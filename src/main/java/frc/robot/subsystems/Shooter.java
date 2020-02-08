@@ -87,7 +87,7 @@ public class Shooter extends PIDSubsystem {
 
     @Override
     public void periodic() {
-        setSetpoint(getTargetVelocity());
+//        setSetpoint(getTargetVelocity());
         super.periodic();
     }
 
