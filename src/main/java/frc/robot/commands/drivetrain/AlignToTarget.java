@@ -10,12 +10,17 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
     private Drivetrain drivetrain;
 
     public AlignToTarget(Limelight limelight, Drivetrain drive) {
+        this(limelight, drive, () -> 0);
+    }
+
+    public AlignToTarget(Limelight limelight, Drivetrain drive, DoubleSupplier rawY) {
         super(
                 new ProfiledPIDController(DriveConstants.kAlignP, 0, DriveConstants.kAlignD,
                         new TrapezoidProfile.Constraints(100, 300)),
@@ -24,7 +29,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
                 // set reference to target
                 0,
                 // pipe to turn robot
-                (output, setpoint) -> drive.arcadeDrive(0, output),
+                (output, setpoint) -> drive.arcadeDrive(-rawY.getAsDouble(), output),
                 // require drive
                 drive
         );
