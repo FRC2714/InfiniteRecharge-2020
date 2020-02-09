@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ConveyorConstants;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.utils.ToggledBreakBeam;
 
 public class Conveyor extends SubsystemBase {
@@ -22,7 +18,7 @@ public class Conveyor extends SubsystemBase {
 
     private int powerCellsStored = 0;
 
-    private boolean intakeState = false;
+    private boolean intaking = false;
 
     private boolean horizontalBeltMovement = false;
     private boolean verticalBeltMovement = false;
@@ -34,7 +30,8 @@ public class Conveyor extends SubsystemBase {
         THREE,
         FOUR,
         FIVE,
-        SHOOTING
+        SHOOTING,
+        ERROR
     }
 
     private ConveyorState conveyorState;
@@ -66,8 +63,8 @@ public class Conveyor extends SubsystemBase {
         verticalConveyor.set(power);
     }
 
-    public void setIntakeState(boolean intakeState){
-        this.intakeState = intakeState;
+    public void setIntaking(boolean intaking){
+        this.intaking = intaking;
     }
 
     public int getPowerCellsStored() {
@@ -76,6 +73,11 @@ public class Conveyor extends SubsystemBase {
 
     public void setConveyorState(ConveyorState conveyorState) {
         this.conveyorState = conveyorState;
+    }
+
+    public void countBallsShot(){
+        exitBeam.update();
+        if (exitBeam.getToggled()) powerCellsStored--;
     }
 
     @Override
@@ -93,10 +95,8 @@ public class Conveyor extends SubsystemBase {
                 horizontalBeltMovement = false;
                 verticalBeltMovement = false;
 
-                if(intakeState){
+                if(intaking)
                     horizontalBeltMovement = true;
-                    verticalBeltMovement = true;
-                }
 
                 if (entryBeam.getToggled()) conveyorState = ConveyorState.ONE;
                 break;
@@ -104,6 +104,9 @@ public class Conveyor extends SubsystemBase {
             case ONE:
                 horizontalBeltMovement = middleBeam.getState();
                 verticalBeltMovement = false;
+
+                if(intaking)
+                    horizontalBeltMovement = true;
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.TWO;
@@ -123,12 +126,18 @@ public class Conveyor extends SubsystemBase {
                     verticalBeltMovement = false;
                 }
 
+                if(intaking)
+                    horizontalBeltMovement = true;
+
                 if (entryBeam.getToggled()) conveyorState = ConveyorState.THREE;
                 break;
 
             case THREE:
                 verticalBeltMovement = exitBeam.getState();
                 horizontalBeltMovement = middleBeam.getState();
+
+                if(intaking)
+                    horizontalBeltMovement = true;
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.FOUR;
@@ -141,6 +150,9 @@ public class Conveyor extends SubsystemBase {
 
                 if (RobotController.getFPGATime() < (stateTimer + 2e6)) horizontalBeltMovement = true;
                 else horizontalBeltMovement = false;
+
+                if(intaking)
+                    horizontalBeltMovement = true;
 
                 if (entryBeam.getToggled()) {
                     conveyorState = ConveyorState.FIVE;
@@ -163,7 +175,7 @@ public class Conveyor extends SubsystemBase {
                 } else {
                     horizontalBeltMovement = false;
                     verticalBeltMovement = false;
-            }
+                }
                 break;
         }
 

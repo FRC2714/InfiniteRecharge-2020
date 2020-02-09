@@ -16,7 +16,6 @@ public class ManualShooter extends CommandBase {
         this.rpm = rpm;
     }
 
-
     @Override
     public void initialize() {
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
@@ -26,9 +25,36 @@ public class ManualShooter extends CommandBase {
     }
 
     @Override
+    public void execute() {
+        conveyor.countBallsShot();
+    }
+
+    @Override
     public void end(boolean interrupted) {
         shooter.disable();
-        conveyor.setConveyorState(Conveyor.ConveyorState.EMPTY);
+        switch (conveyor.getPowerCellsStored()){
+            case 0:
+                conveyor.setConveyorState(Conveyor.ConveyorState.EMPTY);
+                break;
+            case 1:
+                conveyor.setConveyorState(Conveyor.ConveyorState.ONE);
+                break;
+            case 2:
+                conveyor.setConveyorState(Conveyor.ConveyorState.TWO);
+                break;
+            case 3:
+                conveyor.setConveyorState(Conveyor.ConveyorState.THREE);
+                break;
+            case 4:
+                conveyor.setConveyorState(Conveyor.ConveyorState.FOUR);
+                break;
+            case 5:
+                conveyor.setConveyorState(Conveyor.ConveyorState.FIVE);
+                break;
+            default:
+                conveyor.setConveyorState(Conveyor.ConveyorState.ERROR);
+                break;
+        }
     }
 
 }
