@@ -75,9 +75,41 @@ public class Conveyor extends SubsystemBase {
         this.conveyorState = conveyorState;
     }
 
-    public void countBallsShot(){
+    public void countPowerCellsShot(){
         exitBeam.update();
         if (exitBeam.getToggled()) powerCellsStored--;
+    }
+
+    public void updateEnum(){
+
+        if(getPowerCellsStored() > 5 || getPowerCellsStored() < 0)
+            conveyorState = ConveyorState.ERROR;
+        else
+            conveyorState = ConveyorState.values()[getPowerCellsStored()];
+
+        /*switch (getPowerCellsStored()){
+            case 0:
+                setConveyorState(Conveyor.ConveyorState.EMPTY);
+                break;
+            case 1:
+                setConveyorState(Conveyor.ConveyorState.ONE);
+                break;
+            case 2:
+                setConveyorState(Conveyor.ConveyorState.TWO);
+                break;
+            case 3:
+                setConveyorState(Conveyor.ConveyorState.THREE);
+                break;
+            case 4:
+                setConveyorState(Conveyor.ConveyorState.FOUR);
+                break;
+            case 5:
+                setConveyorState(Conveyor.ConveyorState.FIVE);
+                break;
+            default:
+                setConveyorState(Conveyor.ConveyorState.ERROR);
+                break;
+        }*/
     }
 
     @Override
