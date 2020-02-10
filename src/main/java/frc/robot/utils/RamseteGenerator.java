@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstr
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants;
-import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
 import frc.robot.subsystems.Drivetrain;
 
 import java.util.List;

@@ -25,8 +25,6 @@ public class Robot extends TimedRobot {
 
     private RobotContainer m_robotContainer;
 
-    private InterpolatingTreeMap imap;
-
 
     /**
      * This function is run when the robot is first started up and should be used for any

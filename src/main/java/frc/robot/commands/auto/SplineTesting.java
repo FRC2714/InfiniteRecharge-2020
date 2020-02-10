@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.commands.drivetrain.trajectories.CustomRamseteCommand;
+import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 

@@ -1,4 +1,4 @@
-package frc.robot.commands.drivetrain.trajectories;
+package frc.robot.utils;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
