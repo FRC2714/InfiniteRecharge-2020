@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
-public class ManualShooter extends CommandBase {
+public class AutoShooter extends CommandBase {
 
     private Shooter shooter;
     private Conveyor conveyor;
     private double rpm;
 
-    public ManualShooter(Shooter shooter, Conveyor conveyor, double rpm){
+    public AutoShooter(Shooter shooter, Conveyor conveyor, double rpm){
         this.shooter = shooter;
         this.conveyor = conveyor;
         this.rpm = rpm;

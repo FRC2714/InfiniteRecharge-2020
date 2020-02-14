@@ -97,15 +97,6 @@ public class Shooter extends PIDSubsystem {
         return limelight.targetVisible() ? velocityLUT.getInterpolated(limelight.getDistanceToGoal()) : defaultRpm;
     }
 
-    public void enable() {
-        m_enabled = true;
-    }
-
-    public void disable() {
-        m_enabled = false;
-        shooterMotor1.set(0);
-    }
-
     @Override
     public void periodic() {
         setSetpoint(getTargetLimelightVelocity());
