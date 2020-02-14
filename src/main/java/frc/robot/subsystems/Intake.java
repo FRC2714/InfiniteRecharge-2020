@@ -17,9 +17,9 @@ public class Intake extends SubsystemBase {
         intakeWristMotor = new CANSparkMax(IntakeConstants.kIntakeWristMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         serializerMotor = new CANSparkMax(IntakeConstants.kSerializerMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        intakeMotor.setSmartCurrentLimit(40);
-        intakeWristMotor.setSmartCurrentLimit(40);
-        serializerMotor.setSmartCurrentLimit(40);
+        intakeMotor.setSmartCurrentLimit(30);
+        intakeWristMotor.setSmartCurrentLimit(30);
+        serializerMotor.setSmartCurrentLimit(30);
     }
 
 

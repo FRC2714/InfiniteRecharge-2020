@@ -15,7 +15,7 @@ public class Climber extends SubsystemBase {
         climberMotor2 = new CANSparkMax(15, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         climberMotor2.follow(climberMotor1);
-        climberMotor1.setSmartCurrentLimit(40);
+        climberMotor1.setSmartCurrentLimit(30);
 
         climberMotor2.setInverted(false);
 
