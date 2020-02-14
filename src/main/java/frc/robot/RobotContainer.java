@@ -52,7 +52,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
     private final Limelight limelight = new Limelight();
-    private final Shooter shooter = new Shooter(limelight::getDistanceToGoal);
+    private final Shooter shooter = new Shooter(limelight);
     private final Drivetrain drivetrain = new Drivetrain();
     private final Conveyor conveyor = new Conveyor();
 

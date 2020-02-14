@@ -25,11 +25,15 @@ public class Shooter extends PIDSubsystem {
             new SimpleMotorFeedforward(ShooterConstants.kStatic,ShooterConstants.kV,ShooterConstants.kA);
 
 
-    private DoubleSupplier distanceToGoal;
+    private Limelight limelight;
 
-    public Shooter(DoubleSupplier distanceToGoal) {
+    private double targetRpm = 0.0;
+    private double defaultRpm = 2e3;
+
+
+    public Shooter(Limelight limelight) {
         super(new PIDController(ShooterConstants.kWPILibP,0,0));
-        this.distanceToGoal = distanceToGoal;
+       this.limelight = limelight;
 
         getController().disableContinuousInput();
 
@@ -67,6 +71,10 @@ public class Shooter extends PIDSubsystem {
         shooterMotor1.set(power);
     }
 
+    public void setTargetRpm(double targetRpm) {
+        this.targetRpm = targetRpm;
+    }
+
     @Override
     protected void useOutput(double output, double setpoint) {
         shooterMotor1.set(output + flywheelFeedforward.calculate(setpoint));
@@ -77,17 +85,30 @@ public class Shooter extends PIDSubsystem {
         return shooterEncoder.getVelocity();
     }
 
+    public double getVelocity() {
+        return shooterEncoder.getVelocity();
+    }
+
     /**
      * Returns the target velocity based on current distance from goal
      * @return target velocity in RPM for shooter
      */
-    public double getTargetVelocity() {
-        return velocityLUT.getInterpolated(distanceToGoal.getAsDouble());
+    public double getTargetLimelightVelocity() {
+        return limelight.targetVisible() ? velocityLUT.getInterpolated(limelight.getDistanceToGoal()) : defaultRpm;
+    }
+
+    public void enable() {
+        m_enabled = true;
+    }
+
+    public void disable() {
+        m_enabled = false;
+        shooterMotor1.set(0);
     }
 
     @Override
     public void periodic() {
-//        setSetpoint(getTargetVelocity());
+        setSetpoint(getTargetLimelightVelocity());
         super.periodic();
     }
 
