@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.ToggledBreakBeam;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 public class Conveyor extends SubsystemBase {
 
     private CANSparkMax horizontalConveyor;
@@ -37,7 +40,9 @@ public class Conveyor extends SubsystemBase {
     private ConveyorState conveyorState;
     private long stateTimer; // in microseconds
 
-    public Conveyor() {
+    private BooleanSupplier shooterAtVelocity;
+
+    public Conveyor(BooleanSupplier shooterAtVelocity) {
 
 //        horizontalConveyor = new CANSparkMax(ConveyorConstants.kHorizontalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 //        verticalConveyor = new CANSparkMax(ConveyorConstants.kVerticalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -55,6 +60,8 @@ public class Conveyor extends SubsystemBase {
         entryBeam = new ToggledBreakBeam(new DigitalInput(4));
         middleBeam = new ToggledBreakBeam(new DigitalInput(5));
         exitBeam = new ToggledBreakBeam(new DigitalInput(6));
+
+        this.shooterAtVelocity = shooterAtVelocity;
     }
 
 
@@ -116,6 +123,7 @@ public class Conveyor extends SubsystemBase {
     public void periodic() {
         entryBeam.update();
         if (entryBeam.getToggled()) powerCellsStored++;
+        countPowerCellsShot();
 
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
 
@@ -201,14 +209,10 @@ public class Conveyor extends SubsystemBase {
                 break;
 
             case SHOOTING:
-                if (!exitBeam.getState()) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = true;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
-                break;
+               horizontalBeltMovement = true;
+               if (shooterAtVelocity.getAsBoolean()) {
+                   verticalBeltMovement = true;
+               }
         }
 
         SmartDashboard.putString("Conveyor State", conveyorState.toString());

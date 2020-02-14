@@ -54,7 +54,7 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter(limelight);
     private final Drivetrain drivetrain = new Drivetrain();
-    private final Conveyor conveyor = new Conveyor();
+    private final Conveyor conveyor = new Conveyor(() -> shooter.getController().atSetpoint());
 
     private static Joystick driverStick = new Joystick(0);
 

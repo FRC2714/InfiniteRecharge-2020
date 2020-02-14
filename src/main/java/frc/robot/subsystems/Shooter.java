@@ -36,6 +36,7 @@ public class Shooter extends PIDSubsystem {
        this.limelight = limelight;
 
         getController().disableContinuousInput();
+        getController().setTolerance(ShooterConstants.kVelocityTolerance);
 
         SmartDashboard.putData("WPILib Shooter PID", getController());
 
@@ -97,9 +98,11 @@ public class Shooter extends PIDSubsystem {
         return limelight.targetVisible() ? velocityLUT.getInterpolated(limelight.getDistanceToGoal()) : defaultRpm;
     }
 
+
     @Override
     public void periodic() {
-        setSetpoint(getTargetLimelightVelocity());
+        targetRpm = getTargetLimelightVelocity();
+        setSetpoint(targetRpm);
         super.periodic();
     }
 

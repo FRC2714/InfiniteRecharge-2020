@@ -86,9 +86,13 @@ public final class Constants {
         public static int kLeftMotorPort = 12;
         public static int kRightMotorPort = 13;
 
+        // ONLY TO BE USED IN EMERGENCIES
+        // RPM SHOULD PRIMARILY COME FROM LUT
         public static double kTrenchShotRPM = 4000;
         public static double kBaselineShotRPM = 3000;
         public static double kLongshotRPM = 7000;
+
+        public static double kVelocityTolerance = 120;
     }
 
     public static final class ConveyorConstants {
