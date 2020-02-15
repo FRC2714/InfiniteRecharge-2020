@@ -32,8 +32,8 @@ public class AutomatedIntake extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        intake.extakePowerCells();
         conveyor.setIntaking(false);
+        intake.setIntakePower(0);
     }
 
     enum IntakeType{

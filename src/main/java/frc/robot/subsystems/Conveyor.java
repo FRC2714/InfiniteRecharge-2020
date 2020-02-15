@@ -202,17 +202,16 @@ public class Conveyor extends SubsystemBase {
 
             case FIVE:
                 verticalBeltMovement = exitBeam.getState();
-
                 if (RobotController.getFPGATime() < (stateTimer + 1e6)) horizontalBeltMovement = true;
                 else horizontalBeltMovement = false;
 
                 break;
 
             case SHOOTING:
-               horizontalBeltMovement = true;
-               if (shooterAtVelocity.getAsBoolean()) {
-                   verticalBeltMovement = true;
-               }
+                horizontalBeltMovement = verticalBeltMovement = shooterAtVelocity.getAsBoolean();
+                if(!verticalBeltMovement)
+                    verticalBeltMovement = exitBeam.getState();
+                break;
         }
 
         SmartDashboard.putString("Conveyor State", conveyorState.toString());
