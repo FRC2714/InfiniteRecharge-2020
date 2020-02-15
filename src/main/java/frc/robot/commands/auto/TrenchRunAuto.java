@@ -13,9 +13,9 @@ import frc.robot.utils.RamseteGenerator;
 
 import java.util.List;
 
-public class RightStart extends SequentialCommandGroup {
+public class TrenchRunAuto extends SequentialCommandGroup {
 
-    public RightStart(Drivetrain drivetrain, Limelight limelight) {
+    public TrenchRunAuto(Drivetrain drivetrain, Limelight limelight) {
         CustomRamseteCommand quinticLineToTrench =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,

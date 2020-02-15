@@ -13,9 +13,9 @@ import frc.robot.utils.RamseteGenerator;
 
 import java.util.List;
 
-public class CenterStart extends SequentialCommandGroup {
+public class GeneratorAuto extends SequentialCommandGroup {
 
-    public CenterStart(Drivetrain drivetrain, Limelight limelight){
+    public GeneratorAuto(Drivetrain drivetrain, Limelight limelight){
         CustomRamseteCommand baseLineToGenerator =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,

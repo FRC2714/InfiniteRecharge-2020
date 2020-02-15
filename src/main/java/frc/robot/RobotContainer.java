@@ -27,8 +27,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.auto.CenterStart;
-import frc.robot.commands.auto.RightStart;
+import frc.robot.commands.auto.BallStealAuto;
+import frc.robot.commands.auto.GeneratorAuto;
+import frc.robot.commands.auto.TrenchRunAuto;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
@@ -103,13 +104,17 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getCenterStartAutonomous() {
-        // return new RightStart(drivetrain, limelight);
-        return new CenterStart(drivetrain, limelight);
+    public Command getGeneratorAuto() {
+        return new GeneratorAuto(drivetrain, limelight);
     }
 
-    public Command getRightStartAutonomous() {
-        return new RightStart(drivetrain, limelight);
+    public Command getBallStealAutonomous() {
+        // return new RightStart(drivetrain, limelight);
+        return new BallStealAuto(drivetrain, limelight);
+    }
+
+    public Command getTrenchRunAuto() {
+        return new TrenchRunAuto(drivetrain, limelight);
     }
 
     public Command getRamseteCommand() {
