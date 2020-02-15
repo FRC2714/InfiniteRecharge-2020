@@ -109,6 +109,15 @@ public final class Constants {
         public static double kGoalHeight = Units.inchesToMeters(98.25); // TODO: check this
     }
 
+    public static final class ClimberConstants {
+        public static double kGearRatio = 1.0;
+        public static double kSprocketRadius = 1.0; // in
+
+        public static double kP = 0.1;
+
+        public static double kV = 0.0;
+    }
+
     public static final class AutoConstants {
         
     }
