@@ -30,13 +30,12 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.auto.BallStealAuto;
 import frc.robot.commands.auto.GeneratorAuto;
 import frc.robot.commands.auto.TrenchRunAuto;
+import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.shooter.AutoShooter;
+import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 import frc.robot.utils.Logger;
 import frc.robot.Constants.DriveConstants;
 
@@ -55,14 +54,21 @@ public class RobotContainer {
     private final Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter(limelight);
     private final Conveyor conveyor = new Conveyor(() -> shooter.getController().atSetpoint());
+    private final Intake intake = new Intake();
 
     private final Drivetrain drivetrain = new Drivetrain();
 
     private static Joystick driverStick = new Joystick(0);
+    private static Joystick operatorStick = new Joystick(1);
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
     private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
-    private POVButton leftPOVButton = new POVButton(driverStick, 90);
+    private POVButton driverLeftPOVButton = new POVButton(driverStick, 90);
+
+    private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
+    private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
+    private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
+
 
 
     private DriverControl driverControlCommand = new DriverControl(
@@ -79,8 +85,6 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-
-
     }
 
     public void initDefaultCommands() {
@@ -96,6 +100,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
+
+        operatorAButton.whileHeld(new AutoShooter(shooter,conveyor,3000));
+        operatorBButton.whileHeld(new AutoShooter(shooter,conveyor,5000));
+        operatorLeftShoulder.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
     }
 
 

@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 
-public class AutomatedIntake extends CommandBase {
+public class AutoIntake extends CommandBase {
 
     private Intake intake;
     private Conveyor conveyor;
     private IntakeType intakeType;
 
-    public AutomatedIntake(Intake intake, Conveyor conveyor, IntakeType intakeType){
+    public AutoIntake(Intake intake, Conveyor conveyor, IntakeType intakeType){
         this.intake = intake;
         this.conveyor = conveyor;
         this.intakeType = intakeType;
@@ -21,6 +21,7 @@ public class AutomatedIntake extends CommandBase {
         switch (intakeType){
             case NORMAL_INTAKE:
                 intake.intakePowerCells();
+                conveyor.moveAll(0.6);
                 break;
             case NORMAL_EXTAKE:
                 intake.extakePowerCells();
@@ -33,10 +34,11 @@ public class AutomatedIntake extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         conveyor.setIntaking(false);
-        intake.setIntakePower(0);
+        intake.setSerializerPower(0);
+        conveyor.moveAll(0);
     }
 
-    enum IntakeType{
+    public enum IntakeType{
         NORMAL_INTAKE,
         NORMAL_EXTAKE,
         FORCED_INTAKE,

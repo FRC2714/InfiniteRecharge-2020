@@ -67,8 +67,7 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static int kIntakeMotorPort = 7;
-        public static int kIntakeWristMotorPort = 8;
-        public static int kSerializerMotorPort = 9;
+        public static int kSerializerMotorPort = 8;
     }
 
     public static final class ShooterConstants {
@@ -79,12 +78,12 @@ public final class Constants {
         public static double kWPILibP = 0.0001;
 
 
-        public static double kSparkMaxP = 0.0001;
-        public static double kSparkMaxFeedforward = 0.00018;
+        public static double kSparkMaxP = 0.000;
+        public static double kSparkMaxFeedforward = 0.0001;
 
 
-        public static int kLeftMotorPort = 12;
-        public static int kRightMotorPort = 13;
+        public static int kLeftMotorPort = 11;
+        public static int kRightMotorPort = 12;
 
         // ONLY TO BE USED IN EMERGENCIES
         // RPM SHOULD PRIMARILY COME FROM LUT
@@ -96,8 +95,8 @@ public final class Constants {
     }
 
     public static final class ConveyorConstants {
-        public static int kHorizontalMotorPort = 10;
-        public static int kVerticalMotorPort = 11;
+        public static int kHorizontalMotorPort = 9;
+        public static int kVerticalMotorPort = 10;
     }
 
     public static final class CameraConstants {

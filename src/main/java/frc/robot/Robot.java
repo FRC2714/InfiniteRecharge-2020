@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
     private RobotContainer m_robotContainer;
 
-    SendableChooser<Command> autoChooser;
+    private SendableChooser<Command> autoChooser;
 
 
     /**

@@ -246,10 +246,12 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
+    /**
+     * @return True if external encoders and internal encoders conflict
+     */
     public boolean isEncoderError() {
         return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 1;
     }
-
 
     /**
      * Returns the turn rate of the robot.

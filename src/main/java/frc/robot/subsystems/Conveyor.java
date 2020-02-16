@@ -1,14 +1,18 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.utils.ToggledBreakBeam;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+
+import static frc.robot.Constants.*;
 
 public class Conveyor extends SubsystemBase {
 
@@ -44,14 +48,17 @@ public class Conveyor extends SubsystemBase {
 
     public Conveyor(BooleanSupplier shooterAtVelocity) {
 
-//        horizontalConveyor = new CANSparkMax(ConveyorConstants.kHorizontalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        verticalConveyor = new CANSparkMax(ConveyorConstants.kVerticalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        horizontalConveyor = new CANSparkMax(ConveyorConstants.kHorizontalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        verticalConveyor = new CANSparkMax(ConveyorConstants.kVerticalMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-//        horizontalConveyor.setSmartCurrentLimit(30);
-//        verticalConveyor.setSmartCurrentLimit(30);
-//
-//        horizontalConveyor.setInverted(false);
-//        verticalConveyor.setInverted(false);
+        horizontalConveyor.setSmartCurrentLimit(30);
+        verticalConveyor.setSmartCurrentLimit(30);
+
+        horizontalConveyor.setInverted(true);
+        verticalConveyor.setInverted(true);
+
+        horizontalConveyor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        verticalConveyor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         powerCellsStored = 0;
         conveyorState = ConveyorState.EMPTY;

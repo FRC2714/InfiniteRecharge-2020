@@ -14,12 +14,14 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         intakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        intakeWristMotor = new CANSparkMax(IntakeConstants.kIntakeWristMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         serializerMotor = new CANSparkMax(IntakeConstants.kSerializerMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         intakeMotor.setSmartCurrentLimit(30);
-        intakeWristMotor.setSmartCurrentLimit(30);
         serializerMotor.setSmartCurrentLimit(30);
+
+        intakeMotor.setInverted(false);
+        serializerMotor.setInverted(false);
+
     }
 
 

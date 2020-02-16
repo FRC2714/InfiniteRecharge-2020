@@ -12,8 +12,8 @@ import java.util.function.DoubleSupplier;
 
 public class Shooter extends PIDSubsystem {
 
-    private CANSparkMax shooterMotor1;
-    private CANSparkMax shooterMotor2;
+    public CANSparkMax shooterMotor1;
+    public CANSparkMax shooterMotor2;
 
     private CANEncoder shooterEncoder;
     private CANPIDController sparkMaxPIDController;
@@ -32,7 +32,7 @@ public class Shooter extends PIDSubsystem {
 
 
     public Shooter(Limelight limelight) {
-        super(new PIDController(ShooterConstants.kWPILibP,0,0));
+       super(new PIDController(ShooterConstants.kWPILibP,0,0));
        this.limelight = limelight;
 
         getController().disableContinuousInput();
@@ -43,9 +43,15 @@ public class Shooter extends PIDSubsystem {
         shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        shooterMotor1.setSmartCurrentLimit(50);
-        shooterMotor2.setSmartCurrentLimit(50);
-        shooterMotor2.follow(shooterMotor1);
+//        shooterMotor1.setSmartCurrentLimit(50);
+//        shooterMotor2.setSmartCurrentLimit(50);
+//        shooterMotor2.follow(shooterMotor1);
+//
+//        shooterMotor1.setInverted(false);
+//        shooterMotor2.setInverted(true);
+//
+//        shooterMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
+//        shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         shooterEncoder = shooterMotor1.getEncoder();
 
@@ -78,7 +84,7 @@ public class Shooter extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        shooterMotor1.set(output + flywheelFeedforward.calculate(setpoint));
+//        shooterMotor1.set(output + flywheelFeedforward.calculate(setpoint));
     }
 
     @Override
@@ -101,7 +107,7 @@ public class Shooter extends PIDSubsystem {
     @Override
     public void periodic() {
 //        targetRpm = getTargetLimelightVelocity();
-        setSetpoint(targetRpm);
+//        setSetpoint(targetRpm);
         super.periodic();
     }
 
