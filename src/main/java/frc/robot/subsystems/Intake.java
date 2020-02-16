@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
         serializerMotor.setSmartCurrentLimit(30);
 
         intakeMotor.setInverted(false);
-        serializerMotor.setInverted(false);
+        serializerMotor.setInverted(true);
 
     }
 

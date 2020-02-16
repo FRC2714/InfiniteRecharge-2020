@@ -40,15 +40,14 @@ public class Shooter extends PIDSubsystem {
 
         SmartDashboard.putData("WPILib Shooter PID", getController());
 
-        shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor1 = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor2 = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-//        shooterMotor1.setSmartCurrentLimit(50);
-//        shooterMotor2.setSmartCurrentLimit(50);
-//        shooterMotor2.follow(shooterMotor1);
-//
+        shooterMotor1.setSmartCurrentLimit(60);
+        shooterMotor2.setSmartCurrentLimit(60);
+
 //        shooterMotor1.setInverted(false);
-//        shooterMotor2.setInverted(true);
+//        shooterMotor2.setInverted(false);
 //
 //        shooterMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
 //        shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -76,6 +75,7 @@ public class Shooter extends PIDSubsystem {
 
     public void setShooterPower(double power){
         shooterMotor1.set(power);
+        shooterMotor2.set(-power);
     }
 
     public void setTargetRpm(double targetRpm) {
