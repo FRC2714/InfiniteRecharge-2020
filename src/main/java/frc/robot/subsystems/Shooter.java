@@ -1,16 +1,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
-import edu.wpi.first.wpilibj.controller.PIDController;
+
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.InterpolatingTreeMap;
 
 import java.util.function.DoubleSupplier;
 
-public class Shooter extends PIDSubsystem {
+public class Shooter extends SubsystemBase {
 
     public CANSparkMax shooterMotor1;
     public CANSparkMax shooterMotor2;
@@ -21,24 +22,16 @@ public class Shooter extends PIDSubsystem {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private InterpolatingTreeMap velocityLUT = new InterpolatingTreeMap();
 
-    private SimpleMotorFeedforward flywheelFeedforward=
-            new SimpleMotorFeedforward(ShooterConstants.kStatic,ShooterConstants.kV,ShooterConstants.kA);
-
-
     private Limelight limelight;
 
     private double targetRpm = 0.0;
     private double defaultRpm = 2e3;
 
+    private boolean enabled = false;
+
 
     public Shooter(Limelight limelight) {
-       super(new PIDController(ShooterConstants.kWPILibP,0,0));
        this.limelight = limelight;
-
-        getController().disableContinuousInput();
-        getController().setTolerance(ShooterConstants.kVelocityTolerance);
-
-        SmartDashboard.putData("WPILib Shooter PID", getController());
 
         shooterMotor1 = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -54,11 +47,18 @@ public class Shooter extends PIDSubsystem {
 
         shooterEncoder = shooterMotor1.getEncoder();
 
+        shooterMotor2.follow(shooterMotor1, true);
+
         sparkMaxPIDController = shooterMotor1.getPIDController();
         sparkMaxPIDController.setFF(ShooterConstants.kSparkMaxFeedforward);
         sparkMaxPIDController.setP(ShooterConstants.kSparkMaxP);
 
+
         populateVelocityMap();
+
+        SmartDashboard.putNumber("Target RPM", targetRpm);
+        SmartDashboard.putNumber("Current RPM", 0);
+
     }
 
     public void populateVelocityMap() {
@@ -75,24 +75,14 @@ public class Shooter extends PIDSubsystem {
 
     public void setShooterPower(double power){
         shooterMotor1.set(power);
-        shooterMotor2.set(-power);
     }
 
     public void setTargetRpm(double targetRpm) {
         this.targetRpm = targetRpm;
     }
 
-    @Override
-    protected void useOutput(double output, double setpoint) {
-//        shooterMotor1.set(output + flywheelFeedforward.calculate(setpoint));
-    }
 
-    @Override
-    protected double getMeasurement() {
-        return shooterEncoder.getVelocity();
-    }
-
-    public double getVelocity() {
+    public double getVelocity() { // in rpm
         return shooterEncoder.getVelocity();
     }
 
@@ -100,15 +90,34 @@ public class Shooter extends PIDSubsystem {
      * Returns the target velocity based on current distance from goal
      * @return target velocity in RPM for shooter
      */
-    public double getTargetLimelightVelocity() {
+    public double getTargetRpm() {
         return limelight.targetVisible() ? velocityLUT.getInterpolated(limelight.getDistanceToGoal()) : defaultRpm;
+    }
+
+    public boolean atSetpoint() {
+        return Math.abs(targetRpm - getVelocity()) < targetRpm * .05;
     }
 
     @Override
     public void periodic() {
-//        targetRpm = getTargetLimelightVelocity();
-//        setSetpoint(targetRpm);
-        super.periodic();
+        SmartDashboard.putNumber("Current RPM", getVelocity());
+        double newTargetRpm = SmartDashboard.getNumber("Target RPM", 0);
+
+        if (enabled) {
+            if (targetRpm != newTargetRpm) {
+                targetRpm = newTargetRpm;
+                setSparkMaxVelocity(targetRpm);
+            }
+        }
+    }
+
+    public void disable() {
+        enabled = false;
+        shooterMotor1.set(0);
+    }
+
+    public void enable() {
+        enabled = true;
     }
 
 }

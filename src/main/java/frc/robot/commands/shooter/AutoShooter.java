@@ -20,11 +20,9 @@ public class AutoShooter extends CommandBase {
     @Override
     public void initialize() {
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
-        shooter.disable();
-        shooter.setShooterPower(1);
         //shooter.setSetpoint(rpm);
         //shooter.enable();
-
+        shooter.enable();
         System.out.println("RAN");
     }
 
@@ -38,7 +36,6 @@ public class AutoShooter extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         System.out.println("Exit");
-        shooter.setShooterPower(0);
         shooter.disable();
         conveyor.updateEnum();
     }

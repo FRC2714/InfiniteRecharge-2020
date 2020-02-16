@@ -78,8 +78,8 @@ public final class Constants {
         public static double kWPILibP = 0.0001;
 
 
-        public static double kSparkMaxP = 0.000;
-        public static double kSparkMaxFeedforward = 0.0001;
+        public static double kSparkMaxP = 0.0006;
+        public static double kSparkMaxFeedforward = 0.00018;
 
 
         public static int kLeftMotorPort = 11;

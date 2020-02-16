@@ -53,7 +53,7 @@ public class RobotContainer {
 
     private final Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter(limelight);
-    private final Conveyor conveyor = new Conveyor(() -> shooter.getController().atSetpoint());
+    private final Conveyor conveyor = new Conveyor(() -> shooter.atSetpoint());
     private final Intake intake = new Intake();
 
     private final Drivetrain drivetrain = new Drivetrain();
