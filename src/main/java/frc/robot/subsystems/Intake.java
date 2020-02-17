@@ -16,23 +16,22 @@ public class Intake extends SubsystemBase {
         intakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         serializerMotor = new CANSparkMax(IntakeConstants.kSerializerMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        intakeMotor.setSmartCurrentLimit(30);
-        serializerMotor.setSmartCurrentLimit(30);
+        intakeMotor.setSmartCurrentLimit(40);
+        serializerMotor.setSmartCurrentLimit(40);
 
         intakeMotor.setInverted(false);
         serializerMotor.setInverted(true);
-
     }
 
 
     public void intakePowerCells() {
-        setSerializerPower(0.5);
-        setIntakePower(0.5);
+        setSerializerPower(IntakeConstants.kSerializerPower);
+        setIntakePower(IntakeConstants.kIntakePower);
     }
 
     public void extakePowerCells() {
-        setIntakePower(-0.5);
-        setSerializerPower(-0.5);
+        setSerializerPower(-IntakeConstants.kSerializerPower);
+        setIntakePower(-IntakeConstants.kIntakePower);
     }
 
     public void setIntakePower(double power){

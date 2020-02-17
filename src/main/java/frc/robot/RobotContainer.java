@@ -101,9 +101,9 @@ public class RobotContainer {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
 
-        operatorAButton.whileHeld(new AutoShooter(shooter,conveyor,3000));
-        operatorBButton.whileHeld(new AutoShooter(shooter,conveyor,5000));
-        operatorLeftShoulder.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
+        operatorAButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
+        operatorBButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
+        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,5000));
     }
 
 

@@ -38,7 +38,7 @@ public class Conveyor extends SubsystemBase {
         FOUR,
         FIVE,
         SHOOTING,
-        ERROR
+        ERROR,
     }
 
     private ConveyorState conveyorState;
@@ -89,8 +89,10 @@ public class Conveyor extends SubsystemBase {
         this.conveyorState = conveyorState;
     }
 
-    public void countPowerCellsShot(){
+    public void updatePowerCellCount(){
+        entryBeam.update();
         exitBeam.update();
+        if (entryBeam.getToggled()) powerCellsStored++;
         if (exitBeam.getToggled()) powerCellsStored--;
     }
 
@@ -128,9 +130,8 @@ public class Conveyor extends SubsystemBase {
 
     @Override
     public void periodic() {
-        entryBeam.update();
-        if (entryBeam.getToggled()) powerCellsStored++;
-        countPowerCellsShot();
+        updatePowerCellCount();
+        updateEnum();
 
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
 
@@ -219,6 +220,7 @@ public class Conveyor extends SubsystemBase {
                 if(!verticalBeltMovement)
                     verticalBeltMovement = exitBeam.getState();
                 break;
+
         }
 
         SmartDashboard.putString("Conveyor State", conveyorState.toString());

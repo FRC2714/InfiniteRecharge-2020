@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
     public CANSparkMax shooterMotor2;
 
     private CANEncoder shooterEncoder;
-    private CANPIDController sparkMaxPIDController;
+    private CANPIDController shooterPIDController;
     
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private InterpolatingTreeMap velocityLUT = new InterpolatingTreeMap();
@@ -33,25 +33,22 @@ public class Shooter extends SubsystemBase {
     public Shooter(Limelight limelight) {
        this.limelight = limelight;
 
-        shooterMotor1 = new CANSparkMax(11, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterMotor2 = new CANSparkMax(12, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         shooterMotor1.setSmartCurrentLimit(60);
         shooterMotor2.setSmartCurrentLimit(60);
 
-//        shooterMotor1.setInverted(false);
-//        shooterMotor2.setInverted(false);
-//
-//        shooterMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-//        shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        shooterMotor1.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
         shooterEncoder = shooterMotor1.getEncoder();
 
         shooterMotor2.follow(shooterMotor1, true);
 
-        sparkMaxPIDController = shooterMotor1.getPIDController();
-        sparkMaxPIDController.setFF(ShooterConstants.kSparkMaxFeedforward);
-        sparkMaxPIDController.setP(ShooterConstants.kSparkMaxP);
+        shooterPIDController = shooterMotor1.getPIDController();
+        shooterPIDController.setFF(ShooterConstants.kSparkMaxFeedforward);
+        shooterPIDController.setP(ShooterConstants.kSparkMaxP);
 
 
         populateVelocityMap();
@@ -66,11 +63,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setSparkMaxVelocity(double rpmReference){
-        sparkMaxPIDController.setReference(rpmReference, ControlType.kVelocity);
+        shooterPIDController.setReference(rpmReference, ControlType.kVelocity);
     }
 
     public void setSparkMaxSmartVelocity(double rpmReference){
-        sparkMaxPIDController.setReference(rpmReference, ControlType.kSmartVelocity);
+        shooterPIDController.setReference(rpmReference, ControlType.kSmartVelocity);
     }
 
     public void setShooterPower(double power){
@@ -102,13 +99,15 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
         double newTargetRpm = SmartDashboard.getNumber("Target RPM", 0);
-
         if (enabled) {
             if (targetRpm != newTargetRpm) {
                 targetRpm = newTargetRpm;
                 setSparkMaxVelocity(targetRpm);
             }
+
+            // setSparkMaxVelocity(getTargetVelocity());
         }
+
     }
 
     public void disable() {

@@ -23,12 +23,12 @@ public class AutoShooter extends CommandBase {
         //shooter.setSetpoint(rpm);
         //shooter.enable();
         shooter.enable();
+        shooter.setSparkMaxVelocity(6000);
         System.out.println("RAN");
     }
 
     @Override
     public void execute() {
-        conveyor.countPowerCellsShot();
         SmartDashboard.putNumber("Current Output 1", shooter.shooterMotor1.getOutputCurrent());
         SmartDashboard.putNumber("Current Output 2", shooter.shooterMotor2.getOutputCurrent());
     }
@@ -38,6 +38,8 @@ public class AutoShooter extends CommandBase {
         System.out.println("Exit");
         shooter.disable();
         conveyor.updateEnum();
+        SmartDashboard.putNumber("Current Output 1", 0);
+        SmartDashboard.putNumber("Current Output 2", 0);
     }
 
 }

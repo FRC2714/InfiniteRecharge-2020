@@ -46,8 +46,8 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.09;
-        public static double kAlignD = 0;
+        public static double kAlignP = 0.1;
+        public static double kAlignD = 0.0001;
 
         public static double kDriveP = 2.45; // 3 stable
         public static double kDriveI = 0;
@@ -68,6 +68,9 @@ public final class Constants {
     public static final class IntakeConstants {
         public static int kIntakeMotorPort = 7;
         public static int kSerializerMotorPort = 8;
+
+        public static double kIntakePower = 1.0;
+        public static double kSerializerPower = 0.5;
     }
 
     public static final class ShooterConstants {
@@ -78,7 +81,7 @@ public final class Constants {
         public static double kWPILibP = 0.0001;
 
 
-        public static double kSparkMaxP = 0.0006;
+        public static double kSparkMaxP = 0.001;
         public static double kSparkMaxFeedforward = 0.00018;
 
 
@@ -100,7 +103,7 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        public static double kCameraHeight = Units.inchesToMeters(42.75); // TODO: update this
+        public static double kCameraHeight = Units.inchesToMeters(28); // TODO: update this
         public static double kCameraMountingAngle = 22; // degrees
     }
 

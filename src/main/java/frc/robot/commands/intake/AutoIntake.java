@@ -25,6 +25,7 @@ public class AutoIntake extends CommandBase {
                 break;
             case NORMAL_EXTAKE:
                 intake.extakePowerCells();
+                conveyor.moveAll(-.6);
                 break;
         }
 
@@ -35,6 +36,7 @@ public class AutoIntake extends CommandBase {
     public void end(boolean interrupted) {
         conveyor.setIntaking(false);
         intake.setSerializerPower(0);
+        intake.setIntakePower(0);
         conveyor.moveAll(0);
     }
 
