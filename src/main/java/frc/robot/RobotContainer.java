@@ -105,14 +105,15 @@ public class RobotContainer {
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
 
         operatorAButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
+        operatorXButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.FORCED_INTAKE));
         operatorBButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,5150));
+        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,2500));
         operatorYButton.whileHeld(new InstantCommand(
                 () -> climber.setPower(1.0)
         ));
-        operatorXButton.whileHeld(new InstantCommand(
-                () -> climber.setPower(-1.0)
-        ));
+//        operatorXButton.whileHeld(new InstantCommand(
+//                () -> climber.setPower(-1.0)
+//        ));
     }
 
 

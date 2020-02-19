@@ -19,8 +19,9 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setSetpoint(rpm);
+//        shooter.setSetpoint(rpm);
         shooter.setSparkMaxVelocity(rpm);
+//        shooter.setShooterPower(0.5);// 2377 neo rpm from basline //2555 from baseline
     }
 
     @Override
@@ -32,6 +33,7 @@ public class AutoShooter extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         conveyor.updateEnum();
+        shooter.setShooterPower(0);
         SmartDashboard.putNumber("Current Output 1", 0);
         SmartDashboard.putNumber("Current Output 2", 0);
     }

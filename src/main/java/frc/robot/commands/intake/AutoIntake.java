@@ -21,20 +21,30 @@ public class AutoIntake extends CommandBase {
         switch (intakeType){
             case NORMAL_INTAKE:
                 intake.intakePowerCells();
-                conveyor.moveAll(0.6);
+                conveyor.horizontalConveyor.set(0.5);
+                conveyor.setIntaking(true);
                 break;
             case NORMAL_EXTAKE:
                 intake.extakePowerCells();
-                conveyor.moveAll(-.6);
+                conveyor.horizontalConveyor.set(-0.4);
+                conveyor.verticalConveyor.set(-0.4);
+                conveyor.setExtaking(true);
                 break;
-        }
+            case FORCED_INTAKE:
+                intake.intakePowerCells();
+                conveyor.horizontalConveyor.set(0.7);
+                conveyor.verticalConveyor.set(0.7);
+                conveyor.setIntaking(true);
+                break;
 
-        conveyor.setIntaking(true);
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        conveyor.setIntaking(false);
+        if(intakeType.equals(IntakeType.NORMAL_INTAKE))
+            conveyor.setIntaking(false);
+        conveyor.setExtaking(false);
         intake.setSerializerPower(0);
         intake.setIntakePower(0);
         conveyor.moveAll(0);
