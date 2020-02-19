@@ -103,7 +103,7 @@ public class RobotContainer {
 
         operatorAButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
         operatorBButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,5000));
+        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,5150));
     }
 
 

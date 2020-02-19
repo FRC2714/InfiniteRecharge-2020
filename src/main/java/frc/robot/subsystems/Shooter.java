@@ -119,4 +119,7 @@ public class Shooter extends SubsystemBase {
         enabled = true;
     }
 
+    public void setSetpoint(double rpm) {
+        defaultRpm = rpm;
+    }
 }

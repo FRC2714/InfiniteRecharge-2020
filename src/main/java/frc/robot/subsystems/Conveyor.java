@@ -128,15 +128,21 @@ public class Conveyor extends SubsystemBase {
         }*/
     }
 
+    public void updateConveyorMotion(){
+        if(!intaking) {
+            if (horizontalBeltMovement)
+                horizontalConveyor.set(0.6);
+            if (verticalBeltMovement)
+                verticalConveyor.set(0.6);
+        }
+    }
+
     @Override
     public void periodic() {
         updatePowerCellCount();
         updateEnum();
 
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
-
-
-//        if shooting: conveyor state = shooting;
 
         switch (conveyorState) {
             case EMPTY:

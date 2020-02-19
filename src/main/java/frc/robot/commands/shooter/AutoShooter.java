@@ -19,12 +19,8 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
-        //shooter.setSetpoint(rpm);
-        //shooter.enable();
-        shooter.enable();
-        shooter.setSparkMaxVelocity(6000);
-        System.out.println("RAN");
+        shooter.setSetpoint(rpm);
+        shooter.setSparkMaxVelocity(rpm);
     }
 
     @Override
@@ -35,8 +31,6 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("Exit");
-        shooter.disable();
         conveyor.updateEnum();
         SmartDashboard.putNumber("Current Output 1", 0);
         SmartDashboard.putNumber("Current Output 2", 0);
