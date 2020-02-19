@@ -103,7 +103,7 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        public static double kCameraHeight = Units.inchesToMeters(28); // TODO: update this
+        public static double kCameraHeight = Units.inchesToMeters(27.25); // TODO: update this
         public static double kCameraMountingAngle = 22; // degrees
     }
 
@@ -117,7 +117,7 @@ public final class Constants {
 
         public static double kP = 0.1;
 
-        public static double kV = 0.0;
+        public static double kToleranceInches = 1;
     }
 
     public static final class AutoConstants {
