@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -10,37 +8,47 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
 
-public class Climber extends PIDSubsystem {
+public class Climber extends SubsystemBase {
 
     private CANSparkMax climberMotor1;
+    private CANPIDController climberPIDController;
     private CANEncoder climberEncoder;
 
     private double targetHeightInches = 0.0;
 
-    private SimpleMotorFeedforward climberFeedforward =
-            new SimpleMotorFeedforward(ClimberConstants.kV,0,0);
-
     public Climber(){
-        super(new PIDController(ClimberConstants.kP,0,0));
         climberMotor1 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         climberMotor1.setSmartCurrentLimit(30);
         climberEncoder = climberMotor1.getEncoder();
 
+        climberPIDController = climberMotor1.getPIDController();
+        climberPIDController.setP(ClimberConstants.kP);
+
     }
 
-    public void setClimber(double power){
+    public void setPower(double power){
         climberMotor1.set(power);
     }
 
-    @Override
-    public double getMeasurement() {
-        return (climberEncoder.getPosition() / ClimberConstants.kGearRatio)
-                * 2 * Math.PI * ClimberConstants.kSprocketRadius;
+    public void setTargetHeight(double targetHeightInches) {
+        this.targetHeightInches = targetHeightInches;
+        climberPIDController.setReference(targetHeightInches / (2 * Math.PI *
+                ClimberConstants.kSprocketRadius), ControlType.kPosition);
+    }
+
+    public boolean atSetpoint() {
+        return Math.abs(targetHeightInches - (climberEncoder.getPosition() * 2 * Math.PI * ClimberConstants.kSprocketRadius))
+                    < ClimberConstants.kToleranceInches;
+    }
+
+    public void disable() {
+        climberMotor1.set(0);
     }
 
     @Override
-    protected void useOutput(double output, double setpoint) {
-        climberMotor1.set(output + climberFeedforward.calculate(setpoint));
+    public void periodic() {
+
     }
+
 }

@@ -117,7 +117,7 @@ public final class Constants {
 
         public static double kP = 0.1;
 
-        public static double kV = 0.0;
+        public static double kToleranceInches = 1;
     }
 
     public static final class AutoConstants {

@@ -55,6 +55,7 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter(limelight);
     private final Conveyor conveyor = new Conveyor(() -> shooter.atSetpoint());
     private final Intake intake = new Intake();
+    private final Climber climber = new Climber();
 
     private final Drivetrain drivetrain = new Drivetrain();
 
@@ -68,6 +69,8 @@ public class RobotContainer {
     private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
     private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
     private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
+    private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
+    private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
 
 
 
@@ -104,6 +107,12 @@ public class RobotContainer {
         operatorAButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
         operatorBButton.whileHeld(new AutoIntake(intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
         operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,5150));
+        operatorYButton.whileHeld(new InstantCommand(
+                () -> climber.setPower(1.0)
+        ));
+        operatorXButton.whileHeld(new InstantCommand(
+                () -> climber.setPower(-1.0)
+        ));
     }
 
 
