@@ -31,6 +31,7 @@ public class AutoIntake extends CommandBase {
                 conveyor.setExtaking(true);
                 conveyor.horizontalConveyor.set(0.2);
                 conveyor.verticalConveyor.set(0);
+                break;
             case NORMAL_EXTAKE:
                 intake.extakePowerCells();
                 conveyor.setExtaking(true);

@@ -233,7 +233,6 @@ public class Drivetrain extends SubsystemBase {
      * Zeroes the heading of the robot.
      */
     public void zeroHeading() {
-        // navx.reset();
         adisIMU.reset();
     }
 
