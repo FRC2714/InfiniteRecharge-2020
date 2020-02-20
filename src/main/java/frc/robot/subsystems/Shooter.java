@@ -92,7 +92,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean atSetpoint() {
-        return Math.abs(targetRpm - getVelocity()) < targetRpm * .05;
+        return Math.abs(targetRpm - getVelocity()) < 500;
     }
 
     @Override

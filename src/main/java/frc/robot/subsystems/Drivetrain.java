@@ -82,23 +82,23 @@ public class Drivetrain extends SubsystemBase {
         rMotor2.follow(rMotor0);
 
         lMotor0.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        lMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        lMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        lMotor1.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        lMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
         rMotor0.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rMotor1.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        rMotor2.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
         lMotor0.enableVoltageCompensation(12.0);
         rMotor0.enableVoltageCompensation(12.0);
 
-        lMotor0.setSmartCurrentLimit(50);
-        lMotor1.setSmartCurrentLimit(50);
-        lMotor2.setSmartCurrentLimit(50);
+        lMotor0.setSmartCurrentLimit(60);
+        lMotor1.setSmartCurrentLimit(60);
+        lMotor2.setSmartCurrentLimit(60);
 
-        rMotor0.setSmartCurrentLimit(50);
-        rMotor1.setSmartCurrentLimit(50);
-        rMotor2.setSmartCurrentLimit(50);
+        rMotor0.setSmartCurrentLimit(60);
+        rMotor1.setSmartCurrentLimit(60);
+        rMotor2.setSmartCurrentLimit(60);
 
         drive = new DifferentialDrive(lMotor0, rMotor0);
         drive.setSafetyEnabled(false);

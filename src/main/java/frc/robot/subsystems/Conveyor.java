@@ -138,18 +138,17 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void updateConveyorMotion(){
-        if(!intaking) {
-            if (horizontalBeltMovement)
-                horizontalConveyor.set(0.2);
-            else
+        if(horizontalBeltMovement)
+            horizontalConveyor.set(0.3);
+        else
+            if(!extaking)
                 horizontalConveyor.set(0);
-            if (verticalBeltMovement)
-                verticalConveyor.set(0.2);
-            else
+
+        if(verticalBeltMovement)
+            verticalConveyor.set(0.2);
+        else
+            if(!extaking)
                 verticalConveyor.set(0);
-        } else if(extaking){
-            decrementIntakeCount();
-        }
     }
 
     @Override
@@ -159,89 +158,84 @@ public class Conveyor extends SubsystemBase {
 
         SmartDashboard.putNumber("Power Cells Stored = ", getPowerCellsStored());
 
-        switch (conveyorState) {
-            case EMPTY:
-                horizontalBeltMovement = false;
-                verticalBeltMovement = false;
-
-                if(intaking)
-                    horizontalBeltMovement = true;
-
-                if (entryBeam.getToggled()) conveyorState = ConveyorState.ONE;
-                break;
-
-            case ONE:
-                horizontalBeltMovement = middleBeam.getState();
-                verticalBeltMovement = false;
-
-                if(intaking)
-                    horizontalBeltMovement = true;
-
-                if (entryBeam.getToggled()) {
-                    conveyorState = ConveyorState.TWO;
-                    stateTimer = RobotController.getFPGATime();
-                }
-                break;
-
-            case TWO:
-                if (RobotController.getFPGATime() < (stateTimer + 2e6)) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = false;
-                } else if (exitBeam.getState()) {
-                    horizontalBeltMovement = true;
-                    verticalBeltMovement = true;
-                } else {
-                    horizontalBeltMovement = false;
-                    verticalBeltMovement = false;
-                }
-
-                if(intaking)
-                    horizontalBeltMovement = true;
-
-                if (entryBeam.getToggled()) conveyorState = ConveyorState.THREE;
-                break;
-
-            case THREE:
-                verticalBeltMovement = exitBeam.getState();
-                horizontalBeltMovement = middleBeam.getState();
-
-                if(intaking)
-                    horizontalBeltMovement = true;
-
-                if (entryBeam.getToggled()) {
-                    conveyorState = ConveyorState.FOUR;
-                    stateTimer = RobotController.getFPGATime();
-                }
-                break;
-
-            case FOUR:
-                verticalBeltMovement = exitBeam.getState();
-                horizontalBeltMovement = !entryBeam.getState();
-
-                if(powerCellsStored < 4 && intaking)
-                    horizontalBeltMovement = true;
-                else
-                    horizontalConveyor.set(0);
-
+//        switch (conveyorState) {
+//            case EMPTY:
+//                horizontalBeltMovement = false;
+//                verticalBeltMovement = false;
+//
+//                if(intaking)
+//                    horizontalBeltMovement = true;
+//
+//                if (entryBeam.getToggled()) conveyorState = ConveyorState.ONE;
+//                break;
+//
+//            case ONE:
+//                horizontalBeltMovement = middleBeam.getState();
+//                verticalBeltMovement = false;
+//
+//                if(intaking)
+//                    horizontalBeltMovement = true;
+//
 //                if (entryBeam.getToggled()) {
-//                    conveyorState = ConveyorState.FIVE;
+//                    conveyorState = ConveyorState.TWO;
 //                    stateTimer = RobotController.getFPGATime();
 //                }
-                break;
+//                break;
+//
+//            case TWO:
+//                horizontalBeltMovement = verticalBeltMovement = exitBeam.getState();
+//
+//                if(intaking)
+//                    horizontalBeltMovement = true;
+//
+//                if (entryBeam.getToggled()) conveyorState = ConveyorState.THREE;
+//
+//                break;
+//
+//            case THREE:
+//                verticalBeltMovement = exitBeam.getState();
+//                if(exitBeam.getState())
+//                    horizontalBeltMovement = true;
+//                else
+//                    horizontalBeltMovement = middleBeam.getState();
+//
+//                if(intaking)
+//                    horizontalBeltMovement = true;
+//
+//                if (entryBeam.getToggled()) {
+//                    conveyorState = ConveyorState.FOUR;
+//                    stateTimer = RobotController.getFPGATime();
+//                }
+//                break;
+//
+//            case FOUR:
+//                verticalBeltMovement = exitBeam.getState();
+//                horizontalBeltMovement = !entryBeam.getState();
+//
+//                if(powerCellsStored < 4 && intaking)
+//                    horizontalBeltMovement = true;
+//                else
+//                    horizontalBeltMovement = false;
+//                break;
+//
+//            case FIVE:
+//                verticalBeltMovement = exitBeam.getState();
+//                if (RobotController.getFPGATime() < (stateTimer + 1e6)) horizontalBeltMovement = true;
+//                else horizontalBeltMovement = false;
+//                break;
+//
+//            case SHOOTING:
+////                horizontalBeltMovement = verticalBeltMovement = shooterAtVelocity.getAsBoolean();
+////                if(!verticalBeltMovement)
+////                    verticalBeltMovement = exitBeam.getState();
+//                horizontalBeltMovement = verticalBeltMovement = true;
+//                break;
+//
+//        }
 
-            case FIVE:
-                verticalBeltMovement = exitBeam.getState();
-                if (RobotController.getFPGATime() < (stateTimer + 1e6)) horizontalBeltMovement = true;
-                else horizontalBeltMovement = false;
-                break;
-
-            case SHOOTING:
-                horizontalBeltMovement = verticalBeltMovement = shooterAtVelocity.getAsBoolean();
-                if(!verticalBeltMovement)
-                    verticalBeltMovement = exitBeam.getState();
-                break;
-
-        }
+        horizontalBeltMovement = verticalBeltMovement = !entryBeam.getState();
+        if(!exitBeam.getState())
+            verticalBeltMovement = false;
 
         updateConveyorMotion();
 

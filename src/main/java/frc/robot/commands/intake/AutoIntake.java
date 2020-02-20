@@ -3,14 +3,17 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class AutoIntake extends CommandBase {
 
+    private Shooter shooter;
     private Intake intake;
     private Conveyor conveyor;
     private IntakeType intakeType;
 
-    public AutoIntake(Intake intake, Conveyor conveyor, IntakeType intakeType){
+    public AutoIntake(Shooter shooter, Intake intake, Conveyor conveyor, IntakeType intakeType){
+        this.shooter = shooter;
         this.intake = intake;
         this.conveyor = conveyor;
         this.intakeType = intakeType;
@@ -21,22 +24,47 @@ public class AutoIntake extends CommandBase {
         switch (intakeType){
             case NORMAL_INTAKE:
                 intake.intakePowerCells();
-                conveyor.horizontalConveyor.set(0.5);
                 conveyor.setIntaking(true);
-                break;
-            case NORMAL_EXTAKE:
-                intake.extakePowerCells();
-                conveyor.horizontalConveyor.set(-0.4);
-                conveyor.verticalConveyor.set(-0.4);
-                conveyor.setExtaking(true);
                 break;
             case FORCED_INTAKE:
                 intake.intakePowerCells();
-                conveyor.horizontalConveyor.set(0.7);
-                conveyor.verticalConveyor.set(0.7);
+                conveyor.setExtaking(true);
+                conveyor.horizontalConveyor.set(0.2);
+                conveyor.verticalConveyor.set(0);
+            case NORMAL_EXTAKE:
+                intake.extakePowerCells();
+                conveyor.setExtaking(true);
+                conveyor.horizontalConveyor.set(-0.4);
+                conveyor.verticalConveyor.set(-0.4);
+                break;
+            case FORCED_SHOOT:
                 conveyor.setIntaking(true);
+                conveyor.setExtaking(true);
+                intake.intakePowerCells();
+                if(shooter.atSetpoint()) {
+                    conveyor.horizontalConveyor.set(0.35);
+                    conveyor.verticalConveyor.set(0.7);
+                }
                 break;
 
+        }
+    }
+
+    @Override
+    public void execute() {
+        switch (intakeType){
+            case FORCED_SHOOT:
+                conveyor.setIntaking(true);
+                conveyor.setExtaking(true);
+                intake.intakePowerCells();
+                if(shooter.atSetpoint()) {
+                    conveyor.horizontalConveyor.set(0.35);
+                    conveyor.verticalConveyor.set(0.7);
+                } else {
+                    conveyor.horizontalConveyor.set(0);
+                    conveyor.verticalConveyor.set(0);
+                }
+                break;
         }
     }
 
@@ -53,8 +81,8 @@ public class AutoIntake extends CommandBase {
     public enum IntakeType{
         NORMAL_INTAKE,
         NORMAL_EXTAKE,
-        FORCED_INTAKE,
-        FORCED_EXTAKE
+        FORCED_SHOOT,
+        FORCED_INTAKE
     }
 
 }
