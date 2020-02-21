@@ -23,7 +23,6 @@ public class Intake extends SubsystemBase {
         serializerMotor.setInverted(true);
     }
 
-
     public void intakePowerCells() {
         setSerializerPower(IntakeConstants.kSerializerPower);
         setIntakePower(IntakeConstants.kIntakePower);

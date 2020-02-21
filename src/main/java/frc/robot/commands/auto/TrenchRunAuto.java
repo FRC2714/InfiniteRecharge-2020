@@ -6,31 +6,34 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
+import frc.robot.commands.intake.AutoIntake;
+import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
 import frc.robot.utils.RamseteGenerator;
 
 import java.util.List;
 
 public class TrenchRunAuto extends SequentialCommandGroup {
 
-    public TrenchRunAuto(Drivetrain drivetrain, Limelight limelight) {
+    public TrenchRunAuto(Drivetrain drivetrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight) {
         CustomRamseteCommand quinticLineToTrench =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(10.82), Units.feetToMeters(19.40), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(17.62), Units.feetToMeters(24.60), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(25.88), Units.feetToMeters(24.65), new Rotation2d().fromDegrees(0.00))
+                                new Pose2d(Units.feetToMeters(11.93), Units.feetToMeters(18.66), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(18.28), Units.feetToMeters(24.72), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(26.18), Units.feetToMeters(24.76), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(8.5), false
+                        Units.feetToMeters(5), Units.feetToMeters(5), false
                 );
         addCommands(
                 sequence(
+                        new AutomaticShooter(shooter,conveyor,2500).withTimeout(8),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
-                        quinticLineToTrench.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
-                        new AlignToTarget(drivetrain, limelight)
+                        deadline(
+                                quinticLineToTrench,
+                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.NORMAL_INTAKE)
+                        )
                 )
         );
 

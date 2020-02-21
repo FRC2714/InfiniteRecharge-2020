@@ -11,7 +11,7 @@ public class AutomaticShooter extends CommandBase {
     private Shooter shooter;
     private double rpm;
 
-    public AutomaticShooter(Conveyor conveyor, Shooter shooter, double rpm){
+    public AutomaticShooter(Shooter shooter, Conveyor conveyor, double rpm){
         this.conveyor = conveyor;
         this.shooter = shooter;
         this.rpm = rpm;
@@ -25,9 +25,26 @@ public class AutomaticShooter extends CommandBase {
 
     @Override
     public void execute() {
-        
+        conveyor.setIntaking(true);
+        conveyor.setExtaking(true);
+        if (shooter.atSetpoint()) {
+            conveyor.horizontalConveyor.set(0.35);
+            conveyor.verticalConveyor.set(0.5);
+        } else {
+            conveyor.horizontalConveyor.set(0);
+            conveyor.verticalConveyor.set(0);
+        }
     }
 
+
+    @Override
+    public void end(boolean interrupted) {
+        conveyor.setIntaking(true);
+        conveyor.setExtaking(true);
+        shooter.setShooterPower(0);
+        conveyor.horizontalConveyor.set(0);
+        conveyor.verticalConveyor.set(0);
+    }
 
     @Override
     public boolean isFinished() {

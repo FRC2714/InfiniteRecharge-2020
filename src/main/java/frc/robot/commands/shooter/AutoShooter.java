@@ -37,4 +37,10 @@ public class AutoShooter extends CommandBase {
         SmartDashboard.putNumber("Current Output 2", 0);
     }
 
+    @Override
+    public boolean isFinished() {
+        return Math.abs(rpm - shooter.getVelocity()) < (.05 *rpm);
+    }
+
+
 }

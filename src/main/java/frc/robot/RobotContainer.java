@@ -135,7 +135,7 @@ public class RobotContainer {
     }
 
     public Command getTrenchRunAuto() {
-        return new TrenchRunAuto(drivetrain, limelight);
+        return new TrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
     public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
