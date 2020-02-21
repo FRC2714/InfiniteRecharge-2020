@@ -56,8 +56,8 @@ public class Drivetrain extends SubsystemBase {
     );
 
     // Gyro
-    private ADIS16470_IMU adisIMU = new ADIS16470_IMU();
-
+    private ADIS16470_IMU adisIMU = new ADIS16470_IMU(ADIS16470_IMU.IMUAxis.kY, SPI.Port.kOnboardCS0, ADIS16470_IMU.ADIS16470CalibrationTime._1s);
+    private AHRS ahrs;
 
     private DifferentialDrive drive;
 
@@ -124,6 +124,10 @@ public class Drivetrain extends SubsystemBase {
 
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
+
+//        ahrs = new AHRS(SerialPort.Port.kMXP);
+//        ahrs.getAngle();
+//        ahrs.zeroYaw();
     }
 
     /**
@@ -152,6 +156,7 @@ public class Drivetrain extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
         adisIMU.reset();
+        adisIMU.calibrate();
         internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
@@ -302,6 +307,8 @@ public class Drivetrain extends SubsystemBase {
 
         SmartDashboard.putNumber("Left Encoder Meters", leftDist);
         SmartDashboard.putNumber("Right Encoder Meters", rightDist);
+
+//        SmartDashboard.putNumber("NavX Angle", ahrs.getAngle());
 
         live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
         live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));

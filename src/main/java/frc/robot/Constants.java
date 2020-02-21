@@ -26,15 +26,15 @@ public final class Constants {
     public static final class DriveConstants {
         public static double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
         public static double kTrackWidth = 0.91; // meters
-        public static double kWheelRadius = 0.076; // meters
+        public static double kWheelRadius = 0.0762; // meters
         public static double kShaftEncoderResolution = 2048; // counts per revolution bore encoder
         public static double positionChangePerRotation = 8.73; // Motor rotation per shaft rotation
         public static double kMaxVelocity = 13; // feet per second
         public static double kMaxAcceleration = 3; // Max Accel fet per second squared
 
-        public static double kStatic = 0.131; // Constant feedforward term for the robot drive.
-        public static double kV = 2.26; // Velocity-proportional feedforward term for the robot drive
-        public static double kA = 0.384; //Acceleration-proportional feedforward term for the robot (.238)
+        public static double kStatic = 0.177; // Constant feedforward term for the robot drive.
+        public static double kV = 2.25; // Velocity-proportional feedforward term for the robot drive
+        public static double kA = 0.44; //Acceleration-proportional feedforward term for the robot (.348)
 
         // Tuning parameter (b > 0) for which larger values make convergence more aggressive like a proportional term
         public static double kRamseteB = 2;

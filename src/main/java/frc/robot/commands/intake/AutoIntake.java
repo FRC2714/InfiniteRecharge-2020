@@ -53,19 +53,17 @@ public class AutoIntake extends CommandBase {
 
     @Override
     public void execute() {
-        switch (intakeType){
-            case FORCED_SHOOT:
-                conveyor.setIntaking(true);
-                conveyor.setExtaking(true);
-                intake.intakePowerCells();
-                if(shooter.atSetpoint()) {
-                    conveyor.horizontalConveyor.set(0.35);
-                    conveyor.verticalConveyor.set(0.7);
-                } else {
-                    conveyor.horizontalConveyor.set(0);
-                    conveyor.verticalConveyor.set(0);
-                }
-                break;
+        if (intakeType == IntakeType.FORCED_SHOOT) {
+            conveyor.setIntaking(true);
+            conveyor.setExtaking(true);
+            intake.intakePowerCells();
+            if (shooter.atSetpoint()) {
+                conveyor.horizontalConveyor.set(0.35);
+                conveyor.verticalConveyor.set(0.7);
+            } else {
+                conveyor.horizontalConveyor.set(0);
+                conveyor.verticalConveyor.set(0);
+            }
         }
     }
 

@@ -8,8 +8,9 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
+import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.shooter.AutoShooter;
+import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class BallStealAuto extends SequentialCommandGroup {
 
-    public BallStealAuto(Drivetrain drivetrain, Limelight limelight){
+    public BallStealAuto(Drivetrain drivetrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight){
         CustomRamseteCommand baselineToStealBalls =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
@@ -41,9 +42,13 @@ public class BallStealAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baselineToStealBalls.getInitialPose())),
-                        baselineToStealBalls.andThen(() -> drivetrain.tankDriveVolts(0,0)),
+                        new AutoShooter(shooter,conveyor,2500).deadlineWith(new AlignToTarget(drivetrain, limelight)),
+                        deadline(
+                                baselineToStealBalls,
+                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.NORMAL_INTAKE)
+                        ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(limelight, drivetrain)
+                        new AlignToTarget(drivetrain, limelight)
                 )
         );
 

@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.auto.BallStealAuto;
 import frc.robot.commands.auto.GeneratorAuto;
+import frc.robot.commands.auto.SplineTesting;
 import frc.robot.commands.auto.TrenchRunAuto;
 import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.shooter.AutoShooter;
@@ -53,7 +54,7 @@ public class RobotContainer {
 
     private final Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter(limelight);
-    private final Conveyor conveyor = new Conveyor(() -> shooter.atSetpoint());
+    private final Conveyor conveyor = new Conveyor(shooter::atSetpoint);
     private final Intake intake = new Intake();
     private final Climber climber = new Climber();
 
@@ -130,12 +131,15 @@ public class RobotContainer {
 
     public Command getBallStealAutonomous() {
         // return new RightStart(drivetrain, limelight);
-        return new BallStealAuto(drivetrain, limelight);
+        return new BallStealAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
     public Command getTrenchRunAuto() {
         return new TrenchRunAuto(drivetrain, limelight);
     }
+
+    public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
+
 
     public Command getRamseteCommand() {
         drivetrain.resetAll();

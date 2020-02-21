@@ -16,8 +16,8 @@ public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
     private Drivetrain drivetrain;
 
-    public AlignToTarget(Limelight limelight, Drivetrain drive) {
-        this(limelight, drive, () -> 0);
+    public AlignToTarget(Drivetrain drivetrain, Limelight limelight) {
+        this(limelight, drivetrain, () -> 0);
     }
 
     public AlignToTarget(Limelight limelight, Drivetrain drive, DoubleSupplier rawY) {

@@ -39,10 +39,10 @@ public class GeneratorAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baseLineToGenerator.getInitialPose())),
-                        new AlignToTarget(limelight, drivetrain),
+                        new AlignToTarget(drivetrain, limelight),
                         baseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
                         reverseBaseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(limelight, drivetrain)
+                        new AlignToTarget(drivetrain, limelight)
                 )
         );
 

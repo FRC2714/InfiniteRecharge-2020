@@ -30,7 +30,7 @@ public class TrenchRunAuto extends SequentialCommandGroup {
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         quinticLineToTrench.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
-                        new AlignToTarget(limelight, drivetrain)
+                        new AlignToTarget(drivetrain, limelight)
                 )
         );
 
