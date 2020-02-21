@@ -320,6 +320,10 @@ public class Drivetrain extends SubsystemBase {
 
         SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
         SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
+
+        SmartDashboard.putNumber("Output Current Left", lMotor0.getOutputCurrent() + lMotor1.getOutputCurrent() + lMotor2.getOutputCurrent());
+        SmartDashboard.putNumber("Output Current Right", rMotor0.getOutputCurrent() + rMotor1.getOutputCurrent() + rMotor2.getOutputCurrent());
+
     }
 
 }

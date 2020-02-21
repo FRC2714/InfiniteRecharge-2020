@@ -28,12 +28,15 @@ public class TrenchRunAuto extends SequentialCommandGroup {
                 );
         addCommands(
                 sequence(
-                        new AutomaticShooter(shooter,conveyor,2500).withTimeout(8),
+                        new AutomaticShooter(shooter,conveyor,2500, true).withTimeout(5),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         deadline(
                                 quinticLineToTrench,
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.NORMAL_INTAKE)
-                        )
+                        ),
+                        new AlignToTarget(drivetrain, limelight),
+                        new AutomaticShooter(shooter,conveyor,2500).withTimeout(5)
+
                 )
         );
 

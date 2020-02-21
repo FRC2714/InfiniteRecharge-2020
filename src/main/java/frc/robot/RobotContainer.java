@@ -110,7 +110,7 @@ public class RobotContainer {
         operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
         operatorYButton.whileHeld(new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.FORCED_INTAKE));
 
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,2500));
+        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,3000));
         operatorYButton.whileHeld(new InstantCommand(
                 () -> climber.setPower(1.0)
         ));
