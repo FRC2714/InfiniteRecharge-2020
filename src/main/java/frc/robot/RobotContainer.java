@@ -92,6 +92,7 @@ public class RobotContainer {
 
         operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
         operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
+        operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
 
         operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
         operatorYButton.whileHeld(new InstantCommand(

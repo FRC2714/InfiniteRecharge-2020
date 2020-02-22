@@ -4,6 +4,7 @@ import com.revrobotics.*;
 
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -59,6 +60,12 @@ public class Shooter extends SubsystemBase {
 
     public void populateVelocityMap() {
         // TODO: implement
+        velocityLUT.put(6.8, 2300.0);
+        velocityLUT.put(11.1, 2100.0);
+        velocityLUT.put(14.3, 2000.0);
+        velocityLUT.put(22.0, 2350.0);
+        velocityLUT.put(26.75, 2750.0);
+        velocityLUT.put(36.0, 2950.0);
     }
 
     public void setVelocity(double rpmReference){
@@ -84,17 +91,21 @@ public class Shooter extends SubsystemBase {
      * @return target velocity in RPM for shooter
      */
     public double getTargetRpm() {
-        return limelight.targetVisible() ? velocityLUT.getInterpolated(limelight.getDistanceToGoal()) : defaultRpm;
+        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())) : defaultRpm;
+    }
+
+    public void setDynamicRpm() {
+        shooterPIDController.setReference(getTargetRpm(), ControlType.kVelocity);
     }
 
     public boolean atSetpoint() {
-        return Math.abs(targetRpm - getVelocity()) < 100;
+        return Math.abs(getTargetRpm() - getVelocity()) < 150;
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
-
+        SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
     }
 
     public void disable() {

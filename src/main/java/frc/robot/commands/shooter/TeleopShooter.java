@@ -19,12 +19,12 @@ public class TeleopShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setVelocity(rpm);
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
     }
 
     @Override
     public void execute() {
+        shooter.setDynamicRpm();
         SmartDashboard.putNumber("Current Output 1", shooter.shooterMotor1.getOutputCurrent());
         SmartDashboard.putNumber("Current Output 2", shooter.shooterMotor2.getOutputCurrent());
     }

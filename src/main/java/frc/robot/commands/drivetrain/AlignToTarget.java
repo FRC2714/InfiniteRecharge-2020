@@ -29,7 +29,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
                 // set reference to target
                 0,
                 // pipe to turn robot
-                (output, setpoint) -> drive.arcadeDrive(-rawY.getAsDouble(), output),
+                (output, setpoint) -> drive.arcadeDrive(-rawY.getAsDouble(), Math.signum(output) * 0.2 + output),
                 // require drive
                 drive
         );
