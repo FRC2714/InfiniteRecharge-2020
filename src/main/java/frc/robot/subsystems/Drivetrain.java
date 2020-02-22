@@ -35,8 +35,7 @@ public class Drivetrain extends SubsystemBase {
     private CANEncoder leftNeoEncoder;
     private CANEncoder rightNeoEncoder;
 
-    // Spark Max Pid
-
+    // Spark Max PID Controllers
     private CANPIDController leftPIDController;
     private CANPIDController rightPIDController;
 
