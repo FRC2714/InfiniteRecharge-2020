@@ -70,7 +70,7 @@ public final class Constants {
         public static int kSerializerMotorPort = 8;
 
         public static double kIntakePower = 1.0;
-        public static double kSerializerPower = 0.5;
+        public static double kSerializerPower = 0.8;
     }
 
     public static final class ShooterConstants {
@@ -81,7 +81,7 @@ public final class Constants {
         public static double kWPILibP = 0.0001;
 
 
-        public static double kSparkMaxP = 0.0005;
+        public static double kSparkMaxP = 0.0006;
         public static double kSparkMaxFeedforward = 0.000195; // .00022
 
 

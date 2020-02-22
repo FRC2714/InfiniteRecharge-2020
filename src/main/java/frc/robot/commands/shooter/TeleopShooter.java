@@ -19,7 +19,7 @@ public class TeleopShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
+
     }
 
     @Override

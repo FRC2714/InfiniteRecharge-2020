@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.InterpolatingTreeMap;
+import frc.robot.utils.ToggledBreakBeam;
 
 import java.util.function.DoubleSupplier;
 
@@ -29,6 +31,10 @@ public class Shooter extends SubsystemBase {
     private double defaultRpm = 2e3;
 
     private boolean enabled = false;
+
+    private ToggledBreakBeam shooterBeam;
+
+    private int ballsShot = 0;
 
 
     public Shooter(Limelight limelight) {
@@ -56,16 +62,27 @@ public class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("Target RPM", targetRpm);
         SmartDashboard.putNumber("Current RPM", 0);
+
+        shooterBeam = new ToggledBreakBeam(new DigitalInput(7));
     }
 
     public void populateVelocityMap() {
         // TODO: implement
+        /*
         velocityLUT.put(6.8, 2300.0);
         velocityLUT.put(11.1, 2100.0);
         velocityLUT.put(14.3, 2000.0);
         velocityLUT.put(22.0, 2350.0);
         velocityLUT.put(26.75, 2750.0);
         velocityLUT.put(36.0, 2950.0);
+        */
+
+        velocityLUT.put(6.8, 2200.0);
+        velocityLUT.put(11.1, 2050.0);
+        velocityLUT.put(14.3, 2000.0);
+        velocityLUT.put(22.0, 2250.0);
+        velocityLUT.put(26.75, 2650.0);
+        velocityLUT.put(36.0, 2850.0);
     }
 
     public void setVelocity(double rpmReference){
@@ -106,6 +123,10 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
+
+        shooterBeam.update();
+        if (shooterBeam.getToggled())
+            ballsShot++;
     }
 
     public void disable() {
@@ -119,5 +140,13 @@ public class Shooter extends SubsystemBase {
 
     public void setSetpoint(double rpm) {
         defaultRpm = rpm;
+    }
+
+    public void resetBallsShot() {
+        ballsShot = 0;
+    }
+
+    public int getBallsShot() {
+        return ballsShot;
     }
 }

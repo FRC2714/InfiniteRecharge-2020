@@ -24,6 +24,7 @@ public class AutoIntake extends CommandBase {
         conveyor.enable();
         switch (intakeType){
             case INTAKE:
+                conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
                 intake.intakePowerCells();
                 break;
             case EXTAKE:

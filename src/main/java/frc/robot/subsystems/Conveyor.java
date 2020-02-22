@@ -81,17 +81,22 @@ public class Conveyor extends SubsystemBase {
 
 
     public void updateConveyorMotion(boolean horiz, boolean vert, boolean reversed){
-        double power = 0.3;
-        if (reversed) power = -0.3;
+        double horizontalPower = 0.4;
+        double verticalPower = 0.6;
+
+        if (reversed) {
+            horizontalPower *= -1;
+            verticalPower *= -1;
+        }
 
         if(horiz)
-            horizontalConveyor.set(power);
+            horizontalConveyor.set(horizontalPower);
         else
             if (conveyorState != ConveyorState.EXTAKING)
                 horizontalConveyor.set(0);
 
         if(vert)
-            verticalConveyor.set(power);
+            verticalConveyor.set(verticalPower);
         else
             if(conveyorState != ConveyorState.EXTAKING)
                 verticalConveyor.set(0);
@@ -105,7 +110,6 @@ public class Conveyor extends SubsystemBase {
 
         SmartDashboard.putString("Conveyor State", conveyorState.toString());
         SmartDashboard.putBoolean("Entry Beam", entryBeam.getState());
-        SmartDashboard.putBoolean("Middle Beam", middleBeam.getState());
         SmartDashboard.putBoolean("Exit Beam", exitBeam.getState());
     }
 

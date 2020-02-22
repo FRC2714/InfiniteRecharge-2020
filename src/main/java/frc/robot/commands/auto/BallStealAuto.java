@@ -40,7 +40,7 @@ public class BallStealAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baselineToStealBalls.getInitialPose())),
-                        new AutomaticShooter(shooter,conveyor,intake, 2500, true).withTimeout(3),
+                        new AutomaticShooter(shooter,conveyor,intake, 2500, true, 3).withTimeout(3),
                         deadline(
                                 baselineToStealBalls,
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)

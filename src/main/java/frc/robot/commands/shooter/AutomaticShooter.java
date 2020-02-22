@@ -14,17 +14,21 @@ public class AutomaticShooter extends CommandBase {
     private boolean keepMotorRunning = false;
 
     private Intake intake;
+    private double ballsToShoot;
 
-    public AutomaticShooter(Shooter shooter, Conveyor conveyor, Intake intake, double rpm, boolean keepMotorRunning){
+    public AutomaticShooter(Shooter shooter, Conveyor conveyor, Intake intake, double rpm, boolean keepMotorRunning,
+                            double ballsToShoot){
         this.conveyor = conveyor;
         this.shooter = shooter;
         this.rpm = rpm;
         this.keepMotorRunning = keepMotorRunning;
         this.intake = intake;
+        this.ballsToShoot = ballsToShoot;
     }
 
     @Override
     public void initialize() {
+        shooter.resetBallsShot();
         shooter.setVelocity(rpm);
         conveyor.enable();
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
@@ -43,10 +47,11 @@ public class AutomaticShooter extends CommandBase {
             shooter.setShooterPower(0);
         conveyor.disable();
         intake.disbale();
+        shooter.resetBallsShot();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return shooter.getBallsShot() >= ballsToShoot;
     }
 }
