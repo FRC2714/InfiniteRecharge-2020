@@ -33,6 +33,11 @@ public class Intake extends SubsystemBase {
         setIntakePower(-IntakeConstants.kIntakePower);
     }
 
+    public void disbale() {
+        setSerializerPower(0);
+        setIntakePower(0);
+    }
+
     public void setIntakePower(double power){
         intakeMotor.set(power);
     }

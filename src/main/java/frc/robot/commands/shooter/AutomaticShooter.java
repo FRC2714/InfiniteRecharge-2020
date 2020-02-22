@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,31 +19,21 @@ public class AutomaticShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setSparkMaxVelocity(rpm);
-        shooter.setTargetRpm(rpm);
+        shooter.setVelocity(rpm);
+        conveyor.enable();
+        conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
     }
 
     @Override
     public void execute() {
-        conveyor.setIntaking(true);
-        conveyor.setExtaking(true);
-        if (shooter.atSetpoint()) {
-            conveyor.horizontalConveyor.set(0.35);
-            conveyor.verticalConveyor.set(0.5);
-        } else {
-            conveyor.horizontalConveyor.set(0);
-            conveyor.verticalConveyor.set(0);
-        }
+
     }
 
 
     @Override
     public void end(boolean interrupted) {
-        conveyor.setIntaking(true);
-        conveyor.setExtaking(true);
         shooter.setShooterPower(0);
-        conveyor.horizontalConveyor.set(0);
-        conveyor.verticalConveyor.set(0);
+        conveyor.disable();
     }
 
     @Override

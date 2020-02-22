@@ -21,67 +21,35 @@ public class AutoIntake extends CommandBase {
 
     @Override
     public void initialize() {
+        conveyor.enable();
         switch (intakeType){
-            case NORMAL_INTAKE:
+            case INTAKE:
                 intake.intakePowerCells();
-                conveyor.setIntaking(true);
                 break;
-            case FORCED_INTAKE:
-                intake.intakePowerCells();
-                conveyor.setExtaking(true);
-                conveyor.horizontalConveyor.set(0.2);
-                conveyor.verticalConveyor.set(0);
-                break;
-            case NORMAL_EXTAKE:
+            case EXTAKE:
                 intake.extakePowerCells();
-                conveyor.setExtaking(true);
-                conveyor.horizontalConveyor.set(-0.4);
-                conveyor.verticalConveyor.set(-0.4);
+                conveyor.setConveyorState(Conveyor.ConveyorState.EXTAKING);
                 break;
-            case FORCED_SHOOT:
-                conveyor.setIntaking(true);
-                conveyor.setExtaking(true);
-                intake.intakePowerCells();
-                if(shooter.atSetpoint()) {
-                    conveyor.horizontalConveyor.set(0.35);
-                    conveyor.verticalConveyor.set(0.7);
-                }
-                break;
-
+            case SHOOT:
+                conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
         }
     }
 
     @Override
     public void execute() {
-        if (intakeType == IntakeType.FORCED_SHOOT) {
-            conveyor.setIntaking(true);
-            conveyor.setExtaking(true);
-            intake.intakePowerCells();
-            if (shooter.atSetpoint()) {
-                conveyor.horizontalConveyor.set(0.35);
-                conveyor.verticalConveyor.set(0.7);
-            } else {
-                conveyor.horizontalConveyor.set(0);
-                conveyor.verticalConveyor.set(0);
-            }
-        }
+        // logic handled in conveyor periodic
     }
 
     @Override
     public void end(boolean interrupted) {
-        if(intakeType.equals(IntakeType.NORMAL_INTAKE))
-            conveyor.setIntaking(false);
-        conveyor.setExtaking(false);
-        intake.setSerializerPower(0);
-        intake.setIntakePower(0);
-        conveyor.moveAll(0);
+        intake.disbale();
+        conveyor.disable();
     }
 
     public enum IntakeType{
-        NORMAL_INTAKE,
-        NORMAL_EXTAKE,
-        FORCED_SHOOT,
-        FORCED_INTAKE
+        INTAKE,
+        EXTAKE,
+        SHOOT
     }
 
 }

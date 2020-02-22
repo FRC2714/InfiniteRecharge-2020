@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
-public class AutoShooter extends CommandBase {
+public class TeleopShooter extends CommandBase {
 
     private Shooter shooter;
     private Conveyor conveyor;
     private double rpm;
 
-    public AutoShooter(Shooter shooter, Conveyor conveyor, double rpm){
+    public TeleopShooter(Shooter shooter, Conveyor conveyor, double rpm){
         this.shooter = shooter;
         this.conveyor = conveyor;
         this.rpm = rpm;
@@ -19,8 +19,8 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setSparkMaxVelocity(rpm);
-        shooter.setTargetRpm(rpm);
+        shooter.setVelocity(rpm);
+        conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
     }
 
     @Override
@@ -31,7 +31,6 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        conveyor.updateEnum();
         shooter.setShooterPower(0);
         SmartDashboard.putNumber("Current Output 1", 0);
         SmartDashboard.putNumber("Current Output 2", 0);

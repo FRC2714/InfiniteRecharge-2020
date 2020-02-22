@@ -55,20 +55,16 @@ public class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("Target RPM", targetRpm);
         SmartDashboard.putNumber("Current RPM", 0);
-
     }
 
     public void populateVelocityMap() {
         // TODO: implement
     }
 
-    public void setSparkMaxVelocity(double rpmReference){
+    public void setVelocity(double rpmReference){
         shooterPIDController.setReference(rpmReference, ControlType.kVelocity);
     }
 
-    public void setSparkMaxSmartVelocity(double rpmReference){
-        shooterPIDController.setReference(rpmReference, ControlType.kSmartVelocity);
-    }
 
     public void setShooterPower(double power){
         shooterMotor1.set(power);
@@ -92,21 +88,12 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean atSetpoint() {
-        return Math.abs(targetRpm - getVelocity()) < (targetRpm * .05);
+        return Math.abs(targetRpm - getVelocity()) < 100;
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
-        double newTargetRpm = SmartDashboard.getNumber("Target RPM", 0);
-        if (enabled) {
-            if (targetRpm != newTargetRpm) {
-                targetRpm = newTargetRpm;
-                setSparkMaxVelocity(targetRpm);
-            }
-
-            // setSparkMaxVelocity(getTargetVelocity());
-        }
 
     }
 

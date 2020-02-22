@@ -10,18 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -32,16 +20,11 @@ import frc.robot.commands.auto.GeneratorAuto;
 import frc.robot.commands.auto.SplineTesting;
 import frc.robot.commands.auto.TrenchRunAuto;
 import frc.robot.commands.intake.AutoIntake;
-import frc.robot.commands.shooter.AutoShooter;
+import frc.robot.commands.shooter.TeleopShooter;
 import frc.robot.subsystems.*;
-import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.DriverControl;
 import frc.robot.utils.Logger;
-import frc.robot.Constants.DriveConstants;
-
-
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -89,10 +72,12 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
+        initDefaultCommands();
     }
 
     public void initDefaultCommands() {
         drivetrain.initDefaultCommand(driverStick);
+        conveyor.initDefaultCommand(shooter::atSetpoint);
     }
 
     /**
@@ -105,18 +90,13 @@ public class RobotContainer {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
 
-        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
-        operatorXButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.FORCED_SHOOT));
-        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
-        operatorYButton.whileHeld(new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.FORCED_INTAKE));
+        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
+        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
 
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,2500));
+        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
         operatorYButton.whileHeld(new InstantCommand(
                 () -> climber.setPower(1.0)
         ));
-//        operatorXButton.whileHeld(new InstantCommand(
-//                () -> climber.setPower(-1.0)
-//        ));
     }
 
 
@@ -139,99 +119,6 @@ public class RobotContainer {
     }
 
     public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
-
-
-    public Command getRamseteCommand() {
-        drivetrain.resetAll();
-        DifferentialDriveVoltageConstraint voltageConstraint =
-                new DifferentialDriveVoltageConstraint(
-                        new SimpleMotorFeedforward(
-                                Constants.DriveConstants.kStatic,
-                                Constants.DriveConstants.kV,
-                                Constants.DriveConstants.kA
-                        ),
-                        drivetrain.getKinematics(),
-                        10
-                );
-
-        CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(Units.feetToMeters(4.5));
-        TrajectoryConfig config =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(drivetrain.getKinematics())
-                        // Apply the voltage constraint
-                        .addConstraint(voltageConstraint)
-                        .addConstraint(centripetalAccelerationConstraint);
-
-        TrajectoryConfig reverseConfig =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(drivetrain.getKinematics())
-                        // Apply the voltage constraint
-                        .addConstraint(voltageConstraint)
-                        .addConstraint(centripetalAccelerationConstraint)
-                        .setReversed(true);
-
-        Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(
-                        new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
-                ),
-                new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
-                // Pass config
-                config
-        );
-
-        Trajectory reverseSimpleSCurve = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(
-                        new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
-                ),
-                new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
-                // Pass config
-                reverseConfig
-        );
-
-        CustomRamseteCommand ramseteCommand = new CustomRamseteCommand(
-                simpleSCurve,
-                drivetrain::getPose,
-                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        DriveConstants.kStatic,
-                        DriveConstants.kV,
-                        DriveConstants.kA
-                ),
-                drivetrain.getKinematics(),
-                drivetrain::getWheelSpeeds,
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                drivetrain::tankDriveVolts,
-                drivetrain
-        );
-
-        CustomRamseteCommand ramseteCommand2 = new CustomRamseteCommand(
-                reverseSimpleSCurve,
-                drivetrain::getPose,
-                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        DriveConstants.kStatic,
-                        DriveConstants.kV,
-                        DriveConstants.kA
-                ),
-                drivetrain.getKinematics(),
-                drivetrain::getWheelSpeeds,
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                drivetrain::tankDriveVolts,
-                drivetrain
-        );
-
-        return ramseteCommand.andThen(ramseteCommand2.andThen(() -> drivetrain.tankDriveVolts(0, 0)));
-    }
 
 
 }

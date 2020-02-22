@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.shooter.AutomaticShooter;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
@@ -28,11 +28,11 @@ public class TrenchRunAuto extends SequentialCommandGroup {
                 );
         addCommands(
                 sequence(
-                        new AutomaticShooter(shooter,conveyor,2500).withTimeout(8),
+                        new AutomaticShooter(shooter,conveyor,1000).withTimeout(8),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         deadline(
                                 quinticLineToTrench,
-                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.NORMAL_INTAKE)
+                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         )
                 )
         );
