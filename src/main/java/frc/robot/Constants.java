@@ -46,8 +46,8 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.1;
-        public static double kAlignD = 0.0001;
+        public static double kAlignP = 0.04;
+        public static double kAlignD = 0.0003;
 
         public static double kDriveP = 2.45; // 3 stable
         public static double kDriveI = 0;
@@ -81,8 +81,8 @@ public final class Constants {
         public static double kWPILibP = 0.0001;
 
 
-        public static double kSparkMaxP = 0.0006;
-        public static double kSparkMaxFeedforward = 0.000174;
+        public static double kSparkMaxP = 0.0005;
+        public static double kSparkMaxFeedforward = 0.00022;
 
 
         public static int kLeftMotorPort = 11;

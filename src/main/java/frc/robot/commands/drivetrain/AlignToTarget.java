@@ -22,14 +22,14 @@ public class AlignToTarget extends ProfiledPIDCommand {
 
     public AlignToTarget(Limelight limelight, Drivetrain drive, DoubleSupplier rawY) {
         super(
-                new ProfiledPIDController(DriveConstants.kAlignP, 0, DriveConstants.kAlignD,
+                new ProfiledPIDController(DriveConstants.kAlignP, 0, 0,
                         new TrapezoidProfile.Constraints(100, 300)),
                 // Close loop on heading
                 limelight::getXAngleOffset,
                 // set reference to target
                 0,
                 // pipe to turn robot
-                (output, setpoint) -> drive.arcadeDrive(-rawY.getAsDouble(), output),
+                (output, setpoint) -> drive.arcadeDrive(-rawY.getAsDouble(), Math.signum(output) * 0.2 + output),
                 // require drive
                 drive
         );
@@ -39,7 +39,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
         getController().enableContinuousInput(-180, 180);
 
         // TODO: set tolerances
-        getController().setTolerance(.75, 4);
+        getController().setTolerance(.5, 4);
     }
 
 

@@ -53,7 +53,6 @@ public class Shooter extends SubsystemBase {
 
         populateVelocityMap();
 
-        SmartDashboard.putNumber("Target RPM", targetRpm);
         SmartDashboard.putNumber("Current RPM", 0);
 
     }
@@ -98,15 +97,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
-        double newTargetRpm = SmartDashboard.getNumber("Target RPM", 0);
-        if (enabled) {
-            if (targetRpm != newTargetRpm) {
-                targetRpm = newTargetRpm;
-                setSparkMaxVelocity(targetRpm);
-            }
-
-            // setSparkMaxVelocity(getTargetVelocity());
-        }
 
     }
 

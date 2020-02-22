@@ -31,7 +31,7 @@ import frc.robot.commands.auto.BallStealAuto;
 import frc.robot.commands.auto.GeneratorAuto;
 import frc.robot.commands.auto.SplineTesting;
 import frc.robot.commands.auto.TrenchRunAuto;
-import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.ballmanager.AutoIntake;
 import frc.robot.commands.shooter.AutoShooter;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
@@ -110,7 +110,7 @@ public class RobotContainer {
         operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
         operatorYButton.whileHeld(new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.FORCED_INTAKE));
 
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,3000));
+        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,2300));
         operatorYButton.whileHeld(new InstantCommand(
                 () -> climber.setPower(1.0)
         ));

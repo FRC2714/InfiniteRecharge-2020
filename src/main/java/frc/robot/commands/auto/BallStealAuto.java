@@ -1,15 +1,13 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.DutyCycle;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.commands.intake.AutoIntake;
-import frc.robot.commands.shooter.AutoShooter;
+import frc.robot.commands.ballmanager.AutoIntake;
+import frc.robot.commands.shooter.AutomaticShooter;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
