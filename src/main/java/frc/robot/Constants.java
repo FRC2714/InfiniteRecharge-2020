@@ -82,7 +82,7 @@ public final class Constants {
 
 
         public static double kSparkMaxP = 0.0005;
-        public static double kSparkMaxFeedforward = 0.00022;
+        public static double kSparkMaxFeedforward = 0.000195; // .00022
 
 
         public static int kLeftMotorPort = 11;

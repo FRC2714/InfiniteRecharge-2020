@@ -19,12 +19,12 @@ public class AutoShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setSparkMaxVelocity(rpm);
-        shooter.setTargetRpm(rpm);
     }
 
     @Override
     public void execute() {
+        shooter.setTargetRpm(shooter.getTargetRpm());
+        shooter.setSparkMaxVelocity(shooter.getTargetRpm());
         SmartDashboard.putNumber("Current Output 1", shooter.shooterMotor1.getOutputCurrent());
         SmartDashboard.putNumber("Current Output 2", shooter.shooterMotor2.getOutputCurrent());
     }
