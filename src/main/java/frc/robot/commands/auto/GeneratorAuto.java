@@ -15,33 +15,33 @@ import java.util.List;
 
 public class GeneratorAuto extends SequentialCommandGroup {
 
-    public GeneratorAuto(Drivetrain drivetrain, Limelight limelight){
+    public GeneratorAuto(Drivetrain drivetrain, Limelight limelight) {
         CustomRamseteCommand baseLineToGenerator =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.59), Rotation2d.fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(20.53), Units.feetToMeters(18.10), Rotation2d.fromDegrees(-70))
+                                new Pose2d(Units.feetToMeters(12.28), Units.feetToMeters(15.18), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(18.32), Units.feetToMeters(13.38), new Rotation2d().fromDegrees(22.81))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(8), false
+                        Units.feetToMeters(8), Units.feetToMeters(6), false
                 );
 
         CustomRamseteCommand reverseBaseLineToGenerator =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(20.53), Units.feetToMeters(18.10), Rotation2d.fromDegrees(-70)),
-                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.59), Rotation2d.fromDegrees(0.00))
+                                new Pose2d(Units.feetToMeters(18.32), Units.feetToMeters(13.38), new Rotation2d().fromDegrees(22.81)),
+                                new Pose2d(Units.feetToMeters(12.28), Units.feetToMeters(15.18), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(8), true
+                        Units.feetToMeters(8), Units.feetToMeters(6), true
                 );
 
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baseLineToGenerator.getInitialPose())),
                         new AlignToTarget(drivetrain, limelight),
-                        baseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        reverseBaseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
+                        baseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
+                        reverseBaseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0, 0)),
                         new AlignToTarget(drivetrain, limelight)
                 )
         );
