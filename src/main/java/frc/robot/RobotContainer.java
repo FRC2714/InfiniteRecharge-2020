@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.shooter.SingleShot;
 import frc.robot.commands.shooter.TeleopShooter;
 import frc.robot.subsystems.*;
 import frc.robot.commands.drivetrain.AlignToTarget;
@@ -53,6 +54,8 @@ public class RobotContainer {
     private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
     private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
 
+    private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
+
 
 
     private DriverControl driverControlCommand = new DriverControl(
@@ -86,15 +89,15 @@ public class RobotContainer {
     private void configureButtonBindings() {
         driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
+        driverLeftShoulder.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
 
         operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
         operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
         operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
-
+        operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
         operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
-        operatorYButton.whileHeld(new InstantCommand(
-                () -> climber.setPower(1.0)
-        ));
+
+
     }
 
 
