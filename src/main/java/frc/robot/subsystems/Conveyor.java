@@ -81,8 +81,9 @@ public class Conveyor extends SubsystemBase {
 
 
     public void updateConveyorMotion(boolean horiz, boolean vert, boolean reversed){
-        double horizontalPower = 0.4;
-        double verticalPower = 0.6;
+        double horizontalPower = conveyorState == ConveyorState.SHOOTING ? 0.5 : 0.3;
+
+        double verticalPower = conveyorState == ConveyorState.SHOOTING ? 0.6 : 0.3;
 
         if (reversed) {
             horizontalPower *= -1;
