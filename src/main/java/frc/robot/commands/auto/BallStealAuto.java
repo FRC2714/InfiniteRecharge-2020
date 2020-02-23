@@ -46,7 +46,7 @@ public class BallStealAuto extends SequentialCommandGroup {
                         ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
                         new AlignToTarget(drivetrain, limelight),
-                        new AutomaticShooter(shooter,conveyor,intake, 2500, true, 3).withTimeout(3)
+                        new AutomaticShooter(shooter,conveyor,intake, 2050, true, 3).withTimeout(3)
                 )
         );
 

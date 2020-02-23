@@ -95,7 +95,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        Tests.testInterpolatingTreeMap();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
