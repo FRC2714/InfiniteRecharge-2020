@@ -57,7 +57,8 @@ public class Drivetrain extends SubsystemBase {
 
     // Gyro
     private ADIS16470_IMU adisIMU = new ADIS16470_IMU(ADIS16470_IMU.IMUAxis.kY, SPI.Port.kOnboardCS0, ADIS16470_IMU.ADIS16470CalibrationTime._1s);
-    private AHRS ahrs;
+    private AHRS navx = new AHRS(SPI.Port.kMXP);
+
 
     private DifferentialDrive drive;
 
@@ -125,9 +126,6 @@ public class Drivetrain extends SubsystemBase {
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
 
-//        ahrs = new AHRS(SerialPort.Port.kMXP);
-//        ahrs.getAngle();
-//        ahrs.zeroYaw();
     }
 
     /**
@@ -157,6 +155,7 @@ public class Drivetrain extends SubsystemBase {
         resetEncoders();
         adisIMU.reset();
         adisIMU.calibrate();
+        navx.zeroYaw();
         internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
@@ -247,7 +246,7 @@ public class Drivetrain extends SubsystemBase {
      * @return the robot's heading in degrees, from 180 to 180
      */
     public double getHeading() {
-        return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return Math.IEEEremainder(navx.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
     /**
