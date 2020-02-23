@@ -56,7 +56,6 @@ public class Drivetrain extends SubsystemBase {
     );
 
     // Gyro
-    private ADIS16470_IMU adisIMU = new ADIS16470_IMU(ADIS16470_IMU.IMUAxis.kY, SPI.Port.kOnboardCS0, ADIS16470_IMU.ADIS16470CalibrationTime._1s);
     private AHRS navx = new AHRS(SPI.Port.kMXP);
 
 
@@ -126,6 +125,7 @@ public class Drivetrain extends SubsystemBase {
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
 
+        resetAll();
     }
 
     /**
@@ -153,8 +153,6 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        adisIMU.reset();
-        adisIMU.calibrate();
         navx.zeroYaw();
         internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
@@ -237,7 +235,7 @@ public class Drivetrain extends SubsystemBase {
      * Zeroes the heading of the robot.
      */
     public void zeroHeading() {
-        adisIMU.reset();
+        navx.zeroYaw();
     }
 
     /**
@@ -262,7 +260,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return adisIMU.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
     public DifferentialDriveKinematics getKinematics() {
@@ -271,7 +269,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetAll() {
         resetOdometry(new Pose2d());
-        adisIMU.reset();
+        navx.reset();
     }
 
     public void setControlsFlipped(boolean controlsFlipped) {
@@ -282,7 +280,7 @@ public class Drivetrain extends SubsystemBase {
         return isControlsFlipped;
     }
 
-    public void initDefaultCommand(Joystick joystick) {
+    public void initDefaultCommands(Joystick joystick) {
         setDefaultCommand(new DriverControl(
                 this,
                 () -> joystick.getRawAxis(1),
