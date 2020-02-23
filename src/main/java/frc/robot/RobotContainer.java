@@ -73,7 +73,7 @@ public class RobotContainer {
     }
 
     public void initDefaultCommands() {
-        drivetrain.initDefaultCommand(driverStick);
+        drivetrain.initDefaultCommands(driverStick);
         conveyor.initDefaultCommand(shooter::atSetpoint);
     }
 

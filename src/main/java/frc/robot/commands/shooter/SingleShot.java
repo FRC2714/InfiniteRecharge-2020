@@ -30,5 +30,5 @@ public class SingleShot extends CommandBase {
         if(shooter.getBallsShot() != 0)
             conveyor.disable();
     }
-    
+
 }
