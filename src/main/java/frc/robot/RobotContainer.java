@@ -45,7 +45,6 @@ public class RobotContainer {
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
     private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
-    private POVButton driverLeftPOVButton = new POVButton(driverStick, 90);
 
     private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
     private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);

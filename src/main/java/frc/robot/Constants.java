@@ -74,25 +74,11 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        // TODO: tune these gains
-        public static double kV = 0.0;
-        public static double kA = 0.0;
-        public static double kStatic = 0.0;
-        public static double kWPILibP = 0.0001;
-
-
         public static double kSparkMaxP = 0.0006;
         public static double kSparkMaxFeedforward = 0.000195; // .00022
 
-
         public static int kLeftMotorPort = 11;
         public static int kRightMotorPort = 12;
-
-        // ONLY TO BE USED IN EMERGENCIES
-        // RPM SHOULD PRIMARILY COME FROM LUT
-        public static double kTrenchShotRPM = 4000;
-        public static double kBaselineShotRPM = 3000;
-        public static double kLongshotRPM = 7000;
 
         public static double kVelocityTolerance = 120;
     }
