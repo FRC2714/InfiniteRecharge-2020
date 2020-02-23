@@ -24,7 +24,7 @@ public class BallStealAuto extends SequentialCommandGroup {
                                 new Pose2d(Units.feetToMeters(11.98), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00)),
                                 new Pose2d(Units.feetToMeters(20.51), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(10), false
+                        Units.feetToMeters(5), Units.feetToMeters(5), false
                 );
 
         CustomRamseteCommand reverseBallsStealToShotSetup =
@@ -40,13 +40,13 @@ public class BallStealAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baselineToStealBalls.getInitialPose())),
-                        new AutomaticShooter(shooter,conveyor,intake, 2500, true, 3).withTimeout(3),
                         deadline(
                                 baselineToStealBalls,
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(drivetrain, limelight)
+                        new AlignToTarget(drivetrain, limelight),
+                        new AutomaticShooter(shooter,conveyor,intake, 2500, true, 3).withTimeout(3)
                 )
         );
 
