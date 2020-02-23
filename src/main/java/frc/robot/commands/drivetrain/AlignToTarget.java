@@ -42,6 +42,10 @@ public class AlignToTarget extends ProfiledPIDCommand {
         getController().setTolerance(.75, 4);
     }
 
+    @Override
+    public void initialize() {
+        limelight.setLED(true);
+    }
 
     @Override
     public boolean isFinished() {

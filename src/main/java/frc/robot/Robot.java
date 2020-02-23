@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utils.Tests;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,7 +22,7 @@ import frc.robot.utils.Tests;
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
-    private RobotContainer m_robotContainer;
+    private RobotContainer robotContainer;
 
     private SendableChooser<Command> autoChooser;
 
@@ -36,14 +35,14 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
+        robotContainer = new RobotContainer();
         autoChooser = new SendableChooser<>();
 
-        autoChooser.setDefaultOption("Trench Run Auto", m_robotContainer.getTrenchRunAuto());
-        autoChooser.addOption("Side Trench Run Auto", m_robotContainer.getSideTrenchRunAuto());
-        autoChooser.addOption("Ball Steal Auto", m_robotContainer.getBallStealAutonomous());
-        autoChooser.addOption("Generator Auto", m_robotContainer.getGeneratorAuto());
-        autoChooser.addOption("Spline Test Auto", m_robotContainer.getSplineTestAuto());
+        autoChooser.setDefaultOption("Trench Run Auto", robotContainer.getTrenchRunAuto());
+        autoChooser.addOption("Side Trench Run Auto", robotContainer.getSideTrenchRunAuto());
+        autoChooser.addOption("Ball Steal Auto", robotContainer.getBallStealAutonomous());
+        autoChooser.addOption("Generator Auto", robotContainer.getGeneratorAuto());
+        autoChooser.addOption("Spline Test Auto", robotContainer.getSplineTestAuto());
 
         SmartDashboard.putData("Auto Picker", autoChooser);
     }
@@ -95,12 +94,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        robotContainer.clearMovingMotors();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
 
-        m_robotContainer.initDefaultCommands();
+        robotContainer.initDefaultCommands();
     }
 
     /**

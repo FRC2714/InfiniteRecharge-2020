@@ -108,7 +108,6 @@ public class RobotContainer {
     }
 
     public Command getBallStealAutonomous() {
-        // return new RightStart(drivetrain, limelight);
         return new BallStealAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
@@ -122,5 +121,10 @@ public class RobotContainer {
 
     public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
 
+    public void clearMovingMotors(){
+        shooter.disable();
+        conveyor.disable();
+        drivetrain.tankDriveVolts(0,0);
+    }
 
 }
