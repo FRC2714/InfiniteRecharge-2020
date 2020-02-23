@@ -302,11 +302,6 @@ public class Drivetrain extends SubsystemBase {
                 (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius,
                 (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
 
-        SmartDashboard.putNumber("Left Encoder Meters", leftDist);
-        SmartDashboard.putNumber("Right Encoder Meters", rightDist);
-
-//        SmartDashboard.putNumber("NavX Angle", ahrs.getAngle());
-
         live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
         live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
         live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());

@@ -59,7 +59,7 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Vision Distance (ft)", Units.metersToFeet(distance));
+        SmartDashboard.putNumber("Est. Distance (ft)", Units.metersToFeet(distance));
 
         tx = limelight.getEntry("tx").getDouble(-1);
         ty = limelight.getEntry("ty").getDouble(-1);
