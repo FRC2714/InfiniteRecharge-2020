@@ -15,10 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.auto.BallStealAuto;
-import frc.robot.commands.auto.GeneratorAuto;
-import frc.robot.commands.auto.SplineTesting;
-import frc.robot.commands.auto.TrenchRunAuto;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.shooter.TeleopShooter;
 import frc.robot.subsystems.*;
@@ -113,6 +110,10 @@ public class RobotContainer {
     public Command getBallStealAutonomous() {
         // return new RightStart(drivetrain, limelight);
         return new BallStealAuto(drivetrain, intake, conveyor, shooter, limelight);
+    }
+
+    public Command getSideTrenchRunAuto(){
+        return new SideTrenchRun(drivetrain, intake, conveyor, shooter, limelight);
     }
 
     public Command getTrenchRunAuto() {

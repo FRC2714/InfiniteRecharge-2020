@@ -40,9 +40,11 @@ public class Robot extends TimedRobot {
         autoChooser = new SendableChooser<>();
 
         autoChooser.setDefaultOption("Trench Run Auto", m_robotContainer.getTrenchRunAuto());
+        autoChooser.addOption("Side Trench Run Auto", m_robotContainer.getSideTrenchRunAuto());
         autoChooser.addOption("Ball Steal Auto", m_robotContainer.getBallStealAutonomous());
         autoChooser.addOption("Generator Auto", m_robotContainer.getGeneratorAuto());
         autoChooser.addOption("Spline Test Auto", m_robotContainer.getSplineTestAuto());
+
         SmartDashboard.putData("Auto Picker", autoChooser);
     }
 

@@ -20,10 +20,10 @@ public class GeneratorAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.59), Rotation2d.fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(20.53), Units.feetToMeters(18.10), Rotation2d.fromDegrees(-70))
+                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.40), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(18.39), Units.feetToMeters(13.53), new Rotation2d().fromDegrees(20.48))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(8), false
+                        Units.feetToMeters(8), Units.feetToMeters(6), false
                 );
 
         CustomRamseteCommand reverseBaseLineToGenerator =
