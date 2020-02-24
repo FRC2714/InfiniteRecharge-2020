@@ -45,7 +45,7 @@ public class AutomaticShooter extends CommandBase {
     public void end(boolean interrupted) {
         if (!keepMotorRunning)
             shooter.setShooterPower(0);
-        conveyor.disable();
+        conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
         intake.disbale();
         shooter.resetBallsShot();
     }
