@@ -30,7 +30,7 @@ public class Conveyor extends SubsystemBase {
     public enum ConveyorState {
         SHOOTING,
         EXTAKING,
-        DEFAULT,
+        DEFAULT
     }
 
     private ConveyorState conveyorState = ConveyorState.DEFAULT;
@@ -56,7 +56,6 @@ public class Conveyor extends SubsystemBase {
         middleBeam = new ToggledBreakBeam(new DigitalInput(5));
         exitBeam = new ToggledBreakBeam(new DigitalInput(6));
     }
-
 
     public void moveAll(double power) {
         horizontalConveyor.set(power);

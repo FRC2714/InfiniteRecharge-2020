@@ -57,7 +57,6 @@ public class Shooter extends SubsystemBase {
         shooterPIDController.setFF(ShooterConstants.kSparkMaxFeedforward);
         shooterPIDController.setP(ShooterConstants.kSparkMaxP);
 
-
         populateVelocityMap();
 
         SmartDashboard.putNumber("Target RPM", targetRpm);
@@ -116,7 +115,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean atSetpoint() {
-        return Math.abs(getTargetRpm() - getVelocity()) < 150;
+        return Math.abs(getTargetRpm() - getVelocity()) < ShooterConstants.kVelocityTolerance;
     }
 
     @Override
