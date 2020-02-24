@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.intake.AutoIntake;
-import frc.robot.commands.shooter.AutomaticShooter;
+import frc.robot.commands.conveyor.AutomaticShoot;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
@@ -46,7 +46,7 @@ public class BallStealAuto extends SequentialCommandGroup {
                         ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
                         new AlignToTarget(drivetrain, limelight),
-                        new AutomaticShooter(shooter,conveyor,intake, 2050, true, 3).withTimeout(3)
+                        new AutomaticShoot(shooter,conveyor,intake, 2050, true, 3).withTimeout(3)
                 )
         );
 

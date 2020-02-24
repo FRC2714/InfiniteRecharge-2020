@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
 import frc.robot.commands.drivetrain.TurnToAngle;
 import frc.robot.commands.intake.AutoIntake;
-import frc.robot.commands.shooter.AutomaticShooter;
+import frc.robot.commands.conveyor.AutomaticShoot;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
@@ -43,14 +43,14 @@ public class SideTrenchRun extends SequentialCommandGroup {
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticStraightLineToTrench.getInitialPose())),
                         quinticStraightLineToTrench.andThen(() -> drivetrain.tankDriveVolts(0,0)),
                         new AlignToTarget(drivetrain, limelight),
-                        new AutomaticShooter(shooter,conveyor,intake, 2000, true,3).withTimeout(5),
+                        new AutomaticShoot(shooter,conveyor,intake, 2000, true,3).withTimeout(5),
                         new TurnToAngle(drivetrain, 0),
                         deadline(
                                 quinticPickupBalls,
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         new AlignToTarget(drivetrain, limelight),
-                        new AutomaticShooter(shooter,conveyor,intake, 2350, false,3).withTimeout(5)
+                        new AutomaticShoot(shooter,conveyor,intake, 2350, false,3).withTimeout(5)
                 )
         );
     }

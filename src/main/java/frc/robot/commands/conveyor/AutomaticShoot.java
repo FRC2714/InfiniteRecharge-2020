@@ -1,12 +1,11 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.conveyor;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class AutomaticShooter extends CommandBase {
+public class AutomaticShoot extends CommandBase {
 
     private Conveyor conveyor;
     private Shooter shooter;
@@ -16,8 +15,8 @@ public class AutomaticShooter extends CommandBase {
     private Intake intake;
     private double ballsToShoot;
 
-    public AutomaticShooter(Shooter shooter, Conveyor conveyor, Intake intake, double rpm, boolean keepMotorRunning,
-                            double ballsToShoot){
+    public AutomaticShoot(Shooter shooter, Conveyor conveyor, Intake intake, double rpm, boolean keepMotorRunning,
+                          double ballsToShoot){
         this.conveyor = conveyor;
         this.shooter = shooter;
         this.rpm = rpm;

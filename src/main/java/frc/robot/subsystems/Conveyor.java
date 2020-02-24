@@ -3,15 +3,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.commands.shooter.ConveyorPeriodic;
+import frc.robot.commands.intake.ConveyorPeriodic;
 import frc.robot.utils.ToggledBreakBeam;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.*;
 

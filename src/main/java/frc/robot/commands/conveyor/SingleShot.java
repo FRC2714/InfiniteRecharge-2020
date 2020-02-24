@@ -1,4 +1,4 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
@@ -27,8 +27,10 @@ public class SingleShot extends CommandBase {
 
     @Override
     public void execute() {
-        if(shooter.getBallsShot() != 0)
+        if(shooter.getBallsShot() != 0) {
             conveyor.disable();
+            conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
+        }
         System.out.println("Balls Shot = " + shooter.getBallsShot());
     }
 
