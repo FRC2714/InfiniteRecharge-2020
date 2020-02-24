@@ -97,7 +97,6 @@ public class RobotContainer {
         operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
         operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
 
-
     }
 
 

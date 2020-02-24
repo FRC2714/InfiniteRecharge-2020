@@ -35,7 +35,7 @@ public class SideTrenchRun extends SequentialCommandGroup {
                                 new Pose2d(Units.feetToMeters(15.46), Units.feetToMeters(24.68), new Rotation2d().fromDegrees(0.50)),
                                 new Pose2d(Units.feetToMeters(26.03), Units.feetToMeters(24.65), new Rotation2d().fromDegrees(0.34))
                         ),
-                        Units.feetToMeters(5), Units.feetToMeters(5), false
+                        Units.feetToMeters(7), Units.feetToMeters(7), false
                 );
 
         addCommands(

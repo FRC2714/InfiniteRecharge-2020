@@ -55,7 +55,6 @@ public class Conveyor extends SubsystemBase {
         entryBeam = new ToggledBreakBeam(new DigitalInput(4));
         middleBeam = new ToggledBreakBeam(new DigitalInput(5));
         exitBeam = new ToggledBreakBeam(new DigitalInput(6));
-
     }
 
 

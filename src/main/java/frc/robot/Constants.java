@@ -80,7 +80,6 @@ public final class Constants {
         public static double kStatic = 0.0;
         public static double kWPILibP = 0.0001;
 
-
         public static double kSparkMaxP = 0.0006;
         public static double kSparkMaxFeedforward = 0.000195; // .00022
 
