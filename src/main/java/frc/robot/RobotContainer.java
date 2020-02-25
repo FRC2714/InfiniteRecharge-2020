@@ -51,6 +51,7 @@ public class RobotContainer {
     private JoystickButton operatorRightShoulder = new JoystickButton(operatorStick, 6);
     private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
     private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
+    private JoystickButton operatorUnjamButton = new JoystickButton(operatorStick, 7);
     Trigger operatorForcedConveyorExtake = new Trigger(() -> operatorStick.getRawAxis(1) > 0.2);
     Trigger operatorForcedConveyorIntake = new Trigger(() -> operatorStick.getRawAxis(1) < -0.2);
     public Trigger operatorLeftTrigger = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
@@ -101,12 +102,14 @@ public class RobotContainer {
         operatorForcedConveyorIntake
                 .whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
 
+        operatorRightTrigger.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
+        operatorUnjamButton.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.UNJAM_STUCK_BALL));
+
         operatorLeftShoulder.or(operatorLeftTrigger)
                 .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
 
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
 
-        operatorRightTrigger.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
     }
 
 

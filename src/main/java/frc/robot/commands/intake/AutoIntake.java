@@ -1,6 +1,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -40,6 +41,10 @@ public class AutoIntake extends CommandBase {
             case FORCED_CONVEYOR_EXTAKE:
                 conveyor.setConveyorState(Conveyor.ConveyorState.FORCED_CONVEYOR_EXTAKE);
                 break;
+            case UNJAM_STUCK_BALL:
+                intake.setSerializerPower(-Constants.IntakeConstants.kSerializerPower);
+                conveyor.setConveyorState(Conveyor.ConveyorState.EXTAKING);
+                break;
         }
     }
 
@@ -64,7 +69,8 @@ public class AutoIntake extends CommandBase {
         EXTAKE,
         SHOOT,
         FORCED_CONVEYOR_INTAKE,
-        FORCED_CONVEYOR_EXTAKE
+        FORCED_CONVEYOR_EXTAKE,
+        UNJAM_STUCK_BALL
     }
 
 }

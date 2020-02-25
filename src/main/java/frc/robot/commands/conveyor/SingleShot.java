@@ -1,6 +1,7 @@
 package frc.robot.commands.conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -22,7 +23,7 @@ public class SingleShot extends CommandBase {
         shooter.resetBallsShot();
         conveyor.enable();
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
-        intake.intakePowerCells();
+        intake.setIntakePower(0.5);
     }
 
     @Override
