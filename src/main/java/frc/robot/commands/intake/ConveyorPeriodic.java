@@ -26,17 +26,32 @@ public class ConveyorPeriodic extends CommandBase {
 
     @Override
     public void execute() {
-        if (conveyor.enabled()) {
             boolean reversed = false;
 
             horizontalBeltMovement = !conveyor.getEntryBeam();
             verticalBeltMovement = conveyor.getExitBeam() && horizontalBeltMovement;
 
             if (conveyor.getConveyorState() == Conveyor.ConveyorState.SHOOTING) {
+                System.out.println("Shooting is Running, shooter at speed = " + shooterAtVelocity.getAsBoolean());
                 if (shooterAtVelocity.getAsBoolean())
                     horizontalBeltMovement = verticalBeltMovement = true;
                 else
                     horizontalBeltMovement = verticalBeltMovement = false;
+            }
+
+            if(conveyor.getConveyorState().equals(Conveyor.ConveyorState.DEFAULT)){
+                horizontalBeltMovement = !conveyor.getEntryBeam();
+                verticalBeltMovement = conveyor.getExitBeam() && horizontalBeltMovement;
+            }
+
+            if(conveyor.getConveyorState() == Conveyor.ConveyorState.FORCED_CONVEYOR_INTAKE){
+                horizontalBeltMovement = true;
+                verticalBeltMovement = true;
+                reversed = false;
+            } else if(conveyor.getConveyorState().equals(Conveyor.ConveyorState.FORCED_CONVEYOR_EXTAKE)){
+                horizontalBeltMovement = true;
+                verticalBeltMovement = true;
+                reversed = true;
             }
 
             if (conveyor.getConveyorState() == Conveyor.ConveyorState.EXTAKING) {
@@ -46,7 +61,6 @@ public class ConveyorPeriodic extends CommandBase {
             }
 
             conveyor.updateConveyorMotion(horizontalBeltMovement, verticalBeltMovement, reversed);
-        }
     }
 
     @Override

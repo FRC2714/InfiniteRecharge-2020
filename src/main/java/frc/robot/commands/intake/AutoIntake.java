@@ -13,7 +13,6 @@ public class AutoIntake extends CommandBase {
     private IntakeType intakeType;
 
     public AutoIntake(Shooter shooter, Intake intake, Conveyor conveyor, IntakeType intakeType){
-        addRequirements(shooter,intake,conveyor);
         this.shooter = shooter;
         this.intake = intake;
         this.conveyor = conveyor;
@@ -34,25 +33,38 @@ public class AutoIntake extends CommandBase {
                 break;
             case SHOOT:
                 conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
+                break;
+            case FORCED_CONVEYOR_INTAKE:
+                conveyor.setConveyorState(Conveyor.ConveyorState.FORCED_CONVEYOR_INTAKE);
+                break;
+            case FORCED_CONVEYOR_EXTAKE:
+                conveyor.setConveyorState(Conveyor.ConveyorState.FORCED_CONVEYOR_EXTAKE);
+
         }
     }
 
     @Override
     public void execute() {
         // logic handled in conveyor periodic
+        if(intakeType.equals(IntakeType.SHOOT))
+            conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
+
     }
 
 
     @Override
     public void end(boolean interrupted) {
         intake.disbale();
+        conveyor.disable();
         conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
     }
 
     public enum IntakeType{
         INTAKE,
         EXTAKE,
-        SHOOT
+        SHOOT,
+        FORCED_CONVEYOR_INTAKE,
+        FORCED_CONVEYOR_EXTAKE
     }
 
 }

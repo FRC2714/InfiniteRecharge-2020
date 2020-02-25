@@ -27,7 +27,8 @@ public class Conveyor extends SubsystemBase {
     public enum ConveyorState {
         SHOOTING,
         EXTAKING,
-        DEFAULT
+        FORCED_CONVEYOR_INTAKE,
+        FORCED_CONVEYOR_EXTAKE, DEFAULT
     }
 
     private ConveyorState conveyorState = ConveyorState.DEFAULT;

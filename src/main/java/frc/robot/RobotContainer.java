@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.conveyor.SingleShot;
@@ -49,20 +50,13 @@ public class RobotContainer {
     private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
     private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
     private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
+    private JoystickButton operatorRightShoulder = new JoystickButton(operatorStick, 6);
+
     private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
     private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
 
     private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
-
-
-    private DriverControl driverControlCommand = new DriverControl(
-            drivetrain,
-            () -> driverStick.getRawAxis(1),
-            () -> driverStick.getRawAxis(4)
-    );
-
-    private Logger<Subsystem> subsystemLogger = new Logger<>();
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -93,8 +87,11 @@ public class RobotContainer {
         operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
         operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
         operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
-        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
 
+        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
+        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
+
+        
     }
 
 

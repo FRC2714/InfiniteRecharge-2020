@@ -70,7 +70,7 @@ public final class Constants {
         public static int kSerializerMotorPort = 8;
 
         public static double kIntakePower = 1.0;
-        public static double kSerializerPower = 0.8;
+        public static double kSerializerPower = 0.4;
     }
 
     public static final class ShooterConstants {
@@ -80,7 +80,7 @@ public final class Constants {
         public static int kLeftMotorPort = 11;
         public static int kRightMotorPort = 12;
 
-        public static double kVelocityTolerance = 120;
+        public static double kVelocityTolerance = 150;
     }
 
     public static final class ConveyorConstants {
