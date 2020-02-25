@@ -17,6 +17,12 @@ public class TeleopShooter extends CommandBase {
         this.rpm = rpm;
     }
 
+    public TeleopShooter(Shooter shooter, Conveyor conveyor){
+        this.shooter = shooter;
+        this.conveyor = conveyor;
+
+    }
+
     @Override
     public void initialize() {
 

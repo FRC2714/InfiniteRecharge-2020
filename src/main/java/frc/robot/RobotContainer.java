@@ -12,17 +12,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.*;
-import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.conveyor.SingleShot;
+import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.shooter.TeleopShooter;
 import frc.robot.subsystems.*;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.commands.drivetrain.DriverControl;
-import frc.robot.utils.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -46,16 +43,19 @@ public class RobotContainer {
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
     private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
+    private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
     private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
     private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
     private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
     private JoystickButton operatorRightShoulder = new JoystickButton(operatorStick, 6);
-
     private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
     private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
+    Trigger operatorForcedConveyorExtake = new Trigger(() -> operatorStick.getRawAxis(1) > 0.2);
+    Trigger operatorForcedConveyorIntake = new Trigger(() -> operatorStick.getRawAxis(1) < -0.2);
+    public Trigger operatorLeftTrigger = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
+    Trigger operatorRightTrigger = new Trigger(() -> operatorStick.getRawAxis(3) > 0.2);
 
-    private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
 
     /**
@@ -66,6 +66,7 @@ public class RobotContainer {
         configureButtonBindings();
         initDefaultCommands();
     }
+
 
     public void initDefaultCommands() {
         drivetrain.initDefaultCommands(driverStick);
@@ -83,15 +84,29 @@ public class RobotContainer {
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
         driverLeftShoulder.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
 
+//        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
+//        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
+//        operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
+//        operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
+//
+//        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
+//        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
+
         operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
-        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
-        operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
-        operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
+        operatorYButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
 
-        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
-        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
+        operatorForcedConveyorExtake
+                .whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_EXTAKE));
 
-        
+        operatorForcedConveyorIntake
+                .whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
+
+        operatorLeftShoulder.or(operatorLeftTrigger)
+                .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
+
+        operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
+
+        operatorRightTrigger.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
     }
 
 

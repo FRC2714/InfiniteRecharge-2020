@@ -39,7 +39,7 @@ public class AutoIntake extends CommandBase {
                 break;
             case FORCED_CONVEYOR_EXTAKE:
                 conveyor.setConveyorState(Conveyor.ConveyorState.FORCED_CONVEYOR_EXTAKE);
-
+                break;
         }
     }
 

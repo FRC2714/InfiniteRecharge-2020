@@ -112,6 +112,7 @@ public class Shooter extends SubsystemBase {
 
     public void setDynamicRpm() {
         shooterPIDController.setReference(getTargetRpm(), ControlType.kVelocity);
+        setTargetRpm(getTargetRpm());
     }
 
     public boolean atSetpoint() {
