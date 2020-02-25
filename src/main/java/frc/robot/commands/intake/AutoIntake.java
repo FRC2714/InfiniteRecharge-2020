@@ -46,6 +46,8 @@ public class AutoIntake extends CommandBase {
                 conveyor.setConveyorState(Conveyor.ConveyorState.EXTAKING);
                 break;
         }
+
+        System.out.println("Auto Intake Triggered. Type -- " + intakeType);
     }
 
     @Override
@@ -62,6 +64,7 @@ public class AutoIntake extends CommandBase {
         intake.disbale();
         conveyor.disable();
         conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
+        System.out.println("Auto Intake Ended. Type -- " + intakeType);
     }
 
     public enum IntakeType{

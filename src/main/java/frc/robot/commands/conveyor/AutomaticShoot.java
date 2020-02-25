@@ -32,13 +32,8 @@ public class AutomaticShoot extends CommandBase {
         conveyor.enable();
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
         intake.intakePowerCells();
+        System.out.println("Automatic Shoot Triggered");
     }
-
-    @Override
-    public void execute() {
-
-    }
-
 
     @Override
     public void end(boolean interrupted) {
@@ -46,6 +41,7 @@ public class AutomaticShoot extends CommandBase {
             shooter.setShooterPower(0);
         conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
         intake.disbale();
+        System.out.println("Automatic Shoot Ended. Balls Shot: " + shooter.getBallsShot());
         shooter.resetBallsShot();
     }
 
@@ -53,4 +49,5 @@ public class AutomaticShoot extends CommandBase {
     public boolean isFinished() {
         return shooter.getBallsShot() >= ballsToShoot;
     }
+
 }

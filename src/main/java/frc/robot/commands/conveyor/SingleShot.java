@@ -32,7 +32,6 @@ public class SingleShot extends CommandBase {
             conveyor.disable();
             conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
         }
-        System.out.println("Balls Shot = " + shooter.getBallsShot());
     }
 
     @Override
@@ -40,5 +39,7 @@ public class SingleShot extends CommandBase {
         intake.disbale();
         shooter.disable();
         conveyor.disable();
+        System.out.println("Single Shot Ended. Balls Shot: " + shooter.getBallsShot());
+        shooter.resetBallsShot();
     }
 }
