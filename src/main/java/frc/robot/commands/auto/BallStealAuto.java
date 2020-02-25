@@ -21,18 +21,20 @@ public class BallStealAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(11.98), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(20.51), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00))
+                                new Pose2d(Units.feetToMeters(12.21), Units.feetToMeters(2.10), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(19.22), Units.feetToMeters(1.43), new Rotation2d().fromDegrees(0)),
+                                new Pose2d(Units.feetToMeters(21.18), Units.feetToMeters(1.89), new Rotation2d().fromDegrees(40.67))
                         ),
-                        Units.feetToMeters(5), Units.feetToMeters(5), false
+                        Units.feetToMeters(9), Units.feetToMeters(8), false
                 );
 
         CustomRamseteCommand reverseBallsStealToShotSetup =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(20.50), Units.feetToMeters(2.25), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(15.96), Units.feetToMeters(13.57), new Rotation2d().fromDegrees(-28.02))
+                                new Pose2d(Units.feetToMeters(21.18), Units.feetToMeters(1.89), new Rotation2d().fromDegrees(40.67)),
+                                new Pose2d(Units.feetToMeters(18.90), Units.feetToMeters(3.76), new Rotation2d().fromDegrees(-90.11)),
+                                new Pose2d(Units.feetToMeters(16.82), Units.feetToMeters(12.30), new Rotation2d().fromDegrees(-27.01))
                         ),
                         Units.feetToMeters(13), Units.feetToMeters(8), true
                 );

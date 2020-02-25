@@ -13,6 +13,7 @@ public class AutoIntake extends CommandBase {
     private IntakeType intakeType;
 
     public AutoIntake(Shooter shooter, Intake intake, Conveyor conveyor, IntakeType intakeType){
+        addRequirements(shooter,intake,conveyor);
         this.shooter = shooter;
         this.intake = intake;
         this.conveyor = conveyor;
@@ -41,10 +42,11 @@ public class AutoIntake extends CommandBase {
         // logic handled in conveyor periodic
     }
 
+
     @Override
     public void end(boolean interrupted) {
         intake.disbale();
-        conveyor.disable();
+        conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
     }
 
     public enum IntakeType{
