@@ -104,6 +104,15 @@ public final class Constants {
         public static double kP = 0.1;
 
         public static double kToleranceInches = 1;
+
+        public static double kMaxHeightInches = 0;
+        public static double kMaxHeightTicks = 0;
+
+        public static double kMinHeightInches = 0;
+        public static double kMinHeightTicks = 0;
+
+        public static double servoLockPosition = 1;
+        public static double servoUnlockPosition = -1;
     }
 
     public static final class AutoConstants {

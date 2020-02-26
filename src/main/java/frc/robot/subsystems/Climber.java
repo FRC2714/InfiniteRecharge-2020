@@ -37,6 +37,18 @@ public class Climber extends SubsystemBase {
         climberMotor1.set(power);
     }
 
+    public void setClimberDown(){
+        if(climberEncoder.getPosition() > 300){
+            setPower(-0.6);
+        }
+    }
+
+    public void setClimberUp(){
+        if(climberEncoder.getPosition() <= ClimberConstants.kMaxHeightTicks){
+            setPower(0.6);
+        }
+    }
+
     public void setPIDTargetHeight(double targetHeightInches) {
         this.targetHeightInches = targetHeightInches;
         climberPIDController.setReference(targetHeightInches / (2 * Math.PI *
@@ -48,9 +60,38 @@ public class Climber extends SubsystemBase {
                     < ClimberConstants.kToleranceInches;
     }
 
+    public double getClimberHeightInches(){
+        return Math.abs(targetHeightInches - (climberEncoder.getPosition() * 2 * Math.PI * ClimberConstants.kSprocketRadius));
+    }
+
+    public void setToTargetTicks(double targetTicks){
+        if(Math.abs(climberEncoder.getPosition() - targetTicks) < 200){
+            climberMotor1.set(0);
+        } else if(climberEncoder.getPosition() < targetTicks)
+            climberMotor1.set(0.6);
+        else
+            climberMotor1.set(-0.6);
+    }
+
+    public void setToTargetInches(double targetHeightInches){
+        this.targetHeightInches = targetHeightInches;
+        if(atSetpoint())
+            climberMotor1.set(0);
+        else if(getClimberHeightInches() < targetHeightInches)
+            climberMotor1.set(0.6);
+        else
+            climberMotor1.set(-0.6);
+    }
 
     public void disable() {
         climberMotor1.set(0);
+    }
+
+    public void setClimberLock(boolean servoLock){
+        if(servoLock)
+            servo.set(ClimberConstants.servoLockPosition);
+        else
+            servo.set(ClimberConstants.servoUnlockPosition);
     }
 
     @Override
