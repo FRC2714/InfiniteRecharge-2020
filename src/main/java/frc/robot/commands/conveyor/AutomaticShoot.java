@@ -28,10 +28,11 @@ public class AutomaticShoot extends CommandBase {
     @Override
     public void initialize() {
         shooter.resetBallsShot();
-        shooter.setVelocity(rpm);
+        shooter.setRPM(rpm);
         conveyor.enable();
         conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
         intake.intakePowerCells();
+        shooter.setTargetRpm(rpm);
         System.out.println("Automatic Shoot Triggered");
     }
 

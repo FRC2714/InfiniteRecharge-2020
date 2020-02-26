@@ -84,10 +84,10 @@ public class Shooter extends SubsystemBase {
         velocityLUT.put(36.0, 2850.0);
     }
 
-    public void setVelocity(double rpmReference){
+    public void setRPM(double rpmReference){
         shooterPIDController.setReference(rpmReference, ControlType.kVelocity);
+        setTargetRpm(rpmReference);
     }
-
 
     public void setShooterPower(double power){
         shooterMotor1.set(power);
@@ -96,7 +96,6 @@ public class Shooter extends SubsystemBase {
     public void setTargetRpm(double targetRpm) {
         this.targetRpm = targetRpm;
     }
-
 
     public double getVelocity() { // in rpm
         return shooterEncoder.getVelocity();
@@ -116,7 +115,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean atSetpoint() {
-        return Math.abs(getTargetRpm() - getVelocity()) < ShooterConstants.kVelocityTolerance;
+        return Math.abs(targetRpm - getVelocity()) < ShooterConstants.kVelocityTolerance;
     }
 
     @Override
