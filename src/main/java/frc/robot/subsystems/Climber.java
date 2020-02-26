@@ -25,8 +25,8 @@ public class Climber extends SubsystemBase {
 
         climberMotor1.setSmartCurrentLimit(30);
 
-        climberMotor1.setInverted(false);
-        climberEncoder.setInverted(false);
+//        climberMotor1.setInverted(false);
+//        climberEncoder.setInverted(false);
 
         climberPIDController = climberMotor1.getPIDController();
         climberPIDController.setP(ClimberConstants.kP);
