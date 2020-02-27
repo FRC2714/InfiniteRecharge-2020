@@ -21,16 +21,16 @@ public class TrenchRunAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(11.93), Units.feetToMeters(18.66), new Rotation2d().fromDegrees(0.00)),
+                                new Pose2d(Units.feetToMeters(9.533), Units.feetToMeters(18.66), new Rotation2d().fromDegrees(0.00)),
                                 new Pose2d(Units.feetToMeters(16), Units.feetToMeters(24.72), new Rotation2d().fromDegrees(0.00)),
                                 new Pose2d(Units.feetToMeters(27.3), Units.feetToMeters(24.76), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(7), Units.feetToMeters(7), false
+                        Units.feetToMeters(5 ), Units.feetToMeters(7), false
                 );
         addCommands(
                 sequence(
                         deadline(
-                                new AutomaticShoot(shooter, conveyor, intake, 2000, true, 3).withTimeout(4),
+                                new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(6),
                                 new AlignToTarget(drivetrain, limelight)
                         ),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
