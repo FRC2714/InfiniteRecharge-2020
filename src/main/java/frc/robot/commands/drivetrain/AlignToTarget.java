@@ -23,6 +23,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
 
     public AlignToTarget(Drivetrain drivetrain, Limelight limelight, boolean isAutoEnabled) {
         this(limelight, drivetrain, () -> 0);
+        this.isAutoEnabled = isAutoEnabled;
     }
 
     public AlignToTarget(Limelight limelight, Drivetrain drive, DoubleSupplier rawY) {
@@ -66,9 +67,5 @@ public class AlignToTarget extends ProfiledPIDCommand {
     @Override
     public void end(boolean interrupted) {
         drivetrain.tankDriveVolts(0, 0);
-//        if(!isAutoEnabled)
-//            limelight.setLED(false);
-//        else
-//            limelight.setLED(true);
     }
 }
