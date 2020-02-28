@@ -14,7 +14,6 @@ public class Climber extends SubsystemBase {
     private CANSparkMax climberMotor1, climberMotor2;
     private CANPIDController climberPIDController;
     private CANEncoder climberEncoder;
-    private Servo servo;
 
     private double targetHeightInches = 0.0;
 
@@ -22,7 +21,6 @@ public class Climber extends SubsystemBase {
         climberMotor1 = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         climberMotor2 = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         climberEncoder = climberMotor1.getEncoder();
-        servo = new Servo(2);
 
         climberMotor1.setSmartCurrentLimit(30);
 
@@ -92,12 +90,6 @@ public class Climber extends SubsystemBase {
         climberMotor1.set(0);
     }
 
-    public void setClimberLock(boolean servoLock){
-        if(servoLock)
-            servo.set(ClimberConstants.servoLockPosition);
-        else
-            servo.set(ClimberConstants.servoUnlockPosition);
-    }
 
     @Override
     public void periodic() {
