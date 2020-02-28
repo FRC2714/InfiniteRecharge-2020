@@ -122,6 +122,9 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
+        SmartDashboard.putBoolean("Is Shooter Reached Speed", atSetpoint());
+
+        SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
 
         shooterBeam.update();
         if (shooterBeam.getToggled())

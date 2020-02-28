@@ -37,6 +37,11 @@ public class AutomaticShoot extends CommandBase {
     }
 
     @Override
+    public boolean isFinished() {
+        return shooter.getBallsShot() >= ballsToShoot;
+    }
+
+    @Override
     public void end(boolean interrupted) {
         if (!keepMotorRunning)
             shooter.setShooterPower(0);
@@ -46,9 +51,6 @@ public class AutomaticShoot extends CommandBase {
         shooter.resetBallsShot();
     }
 
-    @Override
-    public boolean isFinished() {
-        return shooter.getBallsShot() >= ballsToShoot;
-    }
+
 
 }

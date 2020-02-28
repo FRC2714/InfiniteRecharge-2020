@@ -47,7 +47,7 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.02;
+        public static double kAlignP = 0.035;
         public static double kAlignD = 0.0003;
 
         public static double kDriveP = 2.45; // 3 stable
@@ -81,7 +81,7 @@ public final class Constants {
         public static int kLeftMotorPort = 11;
         public static int kRightMotorPort = 12;
 
-        public static double kVelocityTolerance = 140;
+        public static double kVelocityTolerance = 150;
     }
 
     public static final class ConveyorConstants {
@@ -90,8 +90,8 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        public static double kCameraHeight = Units.inchesToMeters(27.25); // TODO: update this
-        public static double kCameraMountingAngle = 22; // degrees
+        public static double kCameraHeight = Units.inchesToMeters(27); // TODO: update this
+        public static double kCameraMountingAngle = 29; // degrees
     }
 
     public static final class FieldConstants {

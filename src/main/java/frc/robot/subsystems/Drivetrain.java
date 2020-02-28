@@ -44,7 +44,7 @@ public class Drivetrain extends SubsystemBase {
     private final Encoder leftEncoder = new Encoder(
             DriveConstants.kLeftEncoderPorts[0],
             DriveConstants.kLeftEncoderPorts[1],
-            true,
+            false,
             CounterBase.EncodingType.k4X
     );
 
@@ -312,6 +312,9 @@ public class Drivetrain extends SubsystemBase {
 
         SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
         SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
+
+        SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
+        SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
     }
 
 }

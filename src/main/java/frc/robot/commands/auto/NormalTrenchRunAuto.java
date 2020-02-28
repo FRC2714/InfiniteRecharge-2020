@@ -30,8 +30,8 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         deadline(
-                                new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(6),
-                                new AlignToTarget(drivetrain, limelight)
+                                new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(4.7),
+                                new AlignToTarget(drivetrain, limelight, true)
                         ),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         deadline(
@@ -39,13 +39,13 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
                                     new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         deadline(
-                                new AlignToTarget(drivetrain, limelight),
+                                new AlignToTarget(drivetrain, limelight, true).withTimeout(1.5),
                                 new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         // was 2300
                         deadline(
-                                new AutomaticShoot(shooter, conveyor, intake, 2400, false, 3).withTimeout(5),
-                                new AlignToTarget(drivetrain, limelight)
+                                new AutomaticShoot(shooter, conveyor, intake, 2300, false, 3),
+                                new AlignToTarget(drivetrain, limelight, false)
                         )
                 )
 

@@ -36,6 +36,8 @@ public class ConveyorPeriodic extends CommandBase {
                 horizontalBeltMovement = verticalBeltMovement = true;
             else
                 horizontalBeltMovement = verticalBeltMovement = false;
+
+            System.out.println("Shooting At Velocity " + shooterAtVelocity.getAsBoolean());
         }
 
         if (conveyor.getConveyorState().equals(Conveyor.ConveyorState.DEFAULT)) {

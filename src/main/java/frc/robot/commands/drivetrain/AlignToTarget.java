@@ -15,8 +15,13 @@ import java.util.function.DoubleSupplier;
 public class AlignToTarget extends ProfiledPIDCommand {
     private Limelight limelight;
     private Drivetrain drivetrain;
+    private boolean isAutoEnabled = false;
 
     public AlignToTarget(Drivetrain drivetrain, Limelight limelight) {
+        this(limelight, drivetrain, () -> 0);
+    }
+
+    public AlignToTarget(Drivetrain drivetrain, Limelight limelight, boolean isAutoEnabled) {
         this(limelight, drivetrain, () -> 0);
     }
 
@@ -42,6 +47,8 @@ public class AlignToTarget extends ProfiledPIDCommand {
         getController().setTolerance(.75, 4);
     }
 
+
+
     @Override
     public void initialize() {
         limelight.setLED(true);
@@ -49,13 +56,19 @@ public class AlignToTarget extends ProfiledPIDCommand {
 
     @Override
     public boolean isFinished() {
-        return
+        if(isAutoEnabled)
+            return
                 getController().atGoal() || !limelight.targetVisible();
+        else
+            return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        super.end(interrupted);
         drivetrain.tankDriveVolts(0, 0);
+//        if(!isAutoEnabled)
+//            limelight.setLED(false);
+//        else
+//            limelight.setLED(true);
     }
 }

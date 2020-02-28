@@ -88,7 +88,8 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
+        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)))
+                                .whenReleased(new InstantCommand(() -> limelight.setLED(false)));
         driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
         driverLeftShoulder.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
 
