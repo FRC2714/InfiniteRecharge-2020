@@ -34,6 +34,8 @@ public class Climber extends SubsystemBase {
 
         climberMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         climberMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+        climberEncoder.setPosition(0);
     }
 
     public void setPower(double power){
@@ -41,14 +43,14 @@ public class Climber extends SubsystemBase {
     }
 
     public void setClimberDown(){
-        if(climberEncoder.getPosition() > ClimberConstants.kMinHeightTicks){
-            setPower(-0.3);
+       if(climberEncoder.getPosition() > ClimberConstants.kMinHeightTicks){
+            setPower(-0.75);
         } else setPower(0);
     }
 
     public void setClimberUp(){
         if(climberEncoder.getPosition() <= ClimberConstants.kMaxHeightTicks){
-            setPower(0.3);
+            setPower(1);
         } else setPower(0);
     }
 
@@ -96,4 +98,7 @@ public class Climber extends SubsystemBase {
 
     }
 
+    public double getPosition() {
+        return climberEncoder.getPosition();
+    }
 }

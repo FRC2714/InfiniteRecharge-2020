@@ -117,8 +117,8 @@ public class RobotContainer {
 
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
 
-        operatorDPadUp.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
-        operatorDPadDown.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));
+        operatorBButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
+        operatorXButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));
 
     }
 

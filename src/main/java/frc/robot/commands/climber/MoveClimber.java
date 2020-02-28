@@ -15,6 +15,11 @@ public class MoveClimber extends CommandBase {
     }
 
     @Override
+    public void initialize() {
+        System.out.println("Climber Init");
+    }
+
+    @Override
     public void execute() {
         switch (climberMotionType){
             case AUTO_EXTEND:
@@ -34,6 +39,8 @@ public class MoveClimber extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         climber.setPower(0);
+        System.out.println("Climber End : " + climber.getPosition());
+
     }
 
     public enum ClimberMotionType {
