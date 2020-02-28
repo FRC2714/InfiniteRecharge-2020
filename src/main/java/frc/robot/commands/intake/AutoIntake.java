@@ -55,9 +55,7 @@ public class AutoIntake extends CommandBase {
         // logic handled in conveyor periodic
         if(intakeType.equals(IntakeType.SHOOT))
             conveyor.setConveyorState(Conveyor.ConveyorState.SHOOTING);
-
     }
-
 
     @Override
     public void end(boolean interrupted) {

@@ -18,31 +18,22 @@ public class MoveClimber extends CommandBase {
     public void execute() {
         switch (climberMotionType){
             case AUTO_EXTEND:
-                climber.setClimberLock(false);
                 climber.setToTargetInches(10);
                 break;
             case AUTO_LOCK:
-                climber.setClimberLock(true);
                 break;
             case MANUAL_EXTEND:
-                climber.setClimberLock(false);
                 climber.setClimberUp();
                 break;
             case MANUAL_RETRACT:
-                climber.setClimberLock(false);
                 climber.setClimberDown();
                 break;
         }
     }
 
     @Override
-    public boolean isFinished() {
-        return climber.atSetpoint();
-    }
-
-    @Override
     public void end(boolean interrupted) {
-
+        climber.setPower(0);
     }
 
     public enum ClimberMotionType {

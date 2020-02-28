@@ -11,19 +11,20 @@ import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
 
-    private CANSparkMax climberMotor1;
+    private CANSparkMax climberMotor1, climberMotor2;
     private CANPIDController climberPIDController;
     private CANEncoder climberEncoder;
-    private Servo servo;
 
     private double targetHeightInches = 0.0;
 
     public Climber(){
-        climberMotor1 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
+        climberMotor1 = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        climberMotor2 = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         climberEncoder = climberMotor1.getEncoder();
-        servo = new Servo(2);
 
         climberMotor1.setSmartCurrentLimit(30);
+
+        climberMotor2.follow(climberMotor1, true);
 
 //        climberMotor1.setInverted(false);
 //        climberEncoder.setInverted(false);
@@ -31,6 +32,8 @@ public class Climber extends SubsystemBase {
         climberPIDController = climberMotor1.getPIDController();
         climberPIDController.setP(ClimberConstants.kP);
 
+        climberMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        climberMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
     }
 
     public void setPower(double power){
@@ -38,15 +41,15 @@ public class Climber extends SubsystemBase {
     }
 
     public void setClimberDown(){
-        if(climberEncoder.getPosition() > 300){
+        if(climberEncoder.getPosition() > ClimberConstants.kMinHeightTicks){
             setPower(-0.6);
-        }
+        } else setPower(0);
     }
 
     public void setClimberUp(){
         if(climberEncoder.getPosition() <= ClimberConstants.kMaxHeightTicks){
             setPower(0.6);
-        }
+        } else setPower(0);
     }
 
     public void setPIDTargetHeight(double targetHeightInches) {
@@ -87,12 +90,6 @@ public class Climber extends SubsystemBase {
         climberMotor1.set(0);
     }
 
-    public void setClimberLock(boolean servoLock){
-        if(servoLock)
-            servo.set(ClimberConstants.servoLockPosition);
-        else
-            servo.set(ClimberConstants.servoUnlockPosition);
-    }
 
     @Override
     public void periodic() {

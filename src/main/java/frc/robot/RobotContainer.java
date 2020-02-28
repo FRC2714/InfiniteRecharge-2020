@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.climber.MoveClimber;
 import frc.robot.commands.conveyor.SingleShot;
 import frc.robot.commands.intake.AutoIntake;
 import frc.robot.commands.shooter.TeleopShooter;
@@ -57,6 +59,10 @@ public class RobotContainer {
     Trigger operatorForcedConveyorIntake = new Trigger(() -> operatorStick.getRawAxis(1) < -0.2);
     public Trigger operatorLeftTrigger = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
     Trigger operatorRightTrigger = new Trigger(() -> operatorStick.getRawAxis(3) > 0.2);
+    private POVButton operatorDPadUp = new POVButton(operatorStick, 0);
+    private POVButton operatorDPadLeft = new POVButton(operatorStick, 90);
+    private POVButton operatorDPadDown = new POVButton(operatorStick, 180);
+    private POVButton operatorDPadRight = new POVButton(operatorStick, 270);
 
 
 
@@ -110,6 +116,9 @@ public class RobotContainer {
                 .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
 
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
+
+        operatorDPadUp.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
+        operatorDPadDown.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));
 
     }
 
