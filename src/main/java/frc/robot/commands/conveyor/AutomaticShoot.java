@@ -48,6 +48,7 @@ public class AutomaticShoot extends CommandBase {
         conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
         intake.disbale();
         System.out.println("Automatic Shoot Ended. Balls Shot: " + shooter.getBallsShot());
+        conveyor.updatePowerCellCount(shooter.getBallsShot());
         shooter.resetBallsShot();
     }
 

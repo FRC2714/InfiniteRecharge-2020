@@ -75,6 +75,10 @@ public class Conveyor extends SubsystemBase {
         if (exitBeam.getToggled()) powerCellsStored--;
     }
 
+    public void updatePowerCellCount(int ballsShot){
+        powerCellsStored -= ballsShot;
+    }
+
 
     public void updateConveyorMotion(boolean horiz, boolean vert, boolean reversed){
         double horizontalPower = conveyorState == ConveyorState.SHOOTING ? 0.5 : 0.3;

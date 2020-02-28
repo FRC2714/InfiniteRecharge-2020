@@ -47,7 +47,7 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.035;
+        public static double kAlignP = 0.031;
         public static double kAlignD = 0.0003;
 
         public static double kDriveP = 2.45; // 3 stable

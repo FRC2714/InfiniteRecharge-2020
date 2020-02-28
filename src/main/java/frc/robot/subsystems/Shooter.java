@@ -123,12 +123,13 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("Current RPM", getVelocity());
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
         SmartDashboard.putBoolean("Is Shooter Reached Speed", atSetpoint());
-
         SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
 
         shooterBeam.update();
-        if (shooterBeam.getToggled())
+        if (shooterBeam.getToggled()) {
             ballsShot++;
+            System.out.println("Ball was Shot -- ");
+        }
     }
 
     public void disable() {
