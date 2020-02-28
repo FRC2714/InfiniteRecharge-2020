@@ -42,13 +42,13 @@ public class Climber extends SubsystemBase {
 
     public void setClimberDown(){
         if(climberEncoder.getPosition() > ClimberConstants.kMinHeightTicks){
-            setPower(-0.6);
+            setPower(-0.3);
         } else setPower(0);
     }
 
     public void setClimberUp(){
         if(climberEncoder.getPosition() <= ClimberConstants.kMaxHeightTicks){
-            setPower(0.6);
+            setPower(0.3);
         } else setPower(0);
     }
 
