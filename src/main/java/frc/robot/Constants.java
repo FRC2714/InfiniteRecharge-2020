@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
+import frc.robot.utils.InterpolatingTreeMap;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -106,13 +107,16 @@ public final class Constants {
         public static double kToleranceInches = 1;
 
         public static double kMaxHeightInches = 0;
-        public static double kMaxHeightTicks = 0;
+        public static double kMaxHeightTicks = 220;
 
         public static double kMinHeightInches = 0;
-        public static double kMinHeightTicks = 0;
+        public static double kMinHeightTicks = 40;
 
         public static double servoLockPosition = 1;
         public static double servoUnlockPosition = -1;
+
+        public static int kLeftMotorPort = 13;
+        public static int kRightMotorPort = 14;
     }
 
     public static final class AutoConstants {

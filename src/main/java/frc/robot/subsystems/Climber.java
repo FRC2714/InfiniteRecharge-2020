@@ -19,8 +19,8 @@ public class Climber extends SubsystemBase {
     private double targetHeightInches = 0.0;
 
     public Climber(){
-        climberMotor1 = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
-        climberMotor2 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
+        climberMotor1 = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        climberMotor2 = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         climberEncoder = climberMotor1.getEncoder();
         servo = new Servo(2);
 
@@ -43,15 +43,15 @@ public class Climber extends SubsystemBase {
     }
 
     public void setClimberDown(){
-        if(climberEncoder.getPosition() > 300){
+        if(climberEncoder.getPosition() > ClimberConstants.kMinHeightTicks){
             setPower(-0.6);
-        }
+        } else setPower(0);
     }
 
     public void setClimberUp(){
         if(climberEncoder.getPosition() <= ClimberConstants.kMaxHeightTicks){
             setPower(0.6);
-        }
+        } else setPower(0);
     }
 
     public void setPIDTargetHeight(double targetHeightInches) {
