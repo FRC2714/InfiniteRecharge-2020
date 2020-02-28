@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.*;
@@ -131,10 +132,19 @@ public class RobotContainer {
     }
 
     public Command getTrenchRunAuto() {
-        return new TrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
+        return new NormalTrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
     public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
+
+    public Command getCustomWaitAuto(double waitTime, boolean driveBackwards){
+        return new WaitCommand(waitTime).andThen(new WaitShootAuton(drivetrain, intake, conveyor, shooter, limelight, driveBackwards));
+    }
+
+    public Command getNothingAuto(){
+        return new InstantCommand(() -> drivetrain.tankDriveVolts(0,0));
+    }
+
 
     public void clearMovingMotors(){
         shooter.disable();
