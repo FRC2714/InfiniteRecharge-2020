@@ -168,4 +168,8 @@ public class RobotContainer {
         drivetrain.tankDriveVolts(0,0);
     }
 
+    public void initTeleop() {
+        limelight.setLED(false);
+    }
+
 }
