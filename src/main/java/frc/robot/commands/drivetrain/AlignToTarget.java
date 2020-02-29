@@ -67,5 +67,8 @@ public class AlignToTarget extends ProfiledPIDCommand {
     @Override
     public void end(boolean interrupted) {
         drivetrain.tankDriveVolts(0, 0);
+
+        if (!isAutoEnabled)
+            limelight.setLED(false);
     }
 }
