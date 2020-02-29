@@ -25,13 +25,13 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
                                 new Pose2d(Units.feetToMeters(16), Units.feetToMeters(24.72), new Rotation2d().fromDegrees(0.00)),
                                 new Pose2d(Units.feetToMeters(27.3), Units.feetToMeters(24.76), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(5 ), Units.feetToMeters(7), false
+                        Units.feetToMeters(6), Units.feetToMeters(7), false
                 );
         addCommands(
                 sequence(
                         deadline(
                                 new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(4.7),
-                                new AlignToTarget(drivetrain, limelight, true)
+                                new AlignToTarget(drivetrain, limelight, true).withTimeout(1)
                         ),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         deadline(

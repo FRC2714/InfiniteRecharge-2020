@@ -21,11 +21,10 @@ public class BallStealAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(12.21), Units.feetToMeters(2.10), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(19.22), Units.feetToMeters(1.43), new Rotation2d().fromDegrees(0)),
-                                new Pose2d(Units.feetToMeters(21.18), Units.feetToMeters(1.89), new Rotation2d().fromDegrees(40.67))
+                                new Pose2d(Units.feetToMeters(12.07), Units.feetToMeters(2.15), new Rotation2d().fromDegrees(0.29)),
+                                new Pose2d(Units.feetToMeters(20.39), Units.feetToMeters(2.15), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(9), Units.feetToMeters(8), false
+                        Units.feetToMeters(13), Units.feetToMeters(7), false
                 );
 
         CustomRamseteCommand reverseBallsStealToShotSetup =
@@ -47,7 +46,7 @@ public class BallStealAuto extends SequentialCommandGroup {
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(drivetrain, limelight),
+                        new AlignToTarget(drivetrain, limelight).withTimeout(1.5),
                         new AutomaticShoot(shooter,conveyor,intake, 2050, true, 3).withTimeout(3)
                 )
         );

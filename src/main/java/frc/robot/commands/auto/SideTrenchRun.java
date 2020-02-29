@@ -42,14 +42,14 @@ public class SideTrenchRun extends SequentialCommandGroup {
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticStraightLineToTrench.getInitialPose())),
                         quinticStraightLineToTrench.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(drivetrain, limelight),
+                        new AlignToTarget(drivetrain, limelight).withTimeout(2.5),
                         new AutomaticShoot(shooter,conveyor,intake, 2000, true,3).withTimeout(5),
-                        new TurnToAngle(drivetrain, 0),
+                        new TurnToAngle(drivetrain, 0).withTimeout(2.5),
                         deadline(
                                 quinticPickupBalls,
                                 new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
-                        new AlignToTarget(drivetrain, limelight),
+                        new AlignToTarget(drivetrain, limelight).withTimeout(2.5),
                         new AutomaticShoot(shooter,conveyor,intake, 2350, false,3).withTimeout(5)
                 )
         );
