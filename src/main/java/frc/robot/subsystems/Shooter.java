@@ -36,9 +36,12 @@ public class Shooter extends SubsystemBase {
 
     private int ballsShot = 0;
 
+    private double rpmIncrement = 0;
+
 
     public Shooter(Limelight limelight) {
        this.limelight = limelight;
+       rpmIncrement = 0;
 
         shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -101,12 +104,24 @@ public class Shooter extends SubsystemBase {
         return shooterEncoder.getVelocity();
     }
 
+    public void incrementRPM(){
+        rpmIncrement += 50;
+    }
+
+    public void decrementRPM(){
+        rpmIncrement -= 50;
+    }
+
+    public void setRpmIncrement(double rpmIncrement){
+        this.rpmIncrement = rpmIncrement;
+    }
+
     /**
      * Returns the target velocity based on current distance from goal
      * @return target velocity in RPM for shooter
      */
     public double getTargetRpm() {
-        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())) : defaultRpm;
+        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())): defaultRpm;
     }
 
     public void setDynamicRpm() {
@@ -124,11 +139,10 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
         SmartDashboard.putBoolean("Is Shooter Reached Speed", atSetpoint());
         SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
-
         shooterBeam.update();
         if (shooterBeam.getToggled()) {
             ballsShot++;
-            System.out.println("Ball was Shot -- ");
+            System.out.println("Ball was Shot -- " + ballsShot);
         }
     }
 

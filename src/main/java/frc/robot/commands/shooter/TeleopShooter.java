@@ -20,7 +20,6 @@ public class TeleopShooter extends CommandBase {
     public TeleopShooter(Shooter shooter, Conveyor conveyor){
         this.shooter = shooter;
         this.conveyor = conveyor;
-
     }
 
     @Override

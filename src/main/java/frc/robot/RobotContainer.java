@@ -57,8 +57,8 @@ public class RobotContainer {
     private JoystickButton operatorUnjamButton = new JoystickButton(operatorStick, 7);
     Trigger operatorForcedConveyorExtake = new Trigger(() -> operatorStick.getRawAxis(1) > 0.2);
     Trigger operatorForcedConveyorIntake = new Trigger(() -> operatorStick.getRawAxis(1) < -0.2);
-    Trigger operatorClimberUp = new Trigger(() -> operatorStick.getRawAxis(3) > 0.2);
-    Trigger operatorClimberDown = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);
+    Trigger operatorClimberUp = new Trigger(() -> operatorStick.getRawAxis(5) < -0.2);
+    Trigger operatorClimberDown = new Trigger(() -> operatorStick.getRawAxis(5) > 0.2);
 
     public Trigger operatorLeftTrigger = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
     Trigger operatorRightTrigger = new Trigger(() -> operatorStick.getRawAxis(3) > 0.2);
@@ -118,8 +118,11 @@ public class RobotContainer {
 
         operatorLeftShoulder.or(operatorLeftTrigger)
                 .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
+//                .whenInactive(new InstantCommand(() ->shooter.setRpmIncrement(0)));
 
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
+//        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
+
 
 //        operatorBButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
 //        operatorXButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));

@@ -40,7 +40,9 @@ public class SingleShot extends CommandBase {
     public void end(boolean interrupted) {
         intake.disbale();
         shooter.disable();
+        conveyor.disable();
         System.out.println("Single Shot Ended. Balls Shot: " + shooter.getBallsShot());
         shooter.resetBallsShot();
+        conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
     }
 }

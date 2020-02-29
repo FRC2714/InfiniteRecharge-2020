@@ -81,7 +81,7 @@ public final class Constants {
         public static int kLeftMotorPort = 11;
         public static int kRightMotorPort = 12;
 
-        public static double kVelocityTolerance = 150;
+        public static double kVelocityTolerance = 115;
     }
 
     public static final class ConveyorConstants {
