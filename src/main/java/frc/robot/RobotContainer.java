@@ -118,14 +118,16 @@ public class RobotContainer {
 
         operatorLeftShoulder.or(operatorLeftTrigger)
                 .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
-//                .whenInactive(new InstantCommand(() ->shooter.setRpmIncrement(0)));
 
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
-//        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
 
+        operatorBButton
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(shooter.getTargetRpm() * 0.1)))
+                .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
 
-//        operatorBButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
-//        operatorXButton.whileHeld(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));
+        operatorXButton
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(-shooter.getTargetRpm() * 0.1)))
+                .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
 
         operatorClimberUp.whileActiveContinuous(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
         operatorClimberDown.whileActiveContinuous(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));

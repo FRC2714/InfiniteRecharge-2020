@@ -39,6 +39,7 @@ public class AlignToTarget extends ProfiledPIDCommand {
                 // require drive
                 drive
         );
+        addRequirements(drive);
 
         this.limelight = limelight;
         this.drivetrain = drive;

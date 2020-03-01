@@ -81,10 +81,10 @@ public class Shooter extends SubsystemBase {
 
         velocityLUT.put(6.8, 2200.0);
         velocityLUT.put(11.1, 2050.0);
-        velocityLUT.put(14.3, 2000.0);
-        velocityLUT.put(22.0, 2250.0);
-        velocityLUT.put(26.75, 2650.0);
-        velocityLUT.put(36.0, 2850.0);
+        velocityLUT.put(14.3, 2100.0);
+        velocityLUT.put(22.0, 2450.0);
+        velocityLUT.put(26.75, 2850.0);//2650.0
+        velocityLUT.put(36.0, 3500.0);//2850.0
     }
 
     public void setRPM(double rpmReference){
@@ -121,7 +121,7 @@ public class Shooter extends SubsystemBase {
      * @return target velocity in RPM for shooter
      */
     public double getTargetRpm() {
-        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())): defaultRpm;
+        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())) + rpmIncrement: defaultRpm;
     }
 
     public void setDynamicRpm() {
@@ -139,6 +139,9 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
         SmartDashboard.putBoolean("Is Shooter Reached Speed", atSetpoint());
         SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
+        SmartDashboard.putNumber("RPM Increment = ", rpmIncrement);
+
+        shooterBeam.update();
         shooterBeam.update();
         if (shooterBeam.getToggled()) {
             ballsShot++;

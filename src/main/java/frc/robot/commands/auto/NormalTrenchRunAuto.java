@@ -23,9 +23,9 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
                         List.of(
                                 new Pose2d(Units.feetToMeters(9.533), Units.feetToMeters(18.66), new Rotation2d().fromDegrees(0.00)),
                                 new Pose2d(Units.feetToMeters(16), Units.feetToMeters(23.8), new Rotation2d().fromDegrees(0.00)), //24.76
-                                new Pose2d(Units.feetToMeters(27), Units.feetToMeters(24.4), new Rotation2d().fromDegrees(0.00)) //24.676
+                                new Pose2d(Units.feetToMeters(27.5), Units.feetToMeters(24.2), new Rotation2d().fromDegrees(0.00)) //24.676
                         ),
-                        Units.feetToMeters(6), Units.feetToMeters(7), false
+                        Units.feetToMeters(5.5), Units.feetToMeters(7), false
                 );
         addCommands(
                 sequence(
@@ -39,7 +39,7 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
                                     new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         deadline(
-                                new AlignToTarget(drivetrain, limelight, true).withTimeout(1.7),
+                                new AlignToTarget(drivetrain, limelight, true).withTimeout(3),
                                 new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         deadline(
