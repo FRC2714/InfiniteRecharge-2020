@@ -82,8 +82,8 @@ public class Shooter extends SubsystemBase {
         velocityLUT.put(6.8, 2200.0);
         velocityLUT.put(11.1, 2050.0);
         velocityLUT.put(14.3, 2100.0);
-        velocityLUT.put(22.0, 2450.0);
-        velocityLUT.put(26.75, 2850.0);//2650.0
+        velocityLUT.put(22.0, 2350.0);
+        velocityLUT.put(26.75, 2650.0);//2650.0
         velocityLUT.put(36.0, 3500.0);//2850.0
     }
 
@@ -141,7 +141,6 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
         SmartDashboard.putNumber("RPM Increment = ", rpmIncrement);
 
-        shooterBeam.update();
         shooterBeam.update();
         if (shooterBeam.getToggled()) {
             ballsShot++;

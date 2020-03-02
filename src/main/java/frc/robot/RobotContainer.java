@@ -122,11 +122,11 @@ public class RobotContainer {
         operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
 
         operatorBButton
-                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(shooter.getTargetRpm() * 0.1)))
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(shooter.getTargetRpm() * 0.13)))
                 .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
 
         operatorXButton
-                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(-shooter.getTargetRpm() * 0.1)))
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(-shooter.getTargetRpm() * 0.13)))
                 .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
 
         operatorClimberUp.whileActiveContinuous(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
@@ -166,6 +166,9 @@ public class RobotContainer {
         return new InstantCommand(() -> drivetrain.tankDriveVolts(0,0));
     }
 
+    public Command getPartnerTrenchRunAuto() {
+        return new PartnerTrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
+    }
 
     public void clearMovingMotors(){
         shooter.disable();

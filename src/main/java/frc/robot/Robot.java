@@ -42,12 +42,14 @@ public class Robot extends TimedRobot {
 
         autoChooser.setDefaultOption("Normal Trench Run Auto", robotContainer.getTrenchRunAuto());
         autoChooser.addOption("Side Trench Run Auto", robotContainer.getSideTrenchRunAuto());
-        autoChooser.addOption("Ball Steal Auto", robotContainer.getBallStealAutonomous());
-        autoChooser.addOption("Generator Auto", robotContainer.getGeneratorAuto());
+        autoChooser.addOption("Partner Normal Trench Auto", robotContainer.getPartnerTrenchRunAuto());
         autoChooser.addOption("Shoot, Drive Forward", robotContainer.getCustomWaitAuto(0,false));
         autoChooser.addOption("Shoot, Drive Back", robotContainer.getCustomWaitAuto(0, true));
         autoChooser.addOption("5 delay, shoot, drive forward", robotContainer.getCustomWaitAuto(5, false));
         autoChooser.addOption("10 delay, shoot, drive back", robotContainer.getCustomWaitAuto(8, true));
+        autoChooser.addOption("Ball Steal Auto", robotContainer.getBallStealAutonomous());
+        autoChooser.addOption("Generator Auto", robotContainer.getGeneratorAuto());
+
         autoChooser.addOption("Do Nothing", robotContainer.getNothingAuto());
 
         SmartDashboard.putData("Auto Picker", autoChooser);
