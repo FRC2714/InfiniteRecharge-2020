@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.InterpolatingTreeMap;
+import frc.robot.utils.ToggledBreakBeam;
 
 import java.util.function.DoubleSupplier;
 
@@ -30,9 +32,16 @@ public class Shooter extends SubsystemBase {
 
     private boolean enabled = false;
 
+    private ToggledBreakBeam shooterBeam;
+
+    private int ballsShot = 0;
+
+    private double rpmIncrement = 0;
+
 
     public Shooter(Limelight limelight) {
        this.limelight = limelight;
+       rpmIncrement = 0;
 
         shooterMotor1 = new CANSparkMax(ShooterConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(ShooterConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -51,29 +60,36 @@ public class Shooter extends SubsystemBase {
         shooterPIDController.setFF(ShooterConstants.kSparkMaxFeedforward);
         shooterPIDController.setP(ShooterConstants.kSparkMaxP);
 
-
         populateVelocityMap();
 
+        SmartDashboard.putNumber("Target RPM", targetRpm);
         SmartDashboard.putNumber("Current RPM", 0);
 
+        shooterBeam = new ToggledBreakBeam(new DigitalInput(7));
     }
 
     public void populateVelocityMap() {
         // TODO: implement
+        /*
         velocityLUT.put(6.8, 2300.0);
         velocityLUT.put(11.1, 2100.0);
         velocityLUT.put(14.3, 2000.0);
         velocityLUT.put(22.0, 2350.0);
         velocityLUT.put(26.75, 2750.0);
         velocityLUT.put(36.0, 2950.0);
+        */
+
+        velocityLUT.put(6.8, 2200.0);
+        velocityLUT.put(11.1, 2050.0);
+        velocityLUT.put(14.3, 2100.0);
+        velocityLUT.put(22.0, 2350.0);
+        velocityLUT.put(26.75, 2650.0);//2650.0
+        velocityLUT.put(36.0, 3500.0);//2850.0
     }
 
-    public void setSparkMaxVelocity(double rpmReference){
+    public void setRPM(double rpmReference){
         shooterPIDController.setReference(rpmReference, ControlType.kVelocity);
-    }
-
-    public void setSparkMaxSmartVelocity(double rpmReference){
-        shooterPIDController.setReference(rpmReference, ControlType.kSmartVelocity);
+        setTargetRpm(rpmReference);
     }
 
     public void setShooterPower(double power){
@@ -84,9 +100,20 @@ public class Shooter extends SubsystemBase {
         this.targetRpm = targetRpm;
     }
 
-
     public double getVelocity() { // in rpm
         return shooterEncoder.getVelocity();
+    }
+
+    public void incrementRPM(){
+        rpmIncrement += 50;
+    }
+
+    public void decrementRPM(){
+        rpmIncrement -= 50;
+    }
+
+    public void setRpmIncrement(double rpmIncrement){
+        this.rpmIncrement = rpmIncrement;
     }
 
     /**
@@ -94,18 +121,31 @@ public class Shooter extends SubsystemBase {
      * @return target velocity in RPM for shooter
      */
     public double getTargetRpm() {
-        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())) : defaultRpm;
+        return limelight.targetVisible() ? velocityLUT.getInterpolated(Units.metersToFeet(limelight.getDistanceToGoal())) + rpmIncrement: defaultRpm;
+    }
+
+    public void setDynamicRpm() {
+        shooterPIDController.setReference(getTargetRpm(), ControlType.kVelocity);
+        setTargetRpm(getTargetRpm());
     }
 
     public boolean atSetpoint() {
-        return Math.abs(targetRpm - getVelocity()) < 150;
+        return Math.abs(targetRpm - getVelocity()) < ShooterConstants.kVelocityTolerance;
     }
 
     @Override
-
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getVelocity());
         SmartDashboard.putNumber("Predicted RPM", getTargetRpm());
+        SmartDashboard.putBoolean("Is Shooter Reached Speed", atSetpoint());
+        SmartDashboard.putBoolean("Shooter Beam", shooterBeam.getState());
+        SmartDashboard.putNumber("RPM Increment = ", rpmIncrement);
+
+        shooterBeam.update();
+        if (shooterBeam.getToggled()) {
+            ballsShot++;
+            System.out.println("Ball was Shot -- " + ballsShot);
+        }
     }
 
     public void disable() {
@@ -119,5 +159,13 @@ public class Shooter extends SubsystemBase {
 
     public void setSetpoint(double rpm) {
         defaultRpm = rpm;
+    }
+
+    public void resetBallsShot() {
+        ballsShot = 0;
+    }
+
+    public int getBallsShot() {
+        return ballsShot;
     }
 }

@@ -10,38 +10,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.auto.BallStealAuto;
-import frc.robot.commands.auto.GeneratorAuto;
-import frc.robot.commands.auto.SplineTesting;
-import frc.robot.commands.auto.TrenchRunAuto;
-import frc.robot.commands.ballmanager.AutoIntake;
-import frc.robot.commands.shooter.AutoShooter;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.climber.MoveClimber;
+import frc.robot.commands.conveyor.SingleShot;
+import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.shooter.TeleopShooter;
 import frc.robot.subsystems.*;
-import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.commands.drivetrain.DriverControl;
-import frc.robot.utils.Logger;
-import frc.robot.Constants.DriveConstants;
-
-
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -65,23 +46,28 @@ public class RobotContainer {
 
     private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
     private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
-    private POVButton driverLeftPOVButton = new POVButton(driverStick, 90);
+    private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
     private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
     private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
     private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
+    private JoystickButton operatorRightShoulder = new JoystickButton(operatorStick, 6);
     private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
     private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
+    private JoystickButton operatorUnjamButton = new JoystickButton(operatorStick, 7);
+    Trigger operatorForcedConveyorExtake = new Trigger(() -> operatorStick.getRawAxis(1) > 0.2);
+    Trigger operatorForcedConveyorIntake = new Trigger(() -> operatorStick.getRawAxis(1) < -0.2);
+    Trigger operatorClimberUp = new Trigger(() -> operatorStick.getRawAxis(5) < -0.2);
+    Trigger operatorClimberDown = new Trigger(() -> operatorStick.getRawAxis(5) > 0.2);
+
+    public Trigger operatorLeftTrigger = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
+    Trigger operatorRightTrigger = new Trigger(() -> operatorStick.getRawAxis(3) > 0.2);
+    private POVButton operatorDPadUp = new POVButton(operatorStick, 0);
+    private POVButton operatorDPadLeft = new POVButton(operatorStick, 90);
+    private POVButton operatorDPadDown = new POVButton(operatorStick, 180);
+    private POVButton operatorDPadRight = new POVButton(operatorStick, 270);
 
 
-
-    private DriverControl driverControlCommand = new DriverControl(
-            drivetrain,
-            () -> driverStick.getRawAxis(1),
-            () -> driverStick.getRawAxis(4)
-    );
-
-    private Logger<Subsystem> subsystemLogger = new Logger<>();
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -89,10 +75,13 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
+        initDefaultCommands();
     }
 
+
     public void initDefaultCommands() {
-        drivetrain.initDefaultCommand(driverStick);
+        drivetrain.initDefaultCommands(driverStick);
+        conveyor.initDefaultCommand(shooter::atSetpoint);
     }
 
     /**
@@ -102,21 +91,47 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)));
-        driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
+        driverAButton.whileHeld(new AlignToTarget(limelight, drivetrain, () -> driverStick.getRawAxis(1)))
+                                .whenReleased(new InstantCommand(() -> limelight.setLED(false)));
+//        driverBButton.whenPressed(new InstantCommand(() -> drivetrain.setControlsFlipped(!drivetrain.isControlsFlipped())));
+        driverLeftShoulder.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
 
-        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_INTAKE));
-        operatorXButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.FORCED_SHOOT));
-        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.NORMAL_EXTAKE));
-        operatorYButton.whileHeld(new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.FORCED_INTAKE));
+//        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
+//        operatorBButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
+//        operatorXButton.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
+//        operatorYButton.whileHeld(new SingleShot(shooter, intake, conveyor));
+//
+//        operatorLeftShoulder.whileHeld(new TeleopShooter(shooter,conveyor,1000));
+//        operatorRightShoulder.whileHeld(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
 
-        operatorLeftShoulder.whileHeld(new AutoShooter(shooter,conveyor,2300));
-        operatorYButton.whileHeld(new InstantCommand(
-                () -> climber.setPower(1.0)
-        ));
-//        operatorXButton.whileHeld(new InstantCommand(
-//                () -> climber.setPower(-1.0)
-//        ));
+        operatorAButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.INTAKE));
+        operatorYButton.whileHeld(new AutoIntake(shooter,intake, conveyor, AutoIntake.IntakeType.EXTAKE));
+
+        operatorForcedConveyorExtake
+                .whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_EXTAKE));
+
+        operatorForcedConveyorIntake
+                .whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.FORCED_CONVEYOR_INTAKE));
+
+        operatorRightTrigger.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.SHOOT));
+        operatorUnjamButton.whileActiveContinuous(new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.UNJAM_STUCK_BALL));
+
+        operatorLeftShoulder.or(operatorLeftTrigger)
+                .whileActiveContinuous(new TeleopShooter(shooter,conveyor,1000));
+
+        operatorRightShoulder.whileHeld(new SingleShot(shooter, intake, conveyor));
+
+        operatorBButton
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(shooter.getTargetRpm() * 0.13)))
+                .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
+
+        operatorXButton
+                .whenPressed(new InstantCommand(() -> shooter.setRpmIncrement(-shooter.getTargetRpm() * 0.13)))
+                .whenReleased(new InstantCommand(() -> shooter.setRpmIncrement(0)));
+
+        operatorClimberUp.whileActiveContinuous(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_EXTEND));
+        operatorClimberDown.whileActiveContinuous(new MoveClimber(climber, MoveClimber.ClimberMotionType.MANUAL_RETRACT));
+
     }
 
 
@@ -130,108 +145,39 @@ public class RobotContainer {
     }
 
     public Command getBallStealAutonomous() {
-        // return new RightStart(drivetrain, limelight);
         return new BallStealAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
+    public Command getSideTrenchRunAuto(){
+        return new SideTrenchRun(drivetrain, intake, conveyor, shooter, limelight);
+    }
+
     public Command getTrenchRunAuto() {
-        return new TrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
+        return new NormalTrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
     }
 
     public Command getSplineTestAuto(){return new SplineTesting(drivetrain,limelight);}
 
-
-    public Command getRamseteCommand() {
-        drivetrain.resetAll();
-        DifferentialDriveVoltageConstraint voltageConstraint =
-                new DifferentialDriveVoltageConstraint(
-                        new SimpleMotorFeedforward(
-                                Constants.DriveConstants.kStatic,
-                                Constants.DriveConstants.kV,
-                                Constants.DriveConstants.kA
-                        ),
-                        drivetrain.getKinematics(),
-                        10
-                );
-
-        CentripetalAccelerationConstraint centripetalAccelerationConstraint = new CentripetalAccelerationConstraint(Units.feetToMeters(4.5));
-        TrajectoryConfig config =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(drivetrain.getKinematics())
-                        // Apply the voltage constraint
-                        .addConstraint(voltageConstraint)
-                        .addConstraint(centripetalAccelerationConstraint);
-
-        TrajectoryConfig reverseConfig =
-                new TrajectoryConfig(Units.feetToMeters(10), Units.feetToMeters(6.5))
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(drivetrain.getKinematics())
-                        // Apply the voltage constraint
-                        .addConstraint(voltageConstraint)
-                        .addConstraint(centripetalAccelerationConstraint)
-                        .setReversed(true);
-
-        Trajectory simpleSCurve = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d().fromDegrees(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(
-                        new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
-                ),
-                new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
-                // Pass config
-                config
-        );
-
-        Trajectory reverseSimpleSCurve = TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(Units.feetToMeters(13), Units.feetToMeters(-4.5), new Rotation2d().fromDegrees(30)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(
-                        new Translation2d(Units.feetToMeters(7), Units.feetToMeters(-2.5))
-                ),
-                new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0), new Rotation2d().fromDegrees(0)),
-                // Pass config
-                reverseConfig
-        );
-
-        CustomRamseteCommand ramseteCommand = new CustomRamseteCommand(
-                simpleSCurve,
-                drivetrain::getPose,
-                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        DriveConstants.kStatic,
-                        DriveConstants.kV,
-                        DriveConstants.kA
-                ),
-                drivetrain.getKinematics(),
-                drivetrain::getWheelSpeeds,
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                drivetrain::tankDriveVolts,
-                drivetrain
-        );
-
-        CustomRamseteCommand ramseteCommand2 = new CustomRamseteCommand(
-                reverseSimpleSCurve,
-                drivetrain::getPose,
-                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        DriveConstants.kStatic,
-                        DriveConstants.kV,
-                        DriveConstants.kA
-                ),
-                drivetrain.getKinematics(),
-                drivetrain::getWheelSpeeds,
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                new PIDController(DriveConstants.kDriveP, 0, DriveConstants.kDriveD),
-                drivetrain::tankDriveVolts,
-                drivetrain
-        );
-
-        return ramseteCommand.andThen(ramseteCommand2.andThen(() -> drivetrain.tankDriveVolts(0, 0)));
+    public Command getCustomWaitAuto(double waitTime, boolean driveBackwards){
+        return new WaitCommand(waitTime).andThen(new WaitShootAuton(drivetrain, intake, conveyor, shooter, limelight, driveBackwards));
     }
 
+    public Command getNothingAuto(){
+        return new InstantCommand(() -> drivetrain.tankDriveVolts(0,0));
+    }
+
+    public Command getPartnerTrenchRunAuto() {
+        return new PartnerTrenchRunAuto(drivetrain, intake, conveyor, shooter, limelight);
+    }
+
+    public void clearMovingMotors(){
+        shooter.disable();
+        conveyor.disable();
+        drivetrain.tankDriveVolts(0,0);
+    }
+
+    public void initTeleop() {
+        limelight.setLED(false);
+    }
 
 }

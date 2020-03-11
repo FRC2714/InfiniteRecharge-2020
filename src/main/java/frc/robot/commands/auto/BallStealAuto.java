@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.AlignToTarget;
-import frc.robot.commands.ballmanager.AutoIntake;
-import frc.robot.commands.shooter.AutomaticShooter;
+import frc.robot.commands.intake.AutoIntake;
+import frc.robot.commands.conveyor.AutomaticShoot;
 import frc.robot.subsystems.*;
 import frc.robot.utils.CustomRamseteCommand;
 import frc.robot.utils.RamseteGenerator;
@@ -21,18 +21,19 @@ public class BallStealAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(11.98), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(20.51), Units.feetToMeters(2.20), new Rotation2d().fromDegrees(0.00))
+                                new Pose2d(Units.feetToMeters(12.07), Units.feetToMeters(2.15), new Rotation2d().fromDegrees(0.29)),
+                                new Pose2d(Units.feetToMeters(20.39), Units.feetToMeters(2.15), new Rotation2d().fromDegrees(0.00))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(10), false
+                        Units.feetToMeters(13), Units.feetToMeters(7), false
                 );
 
         CustomRamseteCommand reverseBallsStealToShotSetup =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(20.50), Units.feetToMeters(2.25), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(15.96), Units.feetToMeters(13.57), new Rotation2d().fromDegrees(-28.02))
+                                new Pose2d(Units.feetToMeters(21.18), Units.feetToMeters(1.89), new Rotation2d().fromDegrees(40.67)),
+                                new Pose2d(Units.feetToMeters(18.90), Units.feetToMeters(3.76), new Rotation2d().fromDegrees(-90.11)),
+                                new Pose2d(Units.feetToMeters(16.82), Units.feetToMeters(12.30), new Rotation2d().fromDegrees(-27.01))
                         ),
                         Units.feetToMeters(13), Units.feetToMeters(8), true
                 );
@@ -40,13 +41,13 @@ public class BallStealAuto extends SequentialCommandGroup {
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baselineToStealBalls.getInitialPose())),
-                        new AutomaticShooter(shooter,conveyor,2500).withTimeout(3),
                         deadline(
                                 baselineToStealBalls,
-                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.NORMAL_INTAKE)
+                                new AutoIntake(shooter,intake,conveyor, AutoIntake.IntakeType.INTAKE)
                         ),
                         reverseBallsStealToShotSetup.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(drivetrain, limelight)
+                        new AlignToTarget(drivetrain, limelight).withTimeout(1.5),
+                        new AutomaticShoot(shooter,conveyor,intake, 2050, true, 3).withTimeout(3)
                 )
         );
 

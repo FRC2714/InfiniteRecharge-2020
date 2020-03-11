@@ -35,7 +35,8 @@ public class Drivetrain extends SubsystemBase {
     private CANEncoder leftNeoEncoder;
     private CANEncoder rightNeoEncoder;
 
-    // Spark Max PID Controllers
+    // Spark Max Pid
+
     private CANPIDController leftPIDController;
     private CANPIDController rightPIDController;
 
@@ -43,7 +44,7 @@ public class Drivetrain extends SubsystemBase {
     private final Encoder leftEncoder = new Encoder(
             DriveConstants.kLeftEncoderPorts[0],
             DriveConstants.kLeftEncoderPorts[1],
-            true,
+            false,
             CounterBase.EncodingType.k4X
     );
 
@@ -55,8 +56,8 @@ public class Drivetrain extends SubsystemBase {
     );
 
     // Gyro
-    private ADIS16470_IMU adisIMU = new ADIS16470_IMU(ADIS16470_IMU.IMUAxis.kY, SPI.Port.kOnboardCS0, ADIS16470_IMU.ADIS16470CalibrationTime._1s);
-    private AHRS ahrs;
+    private AHRS navx = new AHRS(SPI.Port.kMXP);
+
 
     private DifferentialDrive drive;
 
@@ -124,9 +125,7 @@ public class Drivetrain extends SubsystemBase {
         leftPIDController = lMotor0.getPIDController();
         rightPIDController = rMotor0.getPIDController();
 
-//        ahrs = new AHRS(SerialPort.Port.kMXP);
-//        ahrs.getAngle();
-//        ahrs.zeroYaw();
+        resetAll();
     }
 
     /**
@@ -154,8 +153,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        adisIMU.reset();
-        adisIMU.calibrate();
+        navx.zeroYaw();
         internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
         externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
@@ -237,7 +235,7 @@ public class Drivetrain extends SubsystemBase {
      * Zeroes the heading of the robot.
      */
     public void zeroHeading() {
-        adisIMU.reset();
+        navx.zeroYaw();
     }
 
     /**
@@ -246,14 +244,14 @@ public class Drivetrain extends SubsystemBase {
      * @return the robot's heading in degrees, from 180 to 180
      */
     public double getHeading() {
-        return Math.IEEEremainder(adisIMU.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return Math.IEEEremainder(navx.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
     /**
      * @return True if external encoders and internal encoders conflict
      */
     public boolean isEncoderError() {
-        return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 1;
+        return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 0.5;
     }
 
     /**
@@ -262,7 +260,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return adisIMU.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
     public DifferentialDriveKinematics getKinematics() {
@@ -271,7 +269,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetAll() {
         resetOdometry(new Pose2d());
-        adisIMU.reset();
+        navx.reset();
     }
 
     public void setControlsFlipped(boolean controlsFlipped) {
@@ -282,7 +280,7 @@ public class Drivetrain extends SubsystemBase {
         return isControlsFlipped;
     }
 
-    public void initDefaultCommand(Joystick joystick) {
+    public void initDefaultCommands(Joystick joystick) {
         setDefaultCommand(new DriverControl(
                 this,
                 () -> joystick.getRawAxis(1),
@@ -304,11 +302,6 @@ public class Drivetrain extends SubsystemBase {
                 (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius,
                 (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
 
-        SmartDashboard.putNumber("Left Encoder Meters", leftDist);
-        SmartDashboard.putNumber("Right Encoder Meters", rightDist);
-
-//        SmartDashboard.putNumber("NavX Angle", ahrs.getAngle());
-
         live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
         live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
         live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
@@ -320,9 +313,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
         SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
 
-        SmartDashboard.putNumber("Output Current Left", lMotor0.getOutputCurrent() + lMotor1.getOutputCurrent() + lMotor2.getOutputCurrent());
-        SmartDashboard.putNumber("Output Current Right", rMotor0.getOutputCurrent() + rMotor1.getOutputCurrent() + rMotor2.getOutputCurrent());
-
+        SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
+        SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
     }
 
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,11 +13,15 @@ public class Limelight extends SubsystemBase {
 
     private NetworkTable limelight;
     // private final BooleanSupplier buttonPressed;
-    private static final double kCameraToGoalHeight = Constants.FieldConstants.kGoalHeight - Constants.CameraConstants.kCameraHeight;
+    private static final double kCameraToGoalHeight =
+            Constants.FieldConstants.kGoalHeight - Constants.CameraConstants.kCameraHeight;
+
+    Spark ledShooter;
 
     public Limelight() {
         // this.buttonPressed = buttonPressed;
         limelight = NetworkTableInstance.getDefault().getTable("limelight");
+        ledShooter = new Spark(0);
     }
 
     private double internalGetDistanceToGoal() {
@@ -54,10 +59,17 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Est. Distance (ft)", Units.metersToFeet(distance));
+
         tx = limelight.getEntry("tx").getDouble(-1);
         ty = limelight.getEntry("ty").getDouble(-1);
         tv = limelight.getEntry("tz").getDouble(0);
         distance = internalGetDistanceToGoal();
-        SmartDashboard.putNumber("Vision Distance (ft)", Units.metersToFeet(distance));
+
+        if(targetVisible() && getXAngleOffset() < 1)
+            ledShooter.set(0.71);
+        else
+            ledShooter.set(0.61);
+
     }
 }

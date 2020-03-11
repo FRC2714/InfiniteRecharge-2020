@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
+import frc.robot.utils.InterpolatingTreeMap;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -32,9 +33,9 @@ public final class Constants {
         public static double kMaxVelocity = 13; // feet per second
         public static double kMaxAcceleration = 3; // Max Accel fet per second squared
 
-        public static double kStatic = 0.177; // Constant feedforward term for the robot drive.
-        public static double kV = 2.25; // Velocity-proportional feedforward term for the robot drive
-        public static double kA = 0.44; //Acceleration-proportional feedforward term for the robot (.348)
+        public static double kStatic = 0.28; // Constant feedforward term for the robot drive.
+        public static double kV = 2.22; // Velocity-proportional feedforward term for the robot drive
+        public static double kA = 0.438; //Acceleration-proportional feedforward term for the robot (.348) (.44 protobot)
 
         // Tuning parameter (b > 0) for which larger values make convergence more aggressive like a proportional term
         public static double kRamseteB = 2;
@@ -46,7 +47,7 @@ public final class Constants {
         public static double kHeadingD = 0;
         public static double kHeadingI = 0;
 
-        public static double kAlignP = 0.04;
+        public static double kAlignP = 0.031;
         public static double kAlignD = 0.0003;
 
         public static double kDriveP = 2.45; // 3 stable
@@ -59,7 +60,7 @@ public final class Constants {
         public static boolean kLeftEncoderReversed = false;
         public static boolean kRightEncoderReversed = false;
 
-        public static boolean kGyroReversed = false;
+        public static boolean kGyroReversed = true;
 
         public static DifferentialDriveKinematics kDriveKinematics
                 = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
@@ -69,32 +70,18 @@ public final class Constants {
         public static int kIntakeMotorPort = 7;
         public static int kSerializerMotorPort = 8;
 
-        public static double kIntakePower = 1.0;
-        public static double kSerializerPower = 0.5;
+        public static double kIntakePower = 0.8; // was 1.0
+        public static double kSerializerPower = 0.5; //was 0.6
     }
 
     public static final class ShooterConstants {
-        // TODO: tune these gains
-        public static double kV = 0.0;
-        public static double kA = 0.0;
-        public static double kStatic = 0.0;
-        public static double kWPILibP = 0.0001;
-
-
-        public static double kSparkMaxP = 0.0005;
+        public static double kSparkMaxP = 0.0006;
         public static double kSparkMaxFeedforward = 0.000195; // .00022
-
 
         public static int kLeftMotorPort = 11;
         public static int kRightMotorPort = 12;
 
-        // ONLY TO BE USED IN EMERGENCIES
-        // RPM SHOULD PRIMARILY COME FROM LUT
-        public static double kTrenchShotRPM = 4000;
-        public static double kBaselineShotRPM = 3000;
-        public static double kLongshotRPM = 7000;
-
-        public static double kVelocityTolerance = 120;
+        public static double kVelocityTolerance = 115;
     }
 
     public static final class ConveyorConstants {
@@ -103,8 +90,8 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        public static double kCameraHeight = Units.inchesToMeters(27.25); // TODO: update this
-        public static double kCameraMountingAngle = 22; // degrees
+        public static double kCameraHeight = Units.inchesToMeters(27); // TODO: update this
+        public static double kCameraMountingAngle = 29; // degrees
     }
 
     public static final class FieldConstants {
@@ -118,6 +105,18 @@ public final class Constants {
         public static double kP = 0.1;
 
         public static double kToleranceInches = 1;
+
+        public static double kMaxHeightInches = 0;
+            public static double kMaxHeightTicks = 280;
+
+        public static double kMinHeightInches = 0;
+        public static double kMinHeightTicks = 5;
+
+        public static double servoLockPosition = 1;
+        public static double servoUnlockPosition = -1;
+
+        public static int kLeftMotorPort = 13;
+        public static int kRightMotorPort = 14;
     }
 
     public static final class AutoConstants {

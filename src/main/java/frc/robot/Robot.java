@@ -7,12 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utils.Tests;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,7 +23,7 @@ import frc.robot.utils.Tests;
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
-    private RobotContainer m_robotContainer;
+    private RobotContainer robotContainer;
 
     private SendableChooser<Command> autoChooser;
 
@@ -36,13 +36,22 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
+        robotContainer = new RobotContainer();
         autoChooser = new SendableChooser<>();
 
-        autoChooser.setDefaultOption("Trench Run Auto", m_robotContainer.getTrenchRunAuto());
-        autoChooser.addOption("Ball Steal Auto", m_robotContainer.getBallStealAutonomous());
-        autoChooser.addOption("Generator Auto", m_robotContainer.getGeneratorAuto());
-        autoChooser.addOption("Spline Test Auto", m_robotContainer.getSplineTestAuto());
+
+        autoChooser.setDefaultOption("Normal Trench Run Auto", robotContainer.getTrenchRunAuto());
+        autoChooser.addOption("Side Trench Run Auto", robotContainer.getSideTrenchRunAuto());
+        autoChooser.addOption("Partner Normal Trench Auto", robotContainer.getPartnerTrenchRunAuto());
+        autoChooser.addOption("Shoot, Drive Forward", robotContainer.getCustomWaitAuto(0,false));
+        autoChooser.addOption("Shoot, Drive Back", robotContainer.getCustomWaitAuto(0, true));
+        autoChooser.addOption("5 delay, shoot, drive forward", robotContainer.getCustomWaitAuto(5, false));
+        autoChooser.addOption("10 delay, shoot, drive back", robotContainer.getCustomWaitAuto(8, true));
+        autoChooser.addOption("Ball Steal Auto", robotContainer.getBallStealAutonomous());
+        autoChooser.addOption("Generator Auto", robotContainer.getGeneratorAuto());
+
+        autoChooser.addOption("Do Nothing", robotContainer.getNothingAuto());
+
         SmartDashboard.putData("Auto Picker", autoChooser);
     }
 
@@ -93,13 +102,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        Tests.testInterpolatingTreeMap();
+        robotContainer.initTeleop();
+        robotContainer.clearMovingMotors();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
 
-        m_robotContainer.initDefaultCommands();
+        robotContainer.initDefaultCommands();
     }
 
     /**
