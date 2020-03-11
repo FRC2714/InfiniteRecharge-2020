@@ -70,7 +70,7 @@ public final class Constants {
         public static int kIntakeMotorPort = 7;
         public static int kSerializerMotorPort = 8;
 
-        public static double kIntakePower = 0.8; // was 1.0
+        public static double kIntakePower = 1; // was 1.0
         public static double kSerializerPower = 0.5; //was 0.6
     }
 

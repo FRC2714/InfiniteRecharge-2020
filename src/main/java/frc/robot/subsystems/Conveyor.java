@@ -26,9 +26,12 @@ public class Conveyor extends SubsystemBase {
 
     public enum ConveyorState {
         SHOOTING,
+        UNRESTRICTED_SHOOTING,
+        INTAKING,
         EXTAKING,
         FORCED_CONVEYOR_INTAKE,
-        FORCED_CONVEYOR_EXTAKE, DEFAULT
+        FORCED_CONVEYOR_EXTAKE,
+        DEFAULT
     }
 
     private ConveyorState conveyorState = ConveyorState.DEFAULT;
@@ -81,9 +84,14 @@ public class Conveyor extends SubsystemBase {
 
 
     public void updateConveyorMotion(boolean horiz, boolean vert, boolean reversed){
-        double horizontalPower = conveyorState == ConveyorState.SHOOTING ? 0.5 : 0.3;
+        double horizontalPower = conveyorState == ConveyorState.SHOOTING  ? 0.5 : 0.3;
 
-        double verticalPower = conveyorState == ConveyorState.SHOOTING ? 0.6 : 0.3;
+        double verticalPower = conveyorState == ConveyorState.SHOOTING ? 0.6 : 0.45;
+
+        if(conveyorState.equals(ConveyorState.UNRESTRICTED_SHOOTING)) {
+            verticalPower = 1;
+            horizontalPower = 1;
+        }
 
         if (reversed) {
             horizontalPower *= -1;
@@ -120,6 +128,10 @@ public class Conveyor extends SubsystemBase {
 
     public boolean getEntryBeam() {
         return entryBeam.getState();
+    }
+
+    public boolean getMiddleBeam() {
+        return middleBeam.getState();
     }
 
     public boolean getExitBeam() {

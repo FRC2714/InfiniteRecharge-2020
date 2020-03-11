@@ -25,27 +25,27 @@ public class NormalTrenchRunAuto extends SequentialCommandGroup {
                                 new Pose2d(Units.feetToMeters(16), Units.feetToMeters(23.8), new Rotation2d().fromDegrees(0.00)), //24.76
                                 new Pose2d(Units.feetToMeters(27.5), Units.feetToMeters(24.2), new Rotation2d().fromDegrees(0.00)) //24.676
                         ),
-                        Units.feetToMeters(5.5), Units.feetToMeters(7), false
+                        Units.feetToMeters(10), Units.feetToMeters(10), false
                 );
         addCommands(
                 sequence(
-                        deadline(
-                                new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(4.7),
-                                new AlignToTarget(drivetrain, limelight, true).withTimeout(1)
-                        ),
+//                        deadline(
+//                                new AutomaticShoot(shooter, conveyor, intake, 3000, true, 3).withTimeout(4.7),
+//                                new AlignToTarget(drivetrain, limelight, true).withTimeout(1)
+//                        ),
                         new InstantCommand(() -> drivetrain.resetOdometry(quinticLineToTrench.getInitialPose())),
                         deadline(
                                     quinticLineToTrench,
                                     new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
-                        ),
-                        deadline(
-                                new AlignToTarget(drivetrain, limelight, true).withTimeout(3),
-                                new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
-                        ),
-                        deadline(
-                                new AutomaticShoot(shooter, conveyor, intake, 2620, false, 3), //was 2300
-                                new AlignToTarget(drivetrain, limelight, false)
                         )
+//                        deadline(
+//                                new AlignToTarget(drivetrain, limelight, true).withTimeout(3),
+//                                new AutoIntake(shooter, intake, conveyor, AutoIntake.IntakeType.INTAKE)
+//                        ),
+//                        deadline(
+//                                new AutomaticShoot(shooter, conveyor, intake, 2620, false, 3), //was 2300
+//                                new AlignToTarget(drivetrain, limelight, false)
+//                        )
                 )
 
         );

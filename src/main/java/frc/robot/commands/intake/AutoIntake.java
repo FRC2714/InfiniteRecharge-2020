@@ -25,7 +25,7 @@ public class AutoIntake extends CommandBase {
         conveyor.enable();
         switch (intakeType){
             case INTAKE:
-                conveyor.setConveyorState(Conveyor.ConveyorState.DEFAULT);
+                conveyor.setConveyorState(Conveyor.ConveyorState.INTAKING);
                 intake.intakePowerCells();
                 break;
             case EXTAKE:
@@ -44,6 +44,8 @@ public class AutoIntake extends CommandBase {
             case UNJAM_STUCK_BALL:
                 intake.setSerializerPower(-Constants.IntakeConstants.kSerializerPower);
                 conveyor.setConveyorState(Conveyor.ConveyorState.EXTAKING);
+            case UNRESTRICTED_SHOOT:
+                conveyor.setConveyorState(Conveyor.ConveyorState.UNRESTRICTED_SHOOTING);
                 break;
         }
 
@@ -69,6 +71,7 @@ public class AutoIntake extends CommandBase {
         INTAKE,
         EXTAKE,
         SHOOT,
+        UNRESTRICTED_SHOOT,
         FORCED_CONVEYOR_INTAKE,
         FORCED_CONVEYOR_EXTAKE,
         UNJAM_STUCK_BALL
