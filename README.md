@@ -1,6 +1,7 @@
 ![Build FRC Project](https://github.com/FRC2714/InfiniteRecharge-2020/workflows/Build%20FRC%20Project/badge.svg)
 # InfiniteRecharge-2020
-Robot code for Team 2714s Robot designed to play Infinite Recharge
+Robot code for Team 2714s Robot designed to play Infinite Recharge. 
+![](https://media.giphy.com/media/mA11ZBYqMKWApIZbUV/giphy.gif)
 
 ## Build
 Use [gradle](https://gradle.org/) to build and deploy.
