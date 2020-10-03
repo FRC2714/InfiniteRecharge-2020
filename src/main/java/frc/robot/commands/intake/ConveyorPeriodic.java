@@ -40,9 +40,22 @@ public class ConveyorPeriodic extends CommandBase {
             System.out.println("Shooting At Velocity " + shooterAtVelocity.getAsBoolean());
         }
 
+        if (conveyor.getConveyorState() == Conveyor.ConveyorState.UNRESTRICTED_SHOOTING)
+            horizontalBeltMovement = verticalBeltMovement = true;
+
+
+
         if (conveyor.getConveyorState().equals(Conveyor.ConveyorState.DEFAULT)) {
-            horizontalBeltMovement = !conveyor.getEntryBeam();
-            verticalBeltMovement = conveyor.getExitBeam() && horizontalBeltMovement;
+            horizontalBeltMovement = false;
+            verticalBeltMovement = !conveyor.getMiddleBeam() && conveyor.getExitBeam();
+
+//            horizontalBeltMovement = !conveyor.getEntryBeam();
+//            verticalBeltMovement = conveyor.getExitBeam() && horizontalBeltMovement;
+        }
+
+        if (conveyor.getConveyorState().equals(Conveyor.ConveyorState.INTAKING)) {
+            horizontalBeltMovement = true;
+            verticalBeltMovement = !conveyor.getMiddleBeam() && conveyor.getExitBeam();
         }
 
         if (conveyor.getConveyorState() == Conveyor.ConveyorState.FORCED_CONVEYOR_INTAKE) {

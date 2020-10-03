@@ -20,29 +20,31 @@ public class GeneratorAuto extends SequentialCommandGroup {
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.40), new Rotation2d().fromDegrees(0.00)),
-                                new Pose2d(Units.feetToMeters(18.39), Units.feetToMeters(13.53), new Rotation2d().fromDegrees(20.48))
+                                new Pose2d(Units.feetToMeters(10.85), Units.feetToMeters(15.18), new Rotation2d().fromDegrees(-0.07)),
+                                new Pose2d(Units.feetToMeters(19.25), Units.feetToMeters(8.03), new Rotation2d().fromDegrees(13.77)),
+                                new Pose2d(Units.feetToMeters(22.00), Units.feetToMeters(9.19), new Rotation2d().fromDegrees(108.88)),
+                                new Pose2d(Units.feetToMeters(19.97), Units.feetToMeters(13.83), new Rotation2d().fromDegrees(113.62))
                         ),
-                        Units.feetToMeters(8), Units.feetToMeters(6), false
+                        Units.feetToMeters(10), Units.feetToMeters(9), false
                 );
 
-        CustomRamseteCommand reverseBaseLineToGenerator =
+        CustomRamseteCommand generatorToShot =
                 RamseteGenerator.getRamseteCommand(
                         drivetrain,
                         List.of(
-                                new Pose2d(Units.feetToMeters(20.53), Units.feetToMeters(18.10), Rotation2d.fromDegrees(-70)),
-                                new Pose2d(Units.feetToMeters(12.14), Units.feetToMeters(15.59), Rotation2d.fromDegrees(0.00))
+                                new Pose2d(Units.feetToMeters(19.71), Units.feetToMeters(14.20), new Rotation2d().fromDegrees(113.12)),
+                                new Pose2d(Units.feetToMeters(15.24), Units.feetToMeters(13.81), new Rotation2d().fromDegrees(-19.99))
                         ),
-                        Units.feetToMeters(13), Units.feetToMeters(8), true
+                        Units.feetToMeters(10), Units.feetToMeters(9), true
                 );
 
         addCommands(
                 sequence(
                         new InstantCommand(() -> drivetrain.resetOdometry(baseLineToGenerator.getInitialPose())),
-                        new AlignToTarget(drivetrain, limelight),
+//                        new AlignToTarget(drivetrain, limelight),
                         baseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        reverseBaseLineToGenerator.andThen(() -> drivetrain.tankDriveVolts(0,0)),
-                        new AlignToTarget(drivetrain, limelight)
+                        generatorToShot.andThen(() -> drivetrain.tankDriveVolts(0,0))
+//                        new AlignToTarget(drivetrain, limelight)
                 )
         );
 
